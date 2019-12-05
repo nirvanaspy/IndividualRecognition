@@ -1,6 +1,6 @@
 <template>
   <div class="logo">
-    <router-link :to="{ name: 'dashboard' }">
+    <router-link :to="{ name: 'signalChoose' }">
       <LogoSvg alt="logo" />
       <h1 v-if="showTitle">{{ title }}</h1>
     </router-link>
@@ -18,7 +18,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '云仿真多工况',
+      default: '个体识别深度学习',
       required: false
     },
     showTitle: {

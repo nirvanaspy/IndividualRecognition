@@ -16,4 +16,4 @@ export const setDocumentTitle = function(title) {
   }
 }
 
-export const domTitle = '云仿真多工况'
+export const domTitle = '个体识别深度学习'

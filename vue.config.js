@@ -11,7 +11,12 @@ const vueConfig = {
   configureWebpack: {
     plugins: [
       // Ignore all locale files of moment.js
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'windows.jQuery': 'jquery'
+      })
     ]
   },
 
@@ -32,6 +37,22 @@ const vueConfig = {
       .loader('file-loader')
       .options({
         name: 'assets/[name].[hash:8].[ext]'
+      })
+
+    config.module
+      .rule('svg')
+      .exclude.add(resolve('src/icons'))
+      .end()
+
+    config.module
+      .rule('icons')
+      .test(/\.svg$/)
+      .include.add(resolve('src/icons'))
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]'
       })
   },
 

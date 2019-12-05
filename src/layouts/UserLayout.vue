@@ -5,26 +5,15 @@
         <div class="header">
           <a href="/">
             <img src="~@/assets/logo.svg" class="logo" alt="logo" />
-            <span class="title">云仿真多工况系统</span>
+            <span class="title">个体识别深度学习系统</span>
           </a>
         </div>
         <div class="desc">
-          Cloud Simulation Platform
+          Individual Recognition Deep Learning
         </div>
       </div>
 
       <route-view></route-view>
-
-      <div class="footer">
-        <div class="links">
-          <a href="_self">帮助</a>
-          <a href="_self">隐私</a>
-          <a href="_self">条款</a>
-        </div>
-        <div class="copyright">
-          Copyright &copy; 2019 南京仁谷系统集成有限公司
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -52,6 +41,8 @@ export default {
 <style lang="less" scoped>
 #userLayout.user-layout-wrapper {
   height: 100%;
+  background: #f0f2f5 url(~@/assets/background0.png) no-repeat center;
+  background-size: cover;
 
   &.mobile {
     .container {
@@ -65,9 +56,9 @@ export default {
   .container {
     width: 100%;
     min-height: 100%;
-    background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
-    background-size: 100%;
-    padding: 110px 0 144px;
+    // background: #f0f2f5 url(~@/assets/background.png) no-repeat 50%;
+    // background-size: 100%;
+    padding: 200px 0 144px;
     position: relative;
 
     a {
@@ -99,19 +90,31 @@ export default {
         }
 
         .title {
-          font-size: 33px;
-          color: rgba(0, 0, 0, 0.85);
+          font-size: 38px;
+          color: #fff;
           font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
           font-weight: 600;
           position: relative;
           top: 2px;
+
+          background: linear-gradient(to bottom right, #ffffff, #1aabe2);
+          -webkit-background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;
+          text-fill-color: transparent;
         }
       }
       .desc {
         font-size: 14px;
-        color: rgba(0, 0, 0, 0.45);
+        color: #efefef;
         margin-top: 12px;
         margin-bottom: 40px;
+
+        background: linear-gradient(0, #31bee2, #ffffff);
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+        text-fill-color: transparent;
       }
     }
 
@@ -133,7 +136,7 @@ export default {
         margin-bottom: 8px;
         font-size: 14px;
         a {
-          color: rgba(0, 0, 0, 0.45);
+          color: #efefef;
           transition: all 0.3s;
           &:not(:last-child) {
             margin-right: 40px;
@@ -141,7 +144,7 @@ export default {
         }
       }
       .copyright {
-        color: rgba(0, 0, 0, 0.45);
+        color: #efefef;
         font-size: 14px;
       }
     }

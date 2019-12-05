@@ -1,16 +1,19 @@
 <template>
   <div class="user-wrapper">
     <div class="content-box">
-      <a href="https://pro.loacg.com/docs/getting-started" target="_blank">
-        <span class="action">
-          <a-icon type="question-circle-o"></a-icon>
-        </span>
-      </a>
-      <notice-icon class="action" />
       <a-dropdown>
-        <span class="action ant-dropdown-link user-dropdown-menu">
-          <a-avatar class="avatar" size="small" :src="require('@/assets/avatar.png')" />
-          <span>逮虾户</span>
+        <span
+          class="action ant-dropdown-link user-dropdown-menu"
+          style="display: inline-block;height: 100%;"
+        >
+          <!--<a-avatar
+            class="avatar"
+            size="small"
+            :src="require('@/assets/avatar.png')"
+          />-->
+          <span style="font-size: 34px;">
+            <svg-icon icon-class="user3"></svg-icon>
+          </span>
         </span>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
           <a-menu-item key="0">
@@ -43,14 +46,11 @@
 </template>
 
 <script>
-import NoticeIcon from '@/components/NoticeIcon'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'UserMenu',
-  components: {
-    NoticeIcon
-  },
+  components: {},
   methods: {
     ...mapActions(['Logout']),
     ...mapGetters(['nickname', 'avatar']),

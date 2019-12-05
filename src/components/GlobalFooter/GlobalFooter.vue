@@ -1,16 +1,12 @@
 <template>
   <div class="footer">
-    <div class="links">
-      <a href="" target="_blank">Pro 首页</a>
-      <a href="" target="_blank">
-        <a-icon type="github" />
-      </a>
-      <a href="">Rengu admin</a>
-      <a>@Rengu daixia</a>
-    </div>
+    <!--<div class="links">
+      <a href="">首页</a>
+      <a>@Rengu</a>
+    </div>-->
     <div class="copyright">
       Copyright
-      <a-icon type="copyright" /> 2019 <span>宇宙专业逮虾有限公司</span>
+      <a-icon type="copyright" /> 2019 <span>中国航天科工集团</span>
     </div>
   </div>
 </template>
