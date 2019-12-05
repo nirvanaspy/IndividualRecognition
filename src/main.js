@@ -21,7 +21,7 @@ import '@ztree/ztree_v3/js/jquery.ztree.excheck.min.js'
 import '@ztree/ztree_v3/js/jquery.ztree.exhide.min.js'
 import '@ztree/ztree_v3/js/jquery.ztree.exedit.min.js'
 import '@ztree/ztree_v3/css/zTreeStyle/zTreeStyle.css'
-import '@ztree/ztree_v3/css/metroStyle/metroStyle.css'
+// import '@ztree/ztree_v3/css/metroStyle/metroStyle.css'
 
 Vue.prototype.$echarts = echarts
 Vue.prototype.$ = $

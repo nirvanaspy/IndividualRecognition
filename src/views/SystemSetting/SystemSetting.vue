@@ -13,7 +13,7 @@
           <a-icon type="safety-certificate" />
           权限管理
         </span>
-        权限管理
+        <auth-manage></auth-manage>
       </a-tab-pane>
       <a-tab-pane key="3">
         <span slot="tab">
@@ -34,17 +34,21 @@
           <a-icon type="file-search" />
           系统简介
         </span>
-        系统简介
+        <system-intro></system-intro>
       </a-tab-pane>
     </a-tabs>
   </div>
 </template>
 <script>
 import UserManage from './components/UserManage'
+import AuthManage from './components/AuthManage'
+import SystemIntro from './components/SystemIntro'
 export default {
   name: 'SystemSetting',
   components: {
-    UserManage
+    UserManage,
+    AuthManage,
+    SystemIntro
   }
 }
 </script>

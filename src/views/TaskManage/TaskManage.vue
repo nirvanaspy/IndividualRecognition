@@ -7,7 +7,7 @@
     </div>
     <a-table
       bordered
-      :dataSource="applicationList"
+      :dataSource="taskList"
       :columns="columns"
       rowKey="id"
       :pagination="false"
@@ -20,7 +20,7 @@
       </template>
       <template slot="operation" slot-scope="name, record">
         <a-popconfirm
-          v-if="applicationList.length"
+          v-if="taskList.length"
           title="确认删除吗"
           @confirm="() => onDelete(record.id)"
         >
@@ -130,7 +130,7 @@ const attributeLayout = {
   }
 }
 export default {
-  name: 'SimApplication',
+  name: 'TaskManage',
   data() {
     return {
       columns: [
@@ -171,7 +171,7 @@ export default {
           sm: { span: 19, offset: 5 }
         }
       },
-      applicationList: [
+      taskList: [
         {
           name: '任务1',
           description: '这是任务1',
@@ -211,25 +211,8 @@ export default {
       visible: false
     }
   },
-  created() {
-    this.getAppList()
-  },
   methods: {
-    getAppList() {
-      getApplication().then(res => {
-        if (res.data.code === 0) {
-          this.applicationList = res.data.data
-        }
-      })
-    },
-    onDelete(id) {
-      deleteApplication(id).then(res => {
-        if (res.data.code === 0) {
-          const dataSource = [...this.applicationList]
-          this.dataSource = dataSource.filter(item => item.id !== id)
-        }
-      })
-    },
+    onDelete() {},
     resetForm() {
       this.createForm = {
         name: '',
@@ -243,22 +226,15 @@ export default {
     },
     handleOk() {
       console.log(this.createForm)
-      // const postData = {
-      //   name: this.createForm.name,
-      //   description: this.createForm.description,
-      //   appParameterEntities: [{ name: 'int', type: 0 }],
-      //   creatorId: 'fcca6c1c-173d-46c1-81c7-545cbad76a4e'
-      // }
+
       const postData = {
         name: this.createForm.name,
         description: this.createForm.description,
         createTime: '2019-09-04 09:42:21',
         params: [{ name: 'intA', description: 'int', type: '0' }]
       }
-      // const attributeData = [{ name: 'int', type: 0 }]
       const userId = '8bb3870f-4b5a-4a99-8650-59b7e977803a'
       addApplication(userId, JSON.stringify(postData))
-      // addApplication(postData)
     },
     remove(k) {
       const arr = this.createForm.attributeList

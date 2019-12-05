@@ -39,7 +39,7 @@
           <div class="mask">
             <a-icon type="plus" />
           </div>
-          <img :src="option.img" />
+          <img src="./avatar.png" />
         </div>
       </a-col>
     </a-row>
@@ -60,7 +60,7 @@ export default {
       // cropper
       preview: {},
       option: {
-        img: '/avatar2.jpg',
+        img: './avatar.png',
         info: true,
         size: 1,
         outputType: 'jpeg',

@@ -46,7 +46,11 @@
         :md="12"
         :lg="8"
       >
-        <div class="signal-item" ondblclick="handleChooseSignal(signal.id)">
+        <div
+          class="signal-item"
+          ondblclick="handleChooseSignal(signal.id)"
+          @contextmenu.prevent="onSignalRightClick($event, signal)"
+        >
           <div class="signal-icon" v-if="computeSignalIcon(signal.id)">
             <svg-icon :icon-class="signal.id"></svg-icon>
           </div>
@@ -55,6 +59,19 @@
         </div>
       </a-col>
     </a-row>
+    <vue-context ref="signalContextMenu">
+      <div style="padding: 0" slot-scope="signal">
+        <li @click="changeImg(signal)">更换图片</li>
+      </div>
+    </vue-context>
+    <a-modal
+      title="更改图片"
+      :visible="visible"
+      @ok="handleOk"
+      @cancel="handleCancel"
+    >
+      <upload-image></upload-image>
+    </a-modal>
   </div>
 </template>
 
@@ -63,14 +80,21 @@
 // import UserMenu from '../../components/tools/UserMenu'
 
 import { mapGetters } from 'vuex'
+import VueContext from 'vue-context'
+import 'vue-context/src/sass/vue-context.scss'
+
+import UploadImage from './comonents/UploadImage'
 export default {
   name: 'SignalMenu',
   components: {
+    VueContext,
+    UploadImage
     // GlobalFooter,
     // UserMenu
   },
   data() {
     return {
+      visible: false,
       signalList: [
         {
           name: 'ADS-B',
@@ -99,6 +123,25 @@ export default {
   methods: {
     handleChooseSignal(id) {
       console.log(id)
+    },
+    onSignalRightClick(event, data) {
+      this.$refs.signalContextMenu.open(event, data)
+    },
+    changeImg(signal) {
+      console.log(signal)
+      this.visible = true
+    },
+    handleOk(e) {
+      this.ModalText = 'The modal will be closed after two seconds'
+      this.confirmLoading = true
+      setTimeout(() => {
+        this.visible = false
+        this.confirmLoading = false
+      }, 2000)
+    },
+    handleCancel(e) {
+      console.log('Clicked cancel button')
+      this.visible = false
     }
   },
   computed: {

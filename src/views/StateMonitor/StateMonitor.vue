@@ -27,7 +27,8 @@ export default {
             disk: '46%',
             ram: '30%',
             cpuNum: 8
-          }
+          },
+          symbolSize: 40
         },
         {
           name: '节点1',
