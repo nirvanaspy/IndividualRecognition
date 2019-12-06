@@ -39,13 +39,8 @@
   </a-layout>-->
   <div class="signal-type-container">
     <a-row>
-      <a-col
-        v-for="(signal, index) in signalList"
-        :key="index"
-        :xs="24"
-        :md="12"
-        :lg="8"
-      >
+      <a-col :span="2"></a-col>
+      <a-col v-for="(signal, index) in signalList" :key="index" :span="4">
         <div
           class="signal-item"
           ondblclick="handleChooseSignal(signal.id)"
@@ -58,6 +53,7 @@
           <span class="signal-name">{{ signal.name }}</span>
         </div>
       </a-col>
+      <a-col :span="2"></a-col>
     </a-row>
     <vue-context ref="signalContextMenu">
       <div style="padding: 0" slot-scope="signal">
@@ -163,7 +159,7 @@ export default {
 <style lang="less" scoped>
 @import '../../components/index.less';
 .signal-type-container {
-  width: 60%;
+  width: 100%;
   min-width: 600px;
   min-height: 300px;
   margin: 0 auto;

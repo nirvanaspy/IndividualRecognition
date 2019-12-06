@@ -5,7 +5,7 @@
         用户统计
       </a-button>
     </div>
-    <div class="app-list">
+    <!--<div class="app-list">
       <a-list
         :grid="{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }"
         :dataSource="dataSource"
@@ -75,31 +75,47 @@
           </template>
         </a-list-item>
       </a-list>
-    </div>
-    <a-drawer
-      title="用户统计"
-      placement="bottom"
-      height="500"
-      :closable="true"
-      @close="onClose"
-      :visible="drawerVisible"
+    </div>-->
+
+    <a-table
+      bordered
+      :dataSource="dataSource"
+      :columns="columns"
+      rowKey="id"
+      :pagination="false"
     >
-      <div
-        id="myChart"
-        style="width: 100%; height: 100%;min-height: 400px;"
-      ></div>
-    </a-drawer>
+      <template slot="name" slot-scope="text">
+        <editable-cell :text="text" />
+      </template>
+      <template slot="operation" slot-scope="name, record">
+        <a-popconfirm
+          v-if="dataSource.length"
+          title="确认删除吗"
+          @confirm="() => onDelete()"
+        >
+          <a href="javascript:;">删除</a>
+        </a-popconfirm>
+        <span style="margin-left: 10px">
+          <a href="javascript:;">修改</a>
+        </span>
+      </template>
+    </a-table>
+    <div
+      id="myChart"
+      style="width: 100%; height: 100%;min-height: 400px;margin-top: 40px;"
+    ></div>
   </div>
 </template>
 
 <script>
 const dataSource = []
-dataSource.push(null)
+// dataSource.push(null)
 for (let i = 0; i < 11; i++) {
   dataSource.push({
-    title: `用户${i + 1}`,
-    activeUser: 17,
-    newUser: 1700
+    name: `用户${i + 1}`,
+    auth: `用户`,
+    createTime: '2019-12-06 19:30:08',
+    id: i
   })
 }
 
@@ -114,7 +130,7 @@ export default {
         title: [
           {
             text: '用户总量统计',
-            x: '23%',
+            x: '25%',
             y: '30%',
             textStyle: {
               color: '#fff'
@@ -122,7 +138,7 @@ export default {
           },
           {
             text: '用户类型统计',
-            x: '73%',
+            x: '75%',
             y: '30%',
             textStyle: {
               color: '#fff'
@@ -157,10 +173,34 @@ export default {
             }
           }
         ]
-      }
+      },
+      columns: [
+        {
+          title: '名称',
+          dataIndex: 'name',
+          align: 'center'
+        },
+        {
+          title: '角色',
+          dataIndex: 'auth',
+          align: 'center'
+        },
+        {
+          title: '创建时间',
+          dataIndex: 'createTime',
+          align: 'center'
+        },
+        {
+          title: '操作',
+          dataIndex: 'operation',
+          align: 'center',
+          scopedSlots: { customRender: 'operation' }
+        }
+      ]
     }
   },
   methods: {
+    onDelete() {},
     checkUserSum() {
       this.drawerVisible = true
       this.$nextTick(() => {
@@ -174,6 +214,9 @@ export default {
       let myChart = this.$echarts.init(document.getElementById('myChart'))
       myChart.setOption(this.option)
     }
+  },
+  mounted() {
+    this.drawPie()
   }
 }
 </script>
