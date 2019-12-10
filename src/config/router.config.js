@@ -92,6 +92,76 @@ export const asyncRouterMap = [
         }
       },
 
+      // work mode
+      {
+        path: '/workMode',
+        name: 'workMode',
+        component: () => import('@/views/WorkMode/WorkMode'),
+        meta: {
+          title: '工作模式',
+          keepAlive: true,
+          icon: 'setting',
+          level: 3,
+          permission: ['simApplication']
+        }
+      },
+
+      // signal task manage
+      {
+        path: '/signalTaskManage',
+        name: 'signalTaskManage',
+        component: () => import('@/views/SignalTaskManage/SignalTaskManage'),
+        meta: {
+          title: '任务管理',
+          keepAlive: true,
+          icon: 'setting',
+          level: 3,
+          permission: ['simApplication']
+        }
+      },
+
+      // original data manage
+      {
+        path: '/originDataManage',
+        name: 'originDataManage',
+        component: () => import('@/views/OriginDataManage/OriginDataManage'),
+        meta: {
+          title: '原始数据管理',
+          keepAlive: true,
+          icon: 'setting',
+          level: 3,
+          permission: ['simApplication']
+        }
+      },
+
+      // sample data manage
+      {
+        path: '/sampleDataManage',
+        name: 'sampleDataManage',
+        component: () => import('@/views/SampleDataManage/SampleDataManage'),
+        meta: {
+          title: '样本数据管理',
+          keepAlive: true,
+          icon: 'setting',
+          level: 3,
+          permission: ['simApplication']
+        }
+      },
+
+      // model data manage
+      {
+        path: '/modelDataManage',
+        name: 'modelDataManage',
+        component: () => import('@/views/ModelDataManage/ModelDataManage'),
+        meta: {
+          title: '模型数据管理',
+          keepAlive: true,
+          icon: 'setting',
+          level: 3,
+          permission: ['simApplication']
+        }
+      },
+
       // Exception
       {
         path: '/exception',

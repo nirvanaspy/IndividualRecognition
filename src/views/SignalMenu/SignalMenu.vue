@@ -43,7 +43,7 @@
       <a-col v-for="(signal, index) in signalList" :key="index" :span="4">
         <div
           class="signal-item"
-          ondblclick="handleChooseSignal(signal.id)"
+          @dblclick="handleChooseSignal(signal.id)"
           @contextmenu.prevent="onSignalRightClick($event, signal)"
         >
           <div class="signal-icon" v-if="computeSignalIcon(signal.id)">
@@ -118,7 +118,8 @@ export default {
   },
   methods: {
     handleChooseSignal(id) {
-      console.log(id)
+      // console.log(id)
+      this.$router.push('/workMode')
     },
     onSignalRightClick(event, data) {
       this.$refs.signalContextMenu.open(event, data)

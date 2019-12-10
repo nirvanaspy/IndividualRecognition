@@ -80,6 +80,8 @@ import GlobalHeader from '@/components/GlobalHeader'
 import GlobalFooter from '@/components/GlobalFooter'
 import SettingDrawer from '@/components/SettingDrawer'
 
+import _ from 'lodash'
+
 export default {
   name: 'BasicLayout',
   mixins: [mixin, mixinDevice],
@@ -95,7 +97,8 @@ export default {
     return {
       production: config.production,
       collapsed: false,
-      menus: []
+      menus: [],
+      menuBack: []
     }
   },
   computed: {
@@ -116,10 +119,27 @@ export default {
   watch: {
     sidebarOpened(val) {
       this.collapsed = !val
+    },
+    $route(val) {
+      if (val.meta) {
+        let route_meta = val.meta
+        if (route_meta.level === 3) {
+          this.menus = this.menuBack.filter(item => item.meta.level === 3)
+        } else {
+          this.menus = this.menuBack.filter(item => item.meta.level !== 3)
+        }
+      }
     }
   },
   created() {
-    this.menus = this.mainMenu.find(item => item.path === '/').children
+    let menus = this.mainMenu.find(item => item.path === '/').children
+    this.menus = menus
+    if (this.$route.meta.level === 3) {
+      this.menus = menus.filter(item => item.meta.level === 3)
+    } else {
+      this.menus = menus.filter(item => item.meta.level !== 3)
+    }
+    this.menuBack = _.cloneDeep(menus)
     this.collapsed = !this.sidebarOpened
   },
   mounted() {
