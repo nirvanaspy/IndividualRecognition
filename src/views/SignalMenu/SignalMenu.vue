@@ -37,37 +37,46 @@
       <global-footer></global-footer>
     </a-layout-footer>
   </a-layout>-->
-  <div class="signal-type-container">
-    <a-row>
-      <a-col :span="2"></a-col>
-      <a-col v-for="(signal, index) in signalList" :key="index" :span="4">
-        <div
-          class="signal-item"
-          @dblclick="handleChooseSignal(signal.id)"
-          @contextmenu.prevent="onSignalRightClick($event, signal)"
-        >
-          <div class="signal-icon" v-if="computeSignalIcon(signal.id)">
-            <svg-icon :icon-class="signal.id"></svg-icon>
+  <div style="height: 100%;">
+    <div class="view-title">
+      <div class="view-title-btn">信号导航</div>
+    </div>
+    <div class="signal-type-container">
+      <a-row :gutter="30">
+        <a-col :span="2"></a-col>
+        <a-col v-for="(signal, index) in signalList" :key="index" :span="4">
+          <div
+            class="signal-item"
+            @dblclick="handleChooseSignal(signal.id)"
+            @contextmenu.prevent="onSignalRightClick($event, signal)"
+          >
+            <!--<div class="signal-icon" v-if="computeSignalIcon(signal.id)">
+              <svg-icon :icon-class="signal.id"></svg-icon>
+            </div>
+            <div class="signal-name-icon" v-else>{{ signal.name }}</div>
+            <span class="signal-name">{{ signal.name }}</span>-->
+            <div class="signal-icon">
+              <img :src="signal.src" alt="" />
+            </div>
           </div>
-          <div class="signal-name-icon" v-else>{{ signal.name }}</div>
-          <span class="signal-name">{{ signal.name }}</span>
+          <div class="signal-name">{{ signal.name }}</div>
+        </a-col>
+        <a-col :span="2"></a-col>
+      </a-row>
+      <vue-context ref="signalContextMenu">
+        <div style="padding: 0" slot-scope="signal">
+          <li @click="changeImg(signal)">更换图片</li>
         </div>
-      </a-col>
-      <a-col :span="2"></a-col>
-    </a-row>
-    <vue-context ref="signalContextMenu">
-      <div style="padding: 0" slot-scope="signal">
-        <li @click="changeImg(signal)">更换图片</li>
-      </div>
-    </vue-context>
-    <a-modal
-      title="更改图片"
-      :visible="visible"
-      @ok="handleOk"
-      @cancel="handleCancel"
-    >
-      <upload-image></upload-image>
-    </a-modal>
+      </vue-context>
+      <a-modal
+        title="更改图片"
+        :visible="visible"
+        @ok="handleOk"
+        @cancel="handleCancel"
+      >
+        <upload-image></upload-image>
+      </a-modal>
+    </div>
   </div>
 </template>
 
@@ -94,23 +103,28 @@ export default {
       signalList: [
         {
           name: 'ADS-B',
-          id: 'ads-b'
+          id: 'ads-b',
+          src: require('./assets/ads-b.jpg')
         },
         {
           name: 'IFF',
-          id: ' iff'
+          id: ' iff',
+          src: require('./assets/iff.jpg')
         },
         {
           name: '雷达',
-          id: 'radar'
+          id: 'radar',
+          src: require('./assets/radar.jpg')
         },
         {
           name: '通信',
-          id: 'connection'
+          id: 'connection',
+          src: require('./assets/connection.jpg')
         },
         {
           name: 'AIS',
-          id: 'ais'
+          id: 'ais',
+          src: require('./assets/ais.jpg')
         }
       ],
       existIcons: ['radar', 'connection']
@@ -118,7 +132,7 @@ export default {
   },
   methods: {
     handleChooseSignal(id) {
-      // console.log(id)
+      console.log(id)
       this.$router.push('/workMode')
     },
     onSignalRightClick(event, data) {
@@ -163,8 +177,9 @@ export default {
   width: 100%;
   min-width: 600px;
   min-height: 300px;
-  margin: 0 auto;
-  margin-top: 120px;
+  position: relative;
+  top: 40%;
+  margin: -160px auto 0;
   text-align: center;
 
   // 禁止选中文字
@@ -175,26 +190,37 @@ export default {
   .signal-item {
     display: inline-block;
     width: 100%;
+    max-width: 400px;
+    height: 300px;
     border-radius: 6px;
-    padding: 40px;
+    padding: 20px;
     text-align: center;
     cursor: pointer;
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     -o-transition: all 0.3s;
+    border: 3px dashed rgb(14, 65, 108);
+    background: rgba(3, 13, 23, 0.3);
     &:hover {
-      background: #dfdfdf;
+      // background: #dfdfdf;
+      background: rgba(3, 13, 23, 0.5);
       -webkit-transform: scale(1.1); /*1.1放大值*/
       -moz-transform: scale(1.1);
       -o-transform: scale(1.1);
       -ms-transform: scale(1.1);
     }
     .signal-icon {
-      height: 120px;
-      line-height: 120px;
-      font-size: 100px;
+      /*height: 200px;
+      width: 200px;*/
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
-    .signal-name {
+    /*.signal-name {
       display: block;
       font-size: 20px;
     }
@@ -208,7 +234,13 @@ export default {
       color: transparent;
       -webkit-text-fill-color: transparent;
       text-fill-color: transparent;
-    }
+    }*/
+  }
+  .signal-name {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
   }
 }
 </style>

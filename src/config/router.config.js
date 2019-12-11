@@ -100,7 +100,7 @@ export const asyncRouterMap = [
         meta: {
           title: '工作模式',
           keepAlive: true,
-          icon: 'setting',
+          icon: 'appstore',
           level: 3,
           permission: ['simApplication']
         }
@@ -114,7 +114,7 @@ export const asyncRouterMap = [
         meta: {
           title: '任务管理',
           keepAlive: true,
-          icon: 'setting',
+          icon: 'schedule',
           level: 3,
           permission: ['simApplication']
         }
@@ -128,7 +128,7 @@ export const asyncRouterMap = [
         meta: {
           title: '原始数据管理',
           keepAlive: true,
-          icon: 'setting',
+          icon: 'profile',
           level: 3,
           permission: ['simApplication']
         }
@@ -142,7 +142,7 @@ export const asyncRouterMap = [
         meta: {
           title: '样本数据管理',
           keepAlive: true,
-          icon: 'setting',
+          icon: 'project',
           level: 3,
           permission: ['simApplication']
         }
@@ -156,7 +156,7 @@ export const asyncRouterMap = [
         meta: {
           title: '模型数据管理',
           keepAlive: true,
-          icon: 'setting',
+          icon: 'codepen',
           level: 3,
           permission: ['simApplication']
         }

@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div style="margin-bottom: 10px;text-align: right;">
+    <!--<div style="margin-bottom: 10px;text-align: right;">
       <a-button type="primary" @click="checkAuth">查看权限树</a-button>
-    </div>
+    </div>-->
     <a-table
       bordered
       :dataSource="authList"
       :columns="columns"
       rowKey="id"
-      :pagination="false"
+      :pagination="pagination"
     >
       <template slot="name" slot-scope="text">
         <editable-cell :text="text" />
@@ -26,7 +26,17 @@
         </span>
       </template>
     </a-table>
-    <a-drawer
+    <div class="tree-container">
+      <a-row>
+        <a-col :span="12">
+          <ul id="workMode" class="ztree"></ul>
+        </a-col>
+        <a-col :span="12">
+          <ul id="signalMode" class="ztree"></ul>
+        </a-col>
+      </a-row>
+    </div>
+    <!--<a-drawer
       title="权限树"
       placement="right"
       width="300"
@@ -42,7 +52,7 @@
           <ul id="signalMode" class="ztree"></ul>
         </a-tab-pane>
       </a-tabs>
-    </a-drawer>
+    </a-drawer>-->
   </div>
 </template>
 
@@ -145,25 +155,31 @@ export default {
       drawerVisible: false,
       setting: {},
       workModeNodes: [
-        { name: '工作模式1', open: true },
-        { name: '工作模式2', open: true },
-        { name: '工作模式3', open: true },
-        { name: '工作模式4', open: true },
-        { name: '工作模式5', open: true },
-        { name: '工作模式6', open: true },
-        { name: '工作模式7', open: true },
-        { name: '工作模式8', open: true }
+        { name: '工作模式1', open: true, iconSkin: 'mode' },
+        { name: '工作模式2', open: true, iconSkin: 'mode' },
+        { name: '工作模式3', open: true, iconSkin: 'mode' },
+        { name: '工作模式4', open: true, iconSkin: 'mode' },
+        { name: '工作模式5', open: true, iconSkin: 'mode' },
+        { name: '工作模式6', open: true, iconSkin: 'mode' },
+        { name: '工作模式7', open: true, iconSkin: 'mode' },
+        { name: '工作模式8', open: true, iconSkin: 'mode' }
       ],
       signalTypeNodes: [
-        { name: '信号类型1', open: true },
-        { name: '信号类型2', open: true },
-        { name: '信号类型3', open: true },
-        { name: '信号类型4', open: true },
-        { name: '信号类型5', open: true },
-        { name: '信号类型6', open: true },
-        { name: '信号类型7', open: true },
-        { name: '信号类型8', open: true }
-      ]
+        { name: '信号类型1', open: true, iconSkin: 'signal' },
+        { name: '信号类型2', open: true, iconSkin: 'signal' },
+        { name: '信号类型3', open: true, iconSkin: 'signal' },
+        { name: '信号类型4', open: true, iconSkin: 'signal' },
+        { name: '信号类型5', open: true, iconSkin: 'signal' },
+        { name: '信号类型6', open: true, iconSkin: 'signal' },
+        { name: '信号类型7', open: true, iconSkin: 'signal' },
+        { name: '信号类型8', open: true, iconSkin: 'signal' }
+      ],
+      pagination: {
+        defaultPageSize: 5,
+        showTotal: () => `共 ${this.authList.length} 条数据`,
+        showSizeChanger: true,
+        pageSizeOptions: ['5', '10', '15', '20']
+      }
     }
   },
   methods: {
@@ -185,8 +201,16 @@ export default {
       $.fn.zTree.init($('#signalMode'), this.setting, this.signalTypeNodes)
     }
   },
-  mounted() {}
+  mounted() {
+    this.initWorkTree()
+    this.initSignalTree()
+  }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.tree-container {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+</style>

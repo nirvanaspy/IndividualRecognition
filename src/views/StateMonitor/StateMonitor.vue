@@ -1,5 +1,10 @@
 <template>
-  <div id="state_chart"></div>
+  <div class="state-container">
+    <div class="view-title">
+      <div class="view-title-btn">状态监控</div>
+    </div>
+    <div id="state-chart"></div>
+  </div>
 </template>
 
 <script>
@@ -7,6 +12,7 @@ export default {
   name: 'StateMonitor',
   data() {
     return {
+      height: '100%',
       chart: null,
       list: [],
       dataList: [
@@ -195,10 +201,12 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.initChart()
+      window.onresize = () => {
+        if (this.chart) {
+          this.chart.resize()
+        }
+      }
     })
-    window.onresize = () => {
-      this.chart.resize()
-    }
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -209,7 +217,10 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = this.$echarts.init(document.getElementById('state_chart'))
+      this.chart = this.$echarts.init(document.getElementById('state-chart'))
+      this.$nextTick(() => {
+        this.chart.resize()
+      })
       this.chart.setOption({
         /*title: {
           text: this.title
@@ -296,12 +307,20 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-#state_chart {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  background: url('1.jpeg') center center;
-  min-height: 1000px;
-  background-size: cover;
+.state-container {
+  margin-right: 30px;
+  height: calc(100% - 60px);
+  #state-chart {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    // background: url('1.jpeg') center center;
+    // background-size: cover;
+    height: 100%;
+    // min-height: 600px;
+    background: rgba(3, 13, 23, 0.5);
+    border: 2px solid rgb(14, 65, 108);
+    border-radius: 4px;
+  }
 }
 </style>

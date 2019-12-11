@@ -1,5 +1,8 @@
 <template>
   <div class="data-statistics-container">
+    <div class="view-title">
+      <div class="view-title-btn">数据统计</div>
+    </div>
     <a-row>
       <a-col :span="8">
         <div
@@ -31,7 +34,10 @@ export default {
       signalOption: {
         title: {
           text: '原始信号库统计',
-          left: 'center'
+          left: 'center',
+          textStyle: {
+            color: '#fff'
+          }
         },
         tooltip: {},
         legend: {
@@ -39,7 +45,10 @@ export default {
           // top: 'middle',
           bottom: 10,
           left: 'center',
-          data: ['type1', 'type2', 'type3', 'type4']
+          data: ['type1', 'type2', 'type3', 'type4'],
+          textStyle: {
+            color: '#fff'
+          }
         },
         dataset: {
           source: [
@@ -66,7 +75,10 @@ export default {
       dataMarkOption: {
         title: {
           text: '数据标注库统计',
-          left: 'center'
+          left: 'center',
+          textStyle: {
+            color: '#fff'
+          }
         },
         tooltip: {},
         legend: {
@@ -74,7 +86,10 @@ export default {
           // top: 'middle',
           bottom: 10,
           left: 'center',
-          data: ['type1', 'type2', 'type3', 'type4']
+          data: ['type1', 'type2', 'type3', 'type4'],
+          textStyle: {
+            color: '#fff'
+          }
         },
         dataset: {
           source: [
@@ -100,7 +115,10 @@ export default {
       modelOption: {
         title: {
           text: '模型库统计',
-          left: 'center'
+          left: 'center',
+          textStyle: {
+            color: '#fff'
+          }
         },
         tooltip: {},
         legend: {
@@ -108,7 +126,10 @@ export default {
           // top: 'middle',
           bottom: 10,
           left: 'center',
-          data: ['type1', 'type2', 'type3', 'type4']
+          data: ['type1', 'type2', 'type3', 'type4'],
+          textStyle: {
+            color: '#fff'
+          }
         },
         dataset: {
           source: [

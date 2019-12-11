@@ -1,16 +1,19 @@
 <template>
   <div>
-    <div style="text-align:right;margin-bottom: 4px;">
-      <a-button class="editable-add-btn" @click="handleAdd" type="primary"
-        >新建</a-button
-      >
+    <div class="view-title">
+      <div class="view-title-btn">任务管理</div>
+      <div style="float:right;margin-bottom: 4px;">
+        <a-button class="editable-add-btn" @click="handleAdd" type="primary"
+          >新建</a-button
+        >
+      </div>
     </div>
     <a-table
       bordered
       :dataSource="taskList"
       :columns="columns"
       rowKey="id"
-      :pagination="false"
+      :pagination="pagination"
     >
       <template slot="name" slot-scope="text">
         <editable-cell :text="text" />
@@ -133,6 +136,12 @@ export default {
   name: 'TaskManage',
   data() {
     return {
+      pagination: {
+        defaultPageSize: 5,
+        showTotal: () => `共 ${this.taskList.length} 条数据`,
+        showSizeChanger: true,
+        pageSizeOptions: ['5', '10', '15', '20']
+      },
       columns: [
         {
           title: '名称',

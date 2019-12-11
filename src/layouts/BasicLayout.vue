@@ -1,5 +1,5 @@
 <template>
-  <a-layout :class="['layout', device]">
+  <a-layout :class="['layout', device]" class="main_layout">
     <!-- SideMenu -->
     <a-drawer
       v-if="isMobile()"
@@ -31,6 +31,7 @@
     <a-layout
       :class="[layoutMode, `content-width-${contentWidth}`]"
       :style="{ paddingLeft: contentPaddingLeft, minHeight: '100vh' }"
+      class="content-layout"
     >
       <!-- layout header -->
       <global-header
@@ -40,6 +41,7 @@
         :collapsed="collapsed"
         :device="device"
         @toggle="toggle"
+        class="content-header"
       />
 
       <!-- layout content -->
@@ -64,6 +66,15 @@
       <!-- Setting Drawer (show in development mode) -->
       <setting-drawer></setting-drawer>
     </a-layout>
+
+    <div class="footer-logo-container">
+      <div class="footer-logo-info">
+        <div class="footer-logo-text">
+          <div>中国航天科工集团公司</div>
+          <div>电磁信息数据中心</div>
+        </div>
+      </div>
+    </div>
   </a-layout>
 </template>
 
@@ -205,5 +216,19 @@ export default {
 .page-transition-leave-active .page-transition-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+.footer-logo-container {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  .footer-logo-text {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    color: #fff;
+  }
 }
 </style>

@@ -1,5 +1,8 @@
 <template>
   <div class="sys-setting-container">
+    <div class="view-title">
+      <div class="view-title-btn">系统管理</div>
+    </div>
     <a-tabs defaultActiveKey="2">
       <a-tab-pane key="1">
         <span slot="tab">
@@ -55,6 +58,6 @@ export default {
 
 <style lang="less" scoped>
 .sys-setting-container {
-  padding: 20px;
+  // padding: 0 20px 0;
 }
 </style>
