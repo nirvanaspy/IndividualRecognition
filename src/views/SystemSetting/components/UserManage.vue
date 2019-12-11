@@ -36,7 +36,7 @@
       id="myChart"
       style="width: 100%; height: 100%;min-height: 400px;margin-top: 40px;"
     ></div>-->
-    <a-row>
+    <a-row :gutter="30">
       <a-col :span="12">
         <div
           id="userNumChart"
@@ -205,6 +205,13 @@ export default {
     drawPie(id, option) {
       let myChart = this.$echarts.init(document.getElementById(id))
       myChart.setOption(option)
+      this.$nextTick(() => {
+        window.onresize = () => {
+          if (myChart) {
+            myChart.resize()
+          }
+        }
+      })
     }
   },
   mounted() {
@@ -246,5 +253,11 @@ export default {
       }
     }
   }
+}
+#userNumChart,
+#userTypeChart {
+  padding: 10px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.2);
 }
 </style>

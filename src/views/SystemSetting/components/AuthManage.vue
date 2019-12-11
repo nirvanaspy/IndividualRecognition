@@ -9,6 +9,10 @@
       :columns="columns"
       rowKey="id"
       :pagination="pagination"
+      :rowSelection="{
+        selectedRowKeys: selectedRowKeys,
+        onChange: onSelectChange
+      }"
     >
       <template slot="name" slot-scope="text">
         <editable-cell :text="text" />
@@ -28,11 +32,14 @@
     </a-table>
     <div class="tree-container">
       <a-row>
-        <a-col :span="12">
+        <a-col :span="8">
           <ul id="workMode" class="ztree"></ul>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="8">
           <ul id="signalMode" class="ztree"></ul>
+        </a-col>
+        <a-col :span="8">
+          <ul id="fileAuth" class="ztree"></ul>
         </a-col>
       </a-row>
     </div>
@@ -61,6 +68,7 @@ export default {
   name: 'AuthManage',
   data() {
     return {
+      selectedRowKeys: [],
       columns: [
         {
           title: '名称',
@@ -174,6 +182,16 @@ export default {
         { name: '信号类型7', open: true, iconSkin: 'signal' },
         { name: '信号类型8', open: true, iconSkin: 'signal' }
       ],
+      fileAuthNodes: [
+        { name: '文件导出1', open: true, iconSkin: 'signal' },
+        { name: '文件导出2', open: true, iconSkin: 'signal' },
+        { name: '文件导出3', open: true, iconSkin: 'signal' },
+        { name: '文件导出4', open: true, iconSkin: 'signal' },
+        { name: '文件导出5', open: true, iconSkin: 'signal' },
+        { name: '文件导出6', open: true, iconSkin: 'signal' },
+        { name: '文件导出7', open: true, iconSkin: 'signal' },
+        { name: '文件导出8', open: true, iconSkin: 'signal' }
+      ],
       pagination: {
         defaultPageSize: 5,
         showTotal: () => `共 ${this.authList.length} 条数据`,
@@ -183,6 +201,10 @@ export default {
     }
   },
   methods: {
+    onSelectChange(selectedRowKeys) {
+      console.log('selectedRowKeys changed: ', selectedRowKeys)
+      this.selectedRowKeys = selectedRowKeys
+    },
     onDelete() {},
     checkAuth() {
       this.drawerVisible = true
@@ -199,18 +221,23 @@ export default {
     },
     initSignalTree() {
       $.fn.zTree.init($('#signalMode'), this.setting, this.signalTypeNodes)
+    },
+    initFileTree() {
+      $.fn.zTree.init($('#fileAuth'), this.setting, this.fileAuthNodes)
     }
   },
   mounted() {
     this.initWorkTree()
     this.initSignalTree()
+    this.initFileTree()
   }
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .tree-container {
-  border: 1px solid #ddd;
+  // border: 1px solid #ddd;
+  background: rgba(0, 0, 0, 0.2);
   padding: 10px;
 }
 </style>

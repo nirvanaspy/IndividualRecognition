@@ -3,20 +3,24 @@
     <div class="view-title">
       <div class="view-title-btn">系统管理</div>
     </div>
-    <a-tabs defaultActiveKey="2">
+    <a-tabs defaultActiveKey="1">
       <a-tab-pane key="1">
         <span slot="tab">
           <a-icon type="user" />
           用户管理
         </span>
-        <user-manage></user-manage>
+        <div class="tab-pane-container">
+          <user-manage></user-manage>
+        </div>
       </a-tab-pane>
       <a-tab-pane key="2">
         <span slot="tab">
           <a-icon type="safety-certificate" />
           权限管理
         </span>
-        <auth-manage></auth-manage>
+        <div class="tab-pane-container">
+          <auth-manage></auth-manage>
+        </div>
       </a-tab-pane>
       <a-tab-pane key="3">
         <span slot="tab">
@@ -37,7 +41,9 @@
           <a-icon type="file-search" />
           系统简介
         </span>
-        <system-intro></system-intro>
+        <div class="tab-pane-container">
+          <system-intro></system-intro>
+        </div>
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -58,6 +64,7 @@ export default {
 
 <style lang="less" scoped>
 .sys-setting-container {
+  height: 100%;
   // padding: 0 20px 0;
 }
 </style>

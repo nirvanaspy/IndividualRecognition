@@ -1,6 +1,7 @@
 <template>
   <div class="user-wrapper">
     <div class="content-box">
+      <span style="position: relative;top: -10px;">用户中心</span>
       <a-dropdown>
         <span
           class="action ant-dropdown-link user-dropdown-menu"
@@ -11,7 +12,7 @@
             size="small"
             :src="require('@/assets/avatar.png')"
           />-->
-          <span style="font-size: 34px;">
+          <span style="font-size: 40px;">
             <svg-icon icon-class="user3"></svg-icon>
           </span>
         </span>

@@ -3,7 +3,7 @@
     <div class="view-title">
       <div class="view-title-btn">数据统计</div>
     </div>
-    <a-row>
+    <a-row :gutter="30">
       <a-col :span="8">
         <div
           id="signalBaseChart"
@@ -158,6 +158,13 @@ export default {
     drawPie(id, option) {
       let myChart = this.$echarts.init(document.getElementById(id))
       myChart.setOption(option)
+      this.$nextTick(() => {
+        window.onresize = () => {
+          if (myChart) {
+            myChart.resize()
+          }
+        }
+      })
     }
   },
   mounted() {
@@ -168,4 +175,12 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+#signalBaseChart,
+#dataMarkBaseChart,
+#modelBaseChart {
+  padding: 10px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+}
+</style>
