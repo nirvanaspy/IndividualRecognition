@@ -148,4 +148,8 @@ export default {
 .showHeader-leave-to {
   opacity: 0;
 }
+.trigger {
+  position: relative;
+  left: 30px;
+}
 </style>

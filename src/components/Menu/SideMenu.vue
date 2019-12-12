@@ -6,7 +6,7 @@
       theme,
       fixSiderbar ? 'ant-fixed-sidemenu' : null
     ]"
-    width="256px"
+    width="300px"
     :collapsible="collapsible"
     v-model="collapsed"
     :trigger="null"

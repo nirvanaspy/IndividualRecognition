@@ -59,7 +59,15 @@
               <img :src="signal.src" alt="" />
             </div>
           </div>
-          <div class="signal-name">{{ signal.name }}</div>
+          <div class="signal-desc">
+            <div class="signal-name">
+              <span>{{ signal.name }}</span>
+            </div>
+            <div class="signal-info">
+              <div>识别模式5种</div>
+              <div>模型有1000个</div>
+            </div>
+          </div>
         </a-col>
         <a-col :span="2"></a-col>
       </a-row>
@@ -188,12 +196,14 @@ export default {
   -ms-user-select: none; /*IE10*/
   user-select: none;
   .signal-item {
+    position: relative;
     display: inline-block;
     width: 100%;
     max-width: 400px;
-    height: 300px;
+    // height: 300px;
+    height: 0;
+    padding-bottom: 100%;
     border-radius: 6px;
-    padding: 20px;
     text-align: center;
     cursor: pointer;
     -webkit-transition: all 0.3s;
@@ -202,7 +212,6 @@ export default {
     border: 3px dashed rgb(14, 65, 108);
     background: rgba(3, 13, 23, 0.3);
     &:hover {
-      // background: #dfdfdf;
       background: rgba(3, 13, 23, 0.5);
       -webkit-transform: scale(1.1); /*1.1放大值*/
       -moz-transform: scale(1.1);
@@ -210,14 +219,13 @@ export default {
       -ms-transform: scale(1.1);
     }
     .signal-icon {
-      /*height: 200px;
-      width: 200px;*/
       width: 100%;
-      height: 100%;
       text-align: center;
       img {
         width: 100%;
         height: 100%;
+        position: absolute;
+        left: 0;
       }
     }
     /*.signal-name {
@@ -236,11 +244,16 @@ export default {
       text-fill-color: transparent;
     }*/
   }
-  .signal-name {
-    margin-top: 20px;
-    font-size: 24px;
-    font-weight: 700;
-    color: #fff;
+  .signal-desc {
+    .signal-name {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .signal-info {
+      color: #0677b4;
+    }
   }
 }
 </style>

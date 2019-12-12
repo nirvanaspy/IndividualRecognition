@@ -63,18 +63,21 @@
         <global-footer />
       </a-layout-footer>-->
 
-      <!-- Setting Drawer (show in development mode) -->
-      <setting-drawer></setting-drawer>
-    </a-layout>
-
-    <div class="footer-logo-container">
-      <div class="footer-logo-info">
-        <div class="footer-logo-text">
-          <div>中国航天科工集团公司</div>
-          <div>电磁信息数据中心</div>
+      <div class="footer-logo-container">
+        <div class="footer-logo-info">
+          <div class="footer-logo-icon">
+            <img src="../assets/logo-company.png" alt="" />
+          </div>
+          <div class="footer-logo-text">
+            <div>中国航天科工集团公司</div>
+            <div>电磁信息数据中心</div>
+          </div>
         </div>
       </div>
-    </div>
+
+      <!-- Setting Drawer (show in development mode) -->
+      <!--<setting-drawer></setting-drawer>-->
+    </a-layout>
   </a-layout>
 </template>
 
@@ -122,7 +125,7 @@ export default {
         return '0'
       }
       if (this.sidebarOpened) {
-        return '256px'
+        return '300px'
       }
       return '80px'
     }
@@ -174,7 +177,7 @@ export default {
     paddingCalc() {
       let left = ''
       if (this.sidebarOpened) {
-        left = this.isDesktop() ? '256px' : '80px'
+        left = this.isDesktop() ? '300px' : '80px'
       } else {
         left = (this.isMobile() && '0') || ((this.fixSidebar && '80px') || '0')
       }
@@ -220,11 +223,26 @@ export default {
 
 .footer-logo-container {
   position: absolute;
-  bottom: 28px;
+  bottom: 6px;
   left: 0;
   width: 100%;
   text-align: center;
+  .footer-logo-icon,
   .footer-logo-text {
+    display: inline-block;
+  }
+  .footer-logo-icon {
+    width: 40px;
+    position: relative;
+    top: -3px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .footer-logo-text {
+    position: relative;
+    top: 3px;
     height: 20px;
     line-height: 20px;
     font-size: 12px;

@@ -1,4 +1,4 @@
-<script>
+<!--<script>
 export default {
   name: 'RouteView',
   props: {
@@ -30,6 +30,24 @@ export default {
     return this.keepAlive || getters.multiTab || meta.keepAlive
       ? inKeep
       : notKeep
+  }
+}
+</script>-->
+
+<template>
+  <div style="height: 100%;">
+    <keep-alive v-if="this.$route.meta.keepAlive">
+      <router-view></router-view>
+    </keep-alive>
+    <router-view v-if="!this.$route.meta.keepAlive"></router-view>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'RouteView',
+  data() {
+    return {}
   }
 }
 </script>

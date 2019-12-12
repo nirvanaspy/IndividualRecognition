@@ -18,7 +18,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '个体识别深度学习',
+      default: '个体识别深度学习系统',
       required: false
     },
     showTitle: {

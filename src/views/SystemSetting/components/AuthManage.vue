@@ -1,8 +1,17 @@
 <template>
   <div>
-    <!--<div style="margin-bottom: 10px;text-align: right;">
-      <a-button type="primary" @click="checkAuth">查看权限树</a-button>
-    </div>-->
+    <div class="operate-btn-container">
+      <!--<a-button type="primary" @click="checkAuth">查看权限树</a-button>-->
+      <a-button
+        class="editable-add-btn"
+        type="primary"
+        style="margin-right: 10px;"
+        >查询</a-button
+      >
+      <a-button class="editable-add-btn" type="primary" @click="handleDelete"
+        >删除</a-button
+      >
+    </div>
     <a-table
       bordered
       :dataSource="authList"
@@ -163,39 +172,61 @@ export default {
       drawerVisible: false,
       setting: {},
       workModeNodes: [
-        { name: '工作模式1', open: true, iconSkin: 'mode' },
-        { name: '工作模式2', open: true, iconSkin: 'mode' },
-        { name: '工作模式3', open: true, iconSkin: 'mode' },
-        { name: '工作模式4', open: true, iconSkin: 'mode' },
-        { name: '工作模式5', open: true, iconSkin: 'mode' },
-        { name: '工作模式6', open: true, iconSkin: 'mode' },
-        { name: '工作模式7', open: true, iconSkin: 'mode' },
-        { name: '工作模式8', open: true, iconSkin: 'mode' }
+        {
+          name: '工作模式',
+          open: true,
+          iconSkin: 'mode',
+          children: [
+            { name: '工作模式1', open: true },
+            { name: '工作模式2', open: true },
+            { name: '工作模式3', open: true },
+            { name: '工作模式4', open: true },
+            { name: '工作模式5', open: true },
+            { name: '工作模式6', open: true },
+            { name: '工作模式7', open: true },
+            { name: '工作模式8', open: true }
+          ]
+        }
       ],
       signalTypeNodes: [
-        { name: '信号类型1', open: true, iconSkin: 'signal' },
-        { name: '信号类型2', open: true, iconSkin: 'signal' },
-        { name: '信号类型3', open: true, iconSkin: 'signal' },
-        { name: '信号类型4', open: true, iconSkin: 'signal' },
-        { name: '信号类型5', open: true, iconSkin: 'signal' },
-        { name: '信号类型6', open: true, iconSkin: 'signal' },
-        { name: '信号类型7', open: true, iconSkin: 'signal' },
-        { name: '信号类型8', open: true, iconSkin: 'signal' }
+        {
+          name: '信号类型',
+          open: true,
+          iconSkin: 'signal',
+          children: [
+            { name: '信号类型1', open: true },
+            { name: '信号类型2', open: true },
+            { name: '信号类型3', open: true },
+            { name: '信号类型4', open: true },
+            { name: '信号类型5', open: true },
+            { name: '信号类型6', open: true },
+            { name: '信号类型7', open: true },
+            { name: '信号类型8', open: true }
+          ]
+        }
       ],
       fileAuthNodes: [
-        { name: '文件导出1', open: true, iconSkin: 'signal' },
-        { name: '文件导出2', open: true, iconSkin: 'signal' },
-        { name: '文件导出3', open: true, iconSkin: 'signal' },
-        { name: '文件导出4', open: true, iconSkin: 'signal' },
-        { name: '文件导出5', open: true, iconSkin: 'signal' },
-        { name: '文件导出6', open: true, iconSkin: 'signal' },
-        { name: '文件导出7', open: true, iconSkin: 'signal' },
-        { name: '文件导出8', open: true, iconSkin: 'signal' }
+        {
+          name: '导入导出权限',
+          open: true,
+          iconSkin: 'auth',
+          children: [
+            { name: '导入导出权限1', open: true },
+            { name: '导入导出权限2', open: true },
+            { name: '导入导出权限3', open: true },
+            { name: '导入导出权限4', open: true },
+            { name: '导入导出权限5', open: true },
+            { name: '导入导出权限6', open: true },
+            { name: '导入导出权限7', open: true },
+            { name: '导入导出权限8', open: true }
+          ]
+        }
       ],
       pagination: {
         defaultPageSize: 5,
         showTotal: () => `共 ${this.authList.length} 条数据`,
         showSizeChanger: true,
+        showQuickJumper: true,
         pageSizeOptions: ['5', '10', '15', '20']
       }
     }
@@ -224,6 +255,22 @@ export default {
     },
     initFileTree() {
       $.fn.zTree.init($('#fileAuth'), this.setting, this.fileAuthNodes)
+    },
+    // 选择后删除
+    handleDelete() {
+      this.$confirm({
+        title: '警告',
+        content: `真的要删除选中的数据吗?`,
+        okText: '删除',
+        okType: 'danger',
+        cancelText: '取消',
+        onOk() {
+          console.log('OK')
+        },
+        onCancel() {
+          console.log('Cancel')
+        }
+      })
     }
   },
   mounted() {

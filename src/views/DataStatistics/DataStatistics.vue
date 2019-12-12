@@ -2,13 +2,22 @@
   <div class="data-statistics-container">
     <div class="view-title">
       <div class="view-title-btn">数据统计</div>
+      <a-button
+        class="editable-add-btn"
+        type="primary"
+        style="float: right;margin-top: 18px;"
+      >
+        查询
+      </a-button>
     </div>
     <a-row :gutter="30">
       <a-col :span="8">
-        <div
-          id="signalBaseChart"
-          style="width: 100%; height: 100%;min-height: 600px;"
-        ></div>
+        <div class="chart-container">
+          <div
+            id="signalBaseChart"
+            style="width: 100%; height: 100%;min-height: 600px;"
+          ></div>
+        </div>
       </a-col>
       <a-col :span="8">
         <div
@@ -31,6 +40,7 @@ export default {
   name: 'DataStatistics',
   data() {
     return {
+      chartList: [],
       signalOption: {
         title: {
           text: '原始信号库统计',
@@ -156,26 +166,32 @@ export default {
   },
   methods: {
     drawPie(id, option) {
+      /*this.$nextTick(() => {
+      })*/
       let myChart = this.$echarts.init(document.getElementById(id))
       myChart.setOption(option)
-      this.$nextTick(() => {
-        window.onresize = () => {
-          if (myChart) {
-            myChart.resize()
-          }
-        }
-      })
+      this.chartList.push(myChart)
+      myChart.resize()
     }
   },
   mounted() {
-    this.drawPie('signalBaseChart', this.signalOption)
-    this.drawPie('dataMarkBaseChart', this.dataMarkOption)
-    this.drawPie('modelBaseChart', this.modelOption)
+    setTimeout(() => {
+      this.drawPie('signalBaseChart', this.signalOption)
+      this.drawPie('dataMarkBaseChart', this.dataMarkOption)
+      this.drawPie('modelBaseChart', this.modelOption)
+      this.$nextTick(() => {
+        window.onresize = () => {
+          this.chartList.forEach(chart => {
+            chart.resize()
+          })
+        }
+      })
+    })
   }
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 #signalBaseChart,
 #dataMarkBaseChart,
 #modelBaseChart {

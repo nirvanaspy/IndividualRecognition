@@ -1,10 +1,16 @@
 <template>
   <div>
-    <!--<div style="margin-bottom: 10px;text-align: right;">
-      <a-button type="primary" @click="checkUserSum">
-        用户统计
-      </a-button>
-    </div>-->
+    <div class="operate-btn-container">
+      <a-button
+        class="editable-add-btn"
+        type="primary"
+        style="margin-right: 10px;"
+        >查询</a-button
+      >
+      <a-button class="editable-add-btn" type="primary" @click="handleDelete"
+        >删除</a-button
+      >
+    </div>
     <a-table
       bordered
       :dataSource="dataSource"
@@ -32,10 +38,6 @@
         </span>
       </template>
     </a-table>
-    <!--<div
-      id="myChart"
-      style="width: 100%; height: 100%;min-height: 400px;margin-top: 40px;"
-    ></div>-->
     <a-row :gutter="30">
       <a-col :span="12">
         <div
@@ -70,10 +72,12 @@ export default {
   components: {},
   data() {
     return {
+      chartList: [],
       pagination: {
         defaultPageSize: 5,
         showTotal: () => `共 ${dataSource.length} 条数据`,
         showSizeChanger: true,
+        showQuickJumper: true,
         pageSizeOptions: ['5', '10', '15', '20']
       },
       dataSource,
@@ -186,37 +190,51 @@ export default {
     }
   },
   methods: {
+    // 表格勾选
     onSelectChange(selectedRowKeys) {
       console.log('selectedRowKeys changed: ', selectedRowKeys)
       this.selectedRowKeys = selectedRowKeys
     },
+
+    // 操作中的删除事件
     onDelete() {},
 
-    /*checkUserSum() {
-      this.drawerVisible = true
-      this.$nextTick(() => {
-        this.drawPie()
-      })
-    },*/
-
-    onClose() {
-      this.drawerVisible = false
-    },
+    // 绘制饼状图
     drawPie(id, option) {
       let myChart = this.$echarts.init(document.getElementById(id))
       myChart.setOption(option)
-      this.$nextTick(() => {
-        window.onresize = () => {
-          if (myChart) {
-            myChart.resize()
-          }
+      this.chartList.push(myChart)
+    },
+
+    // 选择后删除
+    handleDelete() {
+      this.$confirm({
+        title: '警告',
+        content: `真的要删除选中的数据吗?`,
+        okText: '删除',
+        okType: 'danger',
+        cancelText: '取消',
+        onOk() {
+          console.log('OK')
+        },
+        onCancel() {
+          console.log('Cancel')
         }
       })
     }
   },
   mounted() {
-    this.drawPie('userNumChart', this.userNumOption)
-    this.drawPie('userTypeChart', this.userTypeOption)
+    setTimeout(() => {
+      this.drawPie('userNumChart', this.userNumOption)
+      this.drawPie('userTypeChart', this.userTypeOption)
+      this.$nextTick(() => {
+        window.onresize = () => {
+          this.chartList.forEach(chart => {
+            chart.resize()
+          })
+        }
+      })
+    })
   }
 }
 </script>

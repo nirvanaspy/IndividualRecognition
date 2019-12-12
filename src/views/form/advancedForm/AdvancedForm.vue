@@ -74,7 +74,7 @@
       :style="{
         width:
           isSideMenu() && isDesktop()
-            ? `calc(100% - ${sidebarOpened ? 256 : 80}px)`
+            ? `calc(100% - ${sidebarOpened ? 300 : 80}px)`
             : '100%'
       }"
     >
