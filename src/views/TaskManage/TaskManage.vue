@@ -37,14 +37,14 @@
       <template slot="operation" slot-scope="name, record">
         <a-popconfirm
           v-if="taskList.length"
-          title="确认删除吗"
-          @confirm="() => onDelete(record.id)"
+          title="确认重启吗"
+          @confirm="() => onRestart(record.id)"
         >
-          <a href="javascript:;">删除</a>
+          <a href="javascript:;">重启</a>
         </a-popconfirm>
-        <span style="margin-left: 10px">
+        <!--<span style="margin-left: 10px">
           <a href="javascript:;">修改</a>
-        </span>
+        </span>-->
       </template>
     </a-table>
 
@@ -303,7 +303,7 @@ export default {
       this.selectedRowKeys = selectedRowKeys
     },
 
-    onDelete() {},
+    onRestart() {},
 
     resetForm() {
       this.createForm = {

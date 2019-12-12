@@ -17,7 +17,7 @@
           </span>
         </span>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
-          <a-menu-item key="0">
+          <!--<a-menu-item key="0">
             <router-link :to="{ name: 'center' }">
               <a-icon type="user" />
               <span>个人中心</span>
@@ -28,6 +28,14 @@
               <a-icon type="setting" />
               <span>账户设置</span>
             </router-link>
+          </a-menu-item>-->
+          <a-menu-item key="1">
+            <a-icon type="user" />
+            <span>用户名</span>
+          </a-menu-item>
+          <a-menu-item key="2">
+            <a-icon type="team" />
+            <span>部门信息</span>
           </a-menu-item>
           <a-menu-divider />
           <a-menu-item key="3">
@@ -56,7 +64,7 @@ export default {
 
       this.$confirm({
         title: '提示',
-        content: '真的要注销登录吗 ?',
+        content: '确定要注销登录吗 ?',
         onOk() {
           return that
             .Logout({})

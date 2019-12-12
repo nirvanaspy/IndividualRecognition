@@ -234,7 +234,8 @@ export default {
   .footer-logo-icon {
     width: 40px;
     position: relative;
-    top: -3px;
+    top: -6px;
+    left: -6px;
     img {
       width: 100%;
       height: 100%;
