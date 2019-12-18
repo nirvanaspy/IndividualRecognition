@@ -270,9 +270,6 @@ export default {
   background: rgba(61, 61, 204, 0.3);
   -webkit-box-reflect: below 10px -webkit-linear-gradient(transparent, transparent
         70%, rgba(255, 255, 255, 0.5));
-  &:hover {
-    box-shadow: 0px 0px 30px #1153f7;
-  }
 }
 
 .signal-item-specialEffects {
