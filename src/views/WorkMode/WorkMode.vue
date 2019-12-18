@@ -96,13 +96,13 @@
 
 <script>
 export default {
-  name: 'WorkMode',
+  name: "WorkMode",
   data() {
     return {
       activeMode: 1
-    }
+    };
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
