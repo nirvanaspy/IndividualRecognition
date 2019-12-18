@@ -254,7 +254,7 @@
 
 <script>
 export default {
-  name: 'WorkMode',
+  name: "WorkMode",
   data() {
     return {
       currentStep: 3,
@@ -312,7 +312,7 @@ export default {
       this.currentStep = index
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

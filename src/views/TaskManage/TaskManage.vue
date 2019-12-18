@@ -125,8 +125,8 @@ import {
   getApplication,
   deleteApplication,
   addApplication
-} from '@/api/application'
-import uniqid from 'uniqid'
+} from "@/api/application";
+import uniqid from "uniqid";
 // import qs from 'qs'
 // import _ from 'lodash'
 const formItemLayout = {
@@ -138,7 +138,7 @@ const formItemLayout = {
     xs: { span: 24 },
     sm: { span: 16 }
   }
-}
+};
 const formTailLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -148,7 +148,7 @@ const formTailLayout = {
     xs: { span: 24 },
     sm: { span: 16 }
   }
-}
+};
 const attributeLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -158,16 +158,16 @@ const attributeLayout = {
     xs: { span: 24 },
     sm: { span: 19 }
   }
-}
+};
 
-const chartOptionList = []
+const chartOptionList = [];
 for (let i = 0; i < 6; i++) {
   let option = {
     title: {
       text: `任务统计图${i + 1}`,
-      left: 'center',
+      left: "center",
       textStyle: {
-        color: '#fff'
+        color: "#fff"
       }
     },
     tooltip: {},
@@ -175,37 +175,37 @@ for (let i = 0; i < 6; i++) {
       // orient: 'vertical',
       // top: 'middle',
       bottom: 10,
-      left: 'center',
-      data: ['type1', 'type2', 'type3', 'type4'],
+      left: "center",
+      data: ["type1", "type2", "type3", "type4"],
       textStyle: {
-        color: '#fff'
+        color: "#fff"
       }
     },
     dataset: {
       source: [
-        ['product', '2012', '2013', '2014', '2015', '2016', '2017'],
-        ['type1', 41.1, 30.4, 65.1, 53.3, 83.8, 98.7],
-        ['type2', 86.5, 92.1, 85.7, 83.1, 73.4, 55.1],
-        ['type3', 24.1, 67.2, 79.5, 86.4, 65.2, 82.5],
-        ['type4', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1]
+        ["product", "2012", "2013", "2014", "2015", "2016", "2017"],
+        ["type1", 41.1, 30.4, 65.1, 53.3, 83.8, 98.7],
+        ["type2", 86.5, 92.1, 85.7, 83.1, 73.4, 55.1],
+        ["type3", 24.1, 67.2, 79.5, 86.4, 65.2, 82.5],
+        ["type4", 55.2, 67.1, 69.2, 72.4, 53.9, 39.1]
       ]
     },
     series: [
       {
-        type: 'pie',
+        type: "pie",
         encode: {
-          itemName: 'product',
-          value: '2014'
+          itemName: "product",
+          value: "2014"
         },
-        radius: '65%',
-        center: ['50%', '50%']
+        radius: "65%",
+        center: ["50%", "50%"]
       }
     ]
-  }
-  chartOptionList.push(option)
+  };
+  chartOptionList.push(option);
 }
 export default {
-  name: 'TaskManage',
+  name: "TaskManage",
   data() {
     return {
       selectedRowKeys: [],
@@ -214,35 +214,35 @@ export default {
         showTotal: () => `共 ${this.taskList.length} 条数据`,
         showSizeChanger: true,
         showQuickJumper: true,
-        pageSizeOptions: ['5', '10', '15', '20']
+        pageSizeOptions: ["5", "10", "15", "20"]
       },
       columns: [
         {
-          title: '名称',
-          dataIndex: 'name',
-          align: 'center'
+          title: "名称",
+          dataIndex: "name",
+          align: "center"
         },
         {
-          title: '描述',
-          dataIndex: 'description',
-          align: 'center'
+          title: "描述",
+          dataIndex: "description",
+          align: "center"
         },
         {
-          title: '创建时间',
-          dataIndex: 'createTime',
-          align: 'center'
+          title: "创建时间",
+          dataIndex: "createTime",
+          align: "center"
         },
         {
-          title: '进度',
-          dataIndex: 'progress',
-          align: 'center',
-          scopedSlots: { customRender: 'progress' }
+          title: "进度",
+          dataIndex: "progress",
+          align: "center",
+          scopedSlots: { customRender: "progress" }
         },
         {
-          title: '操作',
-          dataIndex: 'operation',
-          align: 'center',
-          scopedSlots: { customRender: 'operation' }
+          title: "操作",
+          dataIndex: "operation",
+          align: "center",
+          scopedSlots: { customRender: "operation" }
         }
       ],
       chartOptionList,
@@ -257,133 +257,136 @@ export default {
       },
       taskList: [
         {
-          name: '任务1',
-          description: '这是任务1',
-          id: '1',
+          name: "任务1",
+          description: "这是任务1",
+          id: "1",
           progress: 50,
-          createTime: '2010-8-31 11:00:00'
+          createTime: "2010-8-31 11:00:00"
         },
         {
-          name: '任务2',
-          description: '这是任务2',
-          id: '2',
+          name: "任务2",
+          description: "这是任务2",
+          id: "2",
           progress: 70,
-          createTime: '2010-8-31 11:01:00'
+          createTime: "2010-8-31 11:01:00"
         },
         {
-          name: '任务3',
-          description: '这是任务3',
-          id: '3',
+          name: "任务3",
+          description: "这是任务3",
+          id: "3",
           progress: 46,
-          createTime: '2010-8-31 11:02:00'
+          createTime: "2010-8-31 11:02:00"
         },
         {
-          name: '任务4',
-          description: '这是任务4',
-          id: '4',
+          name: "任务4",
+          description: "这是任务4",
+          id: "4",
           progress: 89,
-          createTime: '2010-8-31 11:03:00'
+          createTime: "2010-8-31 11:03:00"
         }
       ],
       chartList: [],
       targetApp: {},
       form: this.$form.createForm(this),
       createForm: {
-        name: '',
-        description: '',
+        name: "",
+        description: "",
         attributeList: []
       },
       visible: false
-    }
+    };
   },
   methods: {
     // 表格数据勾选回调
     onSelectChange(selectedRowKeys) {
-      console.log('selectedRowKeys changed: ', selectedRowKeys)
-      this.selectedRowKeys = selectedRowKeys
+      console.log("selectedRowKeys changed: ", selectedRowKeys);
+      this.selectedRowKeys = selectedRowKeys;
     },
 
     onRestart() {},
 
     resetForm() {
       this.createForm = {
-        name: '',
-        description: '',
+        name: "",
+        description: "",
         attributeList: []
-      }
+      };
     },
 
     handleAdd() {
-      this.resetForm()
-      this.visible = true
+      this.resetForm();
+      this.visible = true;
     },
 
     handleOk() {
-      console.log(this.createForm)
+      console.log(this.createForm);
 
       const postData = {
         name: this.createForm.name,
         description: this.createForm.description,
-        createTime: '2019-09-04 09:42:21',
-        params: [{ name: 'intA', description: 'int', type: '0' }]
-      }
-      const userId = '8bb3870f-4b5a-4a99-8650-59b7e977803a'
-      addApplication(userId, JSON.stringify(postData))
+        createTime: "2019-09-04 09:42:21",
+        params: [{ name: "intA", description: "int", type: "0" }]
+      };
+      const userId = "8bb3870f-4b5a-4a99-8650-59b7e977803a";
+      addApplication(userId, JSON.stringify(postData));
     },
 
     remove(k) {
-      const arr = this.createForm.attributeList
-      arr.splice(arr.findIndex(item => item.id === k.attrId), 1)
-      console.log(k)
+      const arr = this.createForm.attributeList;
+      arr.splice(
+        arr.findIndex(item => item.id === k.attrId),
+        1
+      );
+      console.log(k);
     },
 
     addAttribute() {
       this.createForm.attributeList.push({
-        name: '',
-        type: '',
+        name: "",
+        type: "",
         attrId: uniqid.time()
-      })
+      });
     },
 
     // 绘制饼状图
     drawPie(id, option) {
-      let myChart = this.$echarts.init(document.getElementById(id))
-      myChart.setOption(option)
-      this.chartList.push(myChart)
+      let myChart = this.$echarts.init(document.getElementById(id));
+      myChart.setOption(option);
+      this.chartList.push(myChart);
     },
 
     // 选择后删除
     handleDelete() {
       this.$confirm({
-        title: '警告',
+        title: "警告",
         content: `真的要删除选中的数据吗?`,
-        okText: '删除',
-        okType: 'danger',
-        cancelText: '取消',
+        okText: "删除",
+        okType: "danger",
+        cancelText: "取消",
         onOk() {
-          console.log('OK')
+          console.log("OK");
         },
         onCancel() {
-          console.log('Cancel')
+          console.log("Cancel");
         }
-      })
+      });
     }
   },
   mounted() {
     setTimeout(() => {
       this.chartOptionList.forEach((option, index) => {
-        this.drawPie(`taskChart${index}`, option)
-      })
+        this.drawPie(`taskChart${index}`, option);
+      });
       this.$nextTick(() => {
         window.onresize = () => {
           this.chartList.forEach(chart => {
-            chart.resize()
-          })
-        }
-      })
-    })
+            chart.resize();
+          });
+        };
+      });
+    });
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
