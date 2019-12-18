@@ -47,7 +47,37 @@
               </a-radio>
             </a-radio-group>
           </div>
-          <div class="setting-info"></div>
+          <div class="setting-info">
+            <div v-show="activeMode === 1" class="setting-info-container">
+              <!--采集存储-->
+              <a-row :gutter="40">
+                <a-col :span="12" class="col-setting-box">
+                  <div class="setting-box">
+                    基本设置
+                  </div>
+                </a-col>
+                <a-col :span="12" class="col-setting-box">
+                  <div class="setting-box">
+                    高级设置
+                  </div>
+                </a-col>
+                <div class="setting-button-container">
+                  <a-button type="primary" style="margin: 12px 20px"
+                    >启动</a-button
+                  >
+                </div>
+              </a-row>
+            </div>
+            <!--<div v-show="activeMode === 2" class="setting-info-container">
+              数据标注
+            </div>
+            <div v-show="activeMode === 3" class="setting-info-container">
+              模型训练
+            </div>
+            <div v-show="activeMode === 4" class="setting-info-container">
+              推理识别
+            </div>-->
+          </div>
         </div>
       </a-tab-pane>
       <a-tab-pane key="2">
@@ -109,9 +139,30 @@ export default {
     }
   }
   .setting-info {
-    height: calc(100% - 140px);
+    height: calc(100% - 130px);
     margin-top: 20px;
     background: rgba(127, 127, 127, 0.1);
+    padding: 20px 20px 0;
+    .setting-info-container {
+      height: 100%;
+    }
+  }
+  .ant-row {
+    height: 100%;
+  }
+  .col-setting-box {
+    height: calc(100% - 60px);
+    .setting-box {
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+  }
+  .setting-button-container {
+    height: 40px;
+    line-height: 40px;
+    text-align: right;
   }
 }
 </style>
