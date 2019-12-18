@@ -114,10 +114,10 @@ export default {
   }
   .setting-type {
     background: rgba(127, 127, 127, 0.1);
-    padding: 20px;
+    padding: 14px;
     .ant-radio-group {
       label {
-        font-size: 28px;
+        font-size: 20px;
         .mode-text {
           color: #ced4ea;
         }
@@ -126,7 +126,7 @@ export default {
     .type-container {
       display: inline-block;
       // height: 60px;
-      line-height: 50px;
+      line-height: 40px;
       padding: 4px 26px;
       margin-right: 40px;
       background: #1c5ea3;
@@ -139,7 +139,7 @@ export default {
     }
   }
   .setting-info {
-    height: calc(100% - 130px);
+    height: calc(100% - 120px);
     margin-top: 20px;
     background: rgba(127, 127, 127, 0.1);
     padding: 20px 20px 0;
