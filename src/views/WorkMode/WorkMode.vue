@@ -254,7 +254,7 @@
 
 <script>
 export default {
-  name: "WorkMode",
+  name: 'WorkMode',
   data() {
     return {
       currentStep: 3,
@@ -312,7 +312,7 @@ export default {
       this.currentStep = index
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -427,8 +427,8 @@ export default {
   .custom-step {
     padding: 4px 20px;
     border-radius: 4px;
-    background: #aaa;
-    color: #fff;
+    background: #607090;
+    color: #ced4ea;
     cursor: pointer;
     &.current-step {
       background: #315cce;

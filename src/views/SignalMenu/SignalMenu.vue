@@ -100,13 +100,13 @@
 // import GlobalFooter from '../../components/GlobalFooter/GlobalFooter'
 // import UserMenu from '../../components/tools/UserMenu'
 
-import { mapGetters } from "vuex";
-import VueContext from "vue-context";
-import "vue-context/src/sass/vue-context.scss";
+import { mapGetters } from 'vuex'
+import VueContext from 'vue-context'
+import 'vue-context/src/sass/vue-context.scss'
 
-import UploadImage from "./comonents/UploadImage";
+import UploadImage from './comonents/UploadImage'
 export default {
-  name: "SignalMenu",
+  name: 'SignalMenu',
   components: {
     VueContext,
     UploadImage
@@ -118,77 +118,77 @@ export default {
       visible: false,
       signalList: [
         {
-          name: "ADS-B",
-          id: "ads-b",
-          src: require("./assets/ads-b.jpg")
+          name: 'ADS-B',
+          id: 'ads-b',
+          src: require('./assets/ads-b.jpg')
         },
         {
-          name: "IFF",
-          id: " iff",
-          src: require("./assets/iff.jpg")
+          name: 'IFF',
+          id: ' iff',
+          src: require('./assets/iff.jpg')
         },
         {
-          name: "雷达",
-          id: "radar",
-          src: require("./assets/radar.jpg")
+          name: '雷达',
+          id: 'radar',
+          src: require('./assets/radar.jpg')
         },
         {
-          name: "通信",
-          id: "connection",
-          src: require("./assets/connection.jpg")
+          name: '通信',
+          id: 'connection',
+          src: require('./assets/connection.jpg')
         },
         {
-          name: "AIS",
-          id: "ais",
-          src: require("./assets/ais.jpg")
+          name: 'AIS',
+          id: 'ais',
+          src: require('./assets/ais.jpg')
         }
       ],
-      existIcons: ["radar", "connection"]
-    };
+      existIcons: ['radar', 'connection']
+    }
   },
   methods: {
     handleChooseSignal(id) {
-      console.log(id);
-      this.$router.push("/workMode");
+      console.log(id)
+      this.$router.push('/workMode')
     },
     onSignalRightClick(event, data) {
-      this.$refs.signalContextMenu.open(event, data);
+      this.$refs.signalContextMenu.open(event, data)
     },
     changeImg(signal) {
-      console.log(signal);
-      this.visible = true;
+      console.log(signal)
+      this.visible = true
     },
     handleOk(e) {
-      this.ModalText = "The modal will be closed after two seconds";
-      this.confirmLoading = true;
+      this.ModalText = 'The modal will be closed after two seconds'
+      this.confirmLoading = true
       setTimeout(() => {
-        this.visible = false;
-        this.confirmLoading = false;
-      }, 2000);
+        this.visible = false
+        this.confirmLoading = false
+      }, 2000)
     },
     handleCancel(e) {
-      console.log("Clicked cancel button");
-      this.visible = false;
+      console.log('Clicked cancel button')
+      this.visible = false
     }
   },
   computed: {
-    ...mapGetters(["theme"]),
+    ...mapGetters(['theme']),
     computeSignalIcon() {
       return function(id) {
-        let icon = this.existIcons.find(icon => icon === id);
+        let icon = this.existIcons.find(icon => icon === id)
         if (icon) {
-          return id;
+          return id
         } else {
-          return null;
+          return null
         }
-      };
+      }
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
-@import "../../components/index.less";
+@import '../../components/index.less';
 .signal-type-container {
   width: 100%;
   min-width: 600px;
@@ -217,14 +217,14 @@ export default {
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     -o-transition: all 0.3s;
-    border: 3px dashed rgb(14, 65, 108);
+    border: 2px solid rgb(14, 65, 108);
     background: rgba(3, 13, 23, 0.3);
     &:hover {
       background: rgba(3, 13, 23, 0.5);
-      -webkit-transform: scale(1.1); /*1.1放大值*/
+      /*-webkit-transform: scale(1.1); !*1.1放大值*!
       -moz-transform: scale(1.1);
       -o-transform: scale(1.1);
-      -ms-transform: scale(1.1);
+      -ms-transform: scale(1.1);*/
     }
     .signal-icon {
       width: 100%;
@@ -265,13 +265,22 @@ export default {
   }
 }
 .signal-menu {
+  cursor: pointer;
   position: relative;
   padding: 15px;
-  background: rgba(61, 61, 204, 0.3);
+  // background: rgba(61, 61, 204, 0.3);
+  background: rgba(28, 61, 103, 0.5);
   -webkit-box-reflect: below 10px -webkit-linear-gradient(transparent, transparent
         70%, rgba(255, 255, 255, 0.5));
   &:hover {
     box-shadow: 0px 0px 30px #1153f7;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    -webkit-transform: scale(1.1); /*1.1放大值*/
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
   }
 }
 
