@@ -45,7 +45,7 @@
       <a-row :gutter="30">
         <a-col :span="2"></a-col>
         <a-col v-for="(signal, index) in signalList" :key="index" :span="4">
-          <div class="signal-menu">
+          <div class="signal-menu signal-box-shadow">
             <div
               class="signal-item"
               @dblclick="handleChooseSignal(signal.id)"

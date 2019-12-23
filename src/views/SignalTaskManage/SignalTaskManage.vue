@@ -27,7 +27,7 @@
         <a-progress :percent="progress" status="active"></a-progress>
       </template>
       <template slot="process" slot-scope="process, record">
-        <a-steps class="origin-data-container">
+        <a-steps class="step-data-container">
           <a-step v-for="(item, index) in process.steps" :key="index">
             <div
               class="custom-step"

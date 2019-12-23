@@ -15,6 +15,7 @@
         <div class="chart-container">
           <div
             id="signalBaseChart"
+            class="chart-box"
             style="width: 100%; height: 100%;min-height: 600px;"
           ></div>
         </div>
@@ -22,12 +23,14 @@
       <a-col :span="8">
         <div
           id="dataMarkBaseChart"
+          class="chart-box"
           style="width: 100%; height: 100%;min-height: 600px;"
         ></div>
       </a-col>
       <a-col :span="8">
         <div
           id="modelBaseChart"
+          class="chart-box"
           style="width: 100%; height: 100%;min-height: 600px;"
         ></div>
       </a-col>

@@ -42,12 +42,14 @@
       <a-col :span="12">
         <div
           id="userNumChart"
+          class="chart-box"
           style="width: 100%; height: 100%;min-height: 600px;"
         ></div>
       </a-col>
       <a-col :span="12">
         <div
           id="userTypeChart"
+          class="chart-box"
           style="width: 100%; height: 100%;min-height: 600px;"
         ></div>
       </a-col>

@@ -37,12 +37,14 @@
       <a-col :span="12">
         <div
           id="numChart"
+          class="chart-box"
           style="width: 100%; height: 100%;min-height: 600px;"
         ></div>
       </a-col>
       <a-col :span="12">
         <div
           id="typeChart"
+          class="chart-box"
           style="width: 100%; height: 100%;min-height: 600px;"
         ></div>
       </a-col>
@@ -247,6 +249,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.origin-data-container {
+  padding-bottom: 20px;
+}
 #numChart,
 #typeChart {
   padding: 10px;

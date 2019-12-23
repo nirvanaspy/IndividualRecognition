@@ -49,7 +49,7 @@
     </a-table>
 
     <div class="chart-container">
-      <a-row :gutter="20">
+      <a-row :gutter="40">
         <a-col :span="4" v-for="(chart, index) in chartOptionList" :key="index">
           <div class="chart-box">
             <div
