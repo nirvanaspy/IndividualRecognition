@@ -421,6 +421,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.signal-task-container {
+  padding-bottom: 20px;
+}
 td {
   .ant-steps {
     text-align: left;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="task-manage-container">
     <div class="view-title">
       <div class="view-title-btn">任务管理</div>
     </div>
@@ -387,6 +387,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.task-manage-container {
+  padding-bottom: 20px;
+}
 .chart-container {
   margin-top: 20px;
   .chart-box {
