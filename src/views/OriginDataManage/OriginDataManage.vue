@@ -1,54 +1,67 @@
 <template>
   <div class="origin-data-container">
-    <div class="operate-btn-container">
-      <a-button class="editable-add-btn" type="primary" style="margin:0 10px;"
-        >编辑</a-button
-      >
-      <a-button
-        class="editable-add-btn"
-        type="primary"
-        @click="handleDelete"
-        style="margin: 0 10px"
-        >查询</a-button
-      >
-      <a-button class="editable-add-btn" type="primary" style="margin: 0 10px"
-        >导入</a-button
-      >
-      <a-button class="editable-add-btn" type="primary" style="margin: 0 10px"
-        >导出</a-button
-      >
-    </div>
-    <a-table
-      bordered
-      :dataSource="dataSource"
-      :rowSelection="{
-        selectedRowKeys: selectedRowKeys,
-        onChange: onSelectChange
-      }"
-      :columns="columns"
-      rowKey="id"
-      :pagination="pagination"
+    <dv-border-box-4
+      :color="['red', '#2c9dff']"
+      style="padding: 40px 20px 0 20px;width: 100%;"
     >
-      <template slot="name" slot-scope="text">
-        <editable-cell :text="text" />
-      </template>
-    </a-table>
-    <a-row :gutter="30">
-      <a-col :span="12">
-        <div
-          id="numChart"
-          class="chart-box"
-          style="width: 100%; height: 100%;min-height: 600px;"
-        ></div>
-      </a-col>
-      <a-col :span="12">
-        <div
-          id="typeChart"
-          class="chart-box"
-          style="width: 100%; height: 100%;min-height: 600px;"
-        ></div>
-      </a-col>
-    </a-row>
+      <dv-decoration-3 style="width:200px;height:30px;float: left;" />
+      <div class="operate-btn-container">
+        <a-button class="editable-add-btn" type="primary" style="margin:0 10px;"
+          >编辑</a-button
+        >
+        <a-button
+          class="editable-add-btn"
+          type="primary"
+          @click="handleDelete"
+          style="margin: 0 10px"
+          >查询</a-button
+        >
+        <a-button class="editable-add-btn" type="primary" style="margin: 0 10px"
+          >导入</a-button
+        >
+        <a-button class="editable-add-btn" type="primary" style="margin: 0 10px"
+          >导出</a-button
+        >
+      </div>
+      <a-table
+        bordered
+        :dataSource="dataSource"
+        :rowSelection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange
+        }"
+        :columns="columns"
+        rowKey="id"
+        :pagination="pagination"
+      >
+        <template slot="name" slot-scope="text">
+          <editable-cell :text="text" />
+        </template>
+      </a-table>
+    </dv-border-box-4>
+
+    <div style="margin-top: 20px;">
+      <a-row :gutter="30">
+        <a-col :span="12">
+          <dv-border-box-4 style="padding: 20px 0 0 20px;">
+            <div
+              id="numChart"
+              class="chart-box"
+              style="width: 100%; height: 100%;min-height: 600px;"
+            ></div>
+          </dv-border-box-4>
+        </a-col>
+        <a-col :span="12">
+          <dv-border-box-4 style="padding: 20px 0 0 20px;">
+            <div
+              id="typeChart"
+              class="chart-box"
+              style="width: 100%; height: 100%;min-height: 600px;"
+            ></div>
+          </dv-border-box-4>
+        </a-col>
+      </a-row>
+    </div>
   </div>
 </template>
 <script>

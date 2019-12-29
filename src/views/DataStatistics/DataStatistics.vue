@@ -1,40 +1,42 @@
 <template>
   <div class="data-statistics-container">
-    <div class="view-title">
-      <div class="view-title-btn">数据统计</div>
-      <a-button
-        class="editable-add-btn"
-        type="primary"
-        style="float: right;margin-top: 18px;"
-      >
-        查询
-      </a-button>
-    </div>
-    <a-row :gutter="30">
-      <a-col :span="8">
-        <div class="chart-container">
+    <dv-border-box-11 title="数据统计" style="padding: 60px 40px;">
+      <div class="view-title">
+        <div class="view-title-btn">数据统计</div>
+        <a-button
+          class="editable-add-btn"
+          type="primary"
+          style="float: right;margin-top: 18px;"
+        >
+          查询
+        </a-button>
+      </div>
+      <a-row :gutter="30">
+        <a-col :span="8">
+          <div class="chart-container">
+            <div
+              id="signalBaseChart"
+              class="chart-box"
+              style="width: 100%; height: 100%;min-height: 600px;"
+            ></div>
+          </div>
+        </a-col>
+        <a-col :span="8">
           <div
-            id="signalBaseChart"
+            id="dataMarkBaseChart"
             class="chart-box"
             style="width: 100%; height: 100%;min-height: 600px;"
           ></div>
-        </div>
-      </a-col>
-      <a-col :span="8">
-        <div
-          id="dataMarkBaseChart"
-          class="chart-box"
-          style="width: 100%; height: 100%;min-height: 600px;"
-        ></div>
-      </a-col>
-      <a-col :span="8">
-        <div
-          id="modelBaseChart"
-          class="chart-box"
-          style="width: 100%; height: 100%;min-height: 600px;"
-        ></div>
-      </a-col>
-    </a-row>
+        </a-col>
+        <a-col :span="8">
+          <div
+            id="modelBaseChart"
+            class="chart-box"
+            style="width: 100%; height: 100%;min-height: 600px;"
+          ></div>
+        </a-col>
+      </a-row>
+    </dv-border-box-11>
   </div>
 </template>
 

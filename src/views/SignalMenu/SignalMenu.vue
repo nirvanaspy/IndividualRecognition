@@ -51,11 +51,6 @@
               @dblclick="handleChooseSignal(signal.id)"
               @contextmenu.prevent="onSignalRightClick($event, signal)"
             >
-              <!--<div class="signal-icon" v-if="computeSignalIcon(signal.id)">
-                  <svg-icon :icon-class="signal.id"></svg-icon>
-                </div>
-                <div class="signal-name-icon" v-else>{{ signal.name }}</div>
-                <span class="signal-name">{{ signal.name }}</span>-->
               <div class="signal-icon">
                 <img :src="signal.src" alt="" />
               </div>
@@ -273,7 +268,8 @@ export default {
   -webkit-box-reflect: below 10px -webkit-linear-gradient(transparent, transparent
         70%, rgba(255, 255, 255, 0.5));
   &:hover {
-    box-shadow: 0px 0px 30px #1153f7;
+    // box-shadow: 0px 0px 30px #1153f7;
+    box-shadow: 0px 0px 30px #556eea;
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     -o-transition: all 0.3s;

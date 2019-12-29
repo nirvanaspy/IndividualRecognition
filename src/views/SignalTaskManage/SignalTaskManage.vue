@@ -1,65 +1,77 @@
 <template>
   <div class="signal-task-container">
-    <div class="signal-task-btn">
-      <a-button class="editable-add-btn" type="primary" style="margin:0 10px;"
-        >查询</a-button
-      >
-      <a-button class="editable-add-btn" type="primary" style="margin: 0 10px"
-        >删除任务</a-button
-      >
-    </div>
-
-    <a-table
-      bordered
-      :dataSource="taskList"
-      :columns="columns"
-      rowKey="id"
-      :pagination="pagination"
-      :rowSelection="{
-        selectedRowKeys: selectedRowKeys,
-        onChange: onSelectChange
-      }"
+    <dv-border-box-4
+      :color="['red', '#2c9dff']"
+      style="padding: 40px 20px 0 20px;width: 100%;"
     >
-      <template slot="name" slot-scope="text">
-        <editable-cell :text="text" />
-      </template>
-      <template slot="progress" slot-scope="progress, record">
-        <a-progress :percent="progress" status="active"></a-progress>
-      </template>
-      <template slot="process" slot-scope="process, record">
-        <a-steps class="step-data-container">
-          <a-step v-for="(item, index) in process.steps" :key="index">
-            <div
-              class="custom-step"
-              slot="icon"
-              :class="{ 'current-step': process.currentStep === index }"
-            >
-              {{ item.title }}
-            </div>
-          </a-step>
-        </a-steps>
-      </template>
-      <template slot="operation" slot-scope="name, record">
-        <a-popconfirm v-if="taskList.length" title="确认暂停吗">
-          <a href="javascript:;">暂停</a>
-        </a-popconfirm>
-        <a-popconfirm v-if="taskList.length" title="确认结束吗">
-          <span style="margin-left: 10px;">
-            <a href="javascript:;">结束</a>
-          </span>
-        </a-popconfirm>
-      </template>
-    </a-table>
+      <div class="signal-task-btn">
+        <dv-decoration-3 style="width:200px;height:30px;float: left;" />
+        <a-button class="editable-add-btn" type="primary" style="margin:0 10px;"
+          >查询</a-button
+        >
+        <a-button class="editable-add-btn" type="primary" style="margin: 0 10px"
+          >删除任务</a-button
+        >
+      </div>
+
+      <a-table
+        bordered
+        :dataSource="taskList"
+        :columns="columns"
+        rowKey="id"
+        :pagination="pagination"
+        :rowSelection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange
+        }"
+      >
+        <template slot="name" slot-scope="text">
+          <editable-cell :text="text" />
+        </template>
+        <template slot="progress" slot-scope="progress, record">
+          <a-progress :percent="progress" status="active"></a-progress>
+        </template>
+        <template slot="process" slot-scope="process, record">
+          <a-steps class="step-data-container">
+            <a-step v-for="(item, index) in process.steps" :key="index">
+              <div
+                class="custom-step"
+                slot="icon"
+                :class="{ 'current-step': process.currentStep === index }"
+              >
+                {{ item.title }}
+              </div>
+            </a-step>
+          </a-steps>
+        </template>
+        <template slot="operation" slot-scope="name, record">
+          <a-popconfirm v-if="taskList.length" title="确认暂停吗">
+            <a href="javascript:;">暂停</a>
+          </a-popconfirm>
+          <a-popconfirm v-if="taskList.length" title="确认结束吗">
+            <span style="margin-left: 10px;">
+              <a href="javascript:;">结束</a>
+            </span>
+          </a-popconfirm>
+        </template>
+      </a-table>
+    </dv-border-box-4>
 
     <div class="chart-container">
       <a-row :gutter="20">
-        <a-col :span="4" v-for="(chart, index) in chartOptionList" :key="index">
-          <div class="chart-box">
-            <div
-              :id="`signalTaskChart${index}`"
-              style="width: 100%; height: 100%;min-height: 400px;"
-            ></div>
-          </div>
+        <a-col
+          :span="12"
+          v-for="(chart, index) in chartOptionList"
+          :key="index"
+        >
+          <dv-border-box-4 style="padding: 20px 0 0 20px;">
+            <div class="chart-box">
+              <div
+                :id="`signalTaskChart${index}`"
+                style="width: 100%; height: 100%;min-height: 400px;"
+              ></div>
+            </div>
+          </dv-border-box-4>
         </a-col>
       </a-row>
     </div>
@@ -103,9 +115,8 @@ const attributeLayout = {
     sm: { span: 19 }
   }
 }
-
 const chartOptionList = []
-for (let i = 0; i < 6; i++) {
+for (let i = 0; i < 2; i++) {
   let option = {
     title: {
       text: `任务统计图${i + 1}`,

@@ -26,11 +26,16 @@
       :theme="navTheme"
       :collapsed="collapsed"
       :collapsible="true"
+      style="position: fixed;width: 300px;height: 100%;"
     ></side-menu>
 
     <a-layout
       :class="[layoutMode, `content-width-${contentWidth}`]"
-      :style="{ paddingLeft: contentPaddingLeft, minHeight: '100vh' }"
+      :style="{
+        paddingLeft: contentPaddingLeft,
+        minHeight: '100vh',
+        marginLeft: contentMarginLeft
+      }"
       class="content-layout"
     >
       <!-- layout header -->
@@ -128,6 +133,12 @@ export default {
         return '300px'
       }
       return '80px'
+    },
+    contentMarginLeft() {
+      if (this.sidebarOpened) {
+        return '310px'
+      }
+      return '90px'
     }
   },
   watch: {

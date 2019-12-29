@@ -1,6 +1,7 @@
 <template>
   <div class="work-mode-container">
-    <a-tabs defaultActiveKey="1">
+    <a-tabs defaultActiveKey="1" @change="onTabChange">
+      <!--配置设置-->
       <a-tab-pane key="1">
         <span slot="tab">
           <a-icon type="setting" />
@@ -8,188 +9,58 @@
         </span>
         <div class="work-mode-setting">
           <div class="setting-type">
-            <a-radio-group
-              name="radioGroup"
-              :defaultValue="1"
-              v-model="activeMode"
-            >
-              <a-radio :value="1">
-                <div style="" class="type-container">
-                  <span class="mode-icon">
-                    <svg-icon icon-class="mode1"></svg-icon>
-                  </span>
-                  <span class="mode-text">采集存储</span>
-                </div>
-              </a-radio>
-              <a-radio :value="2">
-                <div style="" class="type-container">
-                  <span class="mode-icon">
-                    <svg-icon icon-class="mode2"></svg-icon>
-                  </span>
-                  <span class="mode-text">数据标注</span>
-                </div>
-              </a-radio>
-              <a-radio :value="3">
-                <div style="" class="type-container">
-                  <span class="mode-icon">
-                    <svg-icon icon-class="mode3"></svg-icon>
-                  </span>
-                  <span class="mode-text">模型训练</span>
-                </div>
-              </a-radio>
-              <a-radio :value="4">
-                <div style="" class="type-container">
-                  <span class="mode-icon">
-                    <svg-icon icon-class="mode4"></svg-icon>
-                  </span>
-                  <span class="mode-text">推理识别</span>
-                </div>
-              </a-radio>
-            </a-radio-group>
+            <dv-border-box-8 style="padding: 20px 20px 16px;">
+              <a-radio-group
+                name="radioGroup"
+                :defaultValue="1"
+                v-model="activeMode"
+              >
+                <a-radio :value="1">
+                  <div class="type-container">
+                    <dv-decoration-11 style="width:200px;height:60px;">
+                      <span class="mode-icon">
+                        <svg-icon icon-class="mode1"></svg-icon>
+                      </span>
+                      <span class="mode-text">采集存储</span>
+                    </dv-decoration-11>
+                  </div>
+                </a-radio>
+                <a-radio :value="2">
+                  <div class="type-container">
+                    <dv-decoration-11 style="width:200px;height:60px;">
+                      <span class="mode-icon">
+                        <svg-icon icon-class="mode2"></svg-icon>
+                      </span>
+                      <span class="mode-text">数据标注</span>
+                    </dv-decoration-11>
+                  </div>
+                </a-radio>
+                <a-radio :value="3">
+                  <div style="" class="type-container">
+                    <dv-decoration-11 style="width:200px;height:60px;">
+                      <span class="mode-icon">
+                        <svg-icon icon-class="mode3"></svg-icon>
+                      </span>
+                      <span class="mode-text">模型训练</span>
+                    </dv-decoration-11>
+                  </div>
+                </a-radio>
+                <a-radio :value="4">
+                  <div style="" class="type-container">
+                    <dv-decoration-11 style="width:200px;height:60px;">
+                      <span class="mode-icon">
+                        <svg-icon icon-class="mode4"></svg-icon>
+                      </span>
+                      <span class="mode-text">推理识别</span>
+                    </dv-decoration-11>
+                  </div>
+                </a-radio>
+              </a-radio-group>
+            </dv-border-box-8>
           </div>
           <div class="setting-info">
-            <div class="setting-info-container">
-              <!--采集存储-->
-              <!--<a-row :gutter="40">
-                <a-col :span="12" class="col-setting-box">
-                  <div class="setting-box">
-                    <div class="setting-title">基本设置</div>
-                    <div class="setting-form">
-                      <a-form :form="baseSettingForm">
-                        <a-form-item
-                          label="工作模式"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-radio-group default-value="1">
-                            <a-radio :value="1">手动模式</a-radio>
-                            <a-radio :value="2">自动模式</a-radio>
-                          </a-radio-group>
-                        </a-form-item>
-                        <a-form-item
-                          label="开始时间"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-date-picker
-                            :disabledDate="disabledStartDate"
-                            showTime
-                            format="YYYY-MM-DD HH:mm:ss"
-                            v-model="startValue"
-                            placeholder="开始时间"
-                            @openChange="handleStartOpenChange"
-                          />
-                        </a-form-item>
-                        <a-form-item
-                          label="结束时间"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-date-picker
-                            :disabledDate="disabledStartDate"
-                            showTime
-                            format="YYYY-MM-DD HH:mm:ss"
-                            v-model="endValue"
-                            placeholder="结束时间"
-                            @openChange="handleStartOpenChange"
-                          />
-                        </a-form-item>
-                        <a-form-item
-                          label="基本配置1"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-input></a-input>
-                        </a-form-item>
-                        <a-form-item
-                          label="基本配置2"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-input></a-input>
-                        </a-form-item>
-                        <a-form-item
-                          label="基本配置3"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-input></a-input>
-                        </a-form-item>
-                        <a-form-item
-                          label="基本配置4"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-input-number></a-input-number>
-                        </a-form-item>
-                      </a-form>
-                    </div>
-                  </div>
-                </a-col>
-                <a-col :span="12" class="col-setting-box">
-                  <div class="setting-box">
-                    <div class="setting-title">高级设置</div>
-                    <div class="setting-form">
-                      <a-form :form="advanceSettingForm">
-                        <a-form-item
-                          label="高级配置1"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-input></a-input>
-                        </a-form-item>
-                        <a-form-item
-                          label="高级配置2"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-input></a-input>
-                        </a-form-item>
-                        <a-form-item
-                          label="高级配置3"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-input></a-input>
-                        </a-form-item>
-                        <a-form-item
-                          label="高级配置4"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-input></a-input>
-                        </a-form-item>
-                        <a-form-item
-                          label="高级配置5"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-input></a-input>
-                        </a-form-item>
-                        <a-form-item
-                          label="高级配置6"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-input></a-input>
-                        </a-form-item>
-                        <a-form-item
-                          label="高级配置7"
-                          :label-col="{ span: 5 }"
-                          :wrapper-col="{ span: 12 }"
-                        >
-                          <a-input></a-input>
-                        </a-form-item>
-                      </a-form>
-                    </div>
-                  </div>
-                </a-col>
-                <div class="setting-button-container">
-                  <a-button type="primary" style="margin: 12px 20px"
-                    >启动</a-button
-                  >
-                </div>
-              </a-row>-->
+            <!--采集存储-->
+            <div v-show="activeMode === 1" class="setting-info-container">
               <div class="col-setting-box">
                 <div class="setting-box">
                   <div class="setting-title">
@@ -206,85 +77,192 @@
                       </span>
                     </a-tooltip>
                   </div>
+                  <!--资源列表及采集设备配置信息-->
+                  <div class="resource-container">
+                    <a-row :gutter="40">
+                      <a-col :span="12" style="height: 100%;">
+                        <div class="resource-list">
+                          <dv-border-box-4
+                            :color="['#124ef5', '#87ecf5']"
+                            style="padding: 40px;"
+                          >
+                            <a-table
+                              bordered
+                              :dataSource="gatherResourceList"
+                              :rowSelection="{
+                                selectedRowKeys: gatherSelectedRowKeys,
+                                onChange: onGatherSelectChange
+                              }"
+                              :columns="gatherColumns"
+                              rowKey="id"
+                              :pagination="false"
+                            >
+                              <template slot="state" slot-scope="state">
+                                <span
+                                  :style="{
+                                    color: state === 0 ? 'red' : 'green'
+                                  }"
+                                >
+                                  {{ state === 0 ? '忙碌' : '空闲' }}
+                                </span>
+                              </template>
+                            </a-table>
+                          </dv-border-box-4>
+                        </div>
+                      </a-col>
+                      <a-col :span="12" style="height: 100%;">
+                        <div class="resource-form">
+                          <dv-border-box-4
+                            :color="['#124ef5', '#87ecf5']"
+                            style="padding: 40px;"
+                          >
+                            <a-form :form="gatherSettingForm">
+                              <a-form-item
+                                label="采集模式"
+                                :label-col="{ span: 5 }"
+                                :wrapper-col="{ span: 12 }"
+                              >
+                                <a-radio-group default-value="1">
+                                  <a-radio :value="1"
+                                    ><span style="color: #ced4ea;"
+                                      >盲采</span
+                                    ></a-radio
+                                  >
+                                  <a-radio :value="2"
+                                    ><span style="color: #ced4ea;"
+                                      >触发采</span
+                                    ></a-radio
+                                  >
+                                </a-radio-group>
+                              </a-form-item>
+                              <a-form-item
+                                label="中心频率"
+                                :label-col="{ span: 5 }"
+                                :wrapper-col="{ span: 12 }"
+                              >
+                                <a-input></a-input>
+                              </a-form-item>
+                              <a-form-item
+                                label="采样率"
+                                :label-col="{ span: 5 }"
+                                :wrapper-col="{ span: 12 }"
+                              >
+                                <a-input></a-input>
+                              </a-form-item>
+                              <a-form-item
+                                label="每帧数据点个数"
+                                :label-col="{ span: 5 }"
+                                :wrapper-col="{ span: 12 }"
+                              >
+                                <a-input></a-input>
+                              </a-form-item>
+                              <a-form-item
+                                label="单文件最大存储容量"
+                                :label-col="{ span: 5 }"
+                                :wrapper-col="{ span: 12 }"
+                              >
+                                <a-input-number></a-input-number>
+                              </a-form-item>
+                              <a-form-item
+                                label="文件存储路径"
+                                :label-col="{ span: 5 }"
+                                :wrapper-col="{ span: 12 }"
+                              >
+                                <a-input></a-input>
+                              </a-form-item>
+                              <a-form-item
+                                label="文件名前缀"
+                                :label-col="{ span: 5 }"
+                                :wrapper-col="{ span: 12 }"
+                              >
+                                <a-input></a-input>
+                              </a-form-item>
+                            </a-form>
+                          </dv-border-box-4>
+                        </div>
+                      </a-col>
+                    </a-row>
+                  </div>
+
+                  <!--基本设置form-->
                   <div class="setting-form">
-                    <a-form :form="baseSettingForm">
-                      <a-form-item
-                        label="工作模式"
-                        :label-col="{ span: 5 }"
-                        :wrapper-col="{ span: 12 }"
-                      >
-                        <a-radio-group default-value="1" v-model="modelChoose">
-                          <a-radio :value="1"
-                            ><span style="color: #ced4ea;"
-                              >手动模式</span
-                            ></a-radio
+                    <dv-border-box-4
+                      :color="['#124ef5', '#87ecf5']"
+                      style="padding: 40px;height: 300px;"
+                    >
+                      <a-form :form="baseSettingForm">
+                        <a-form-item
+                          label="工作模式"
+                          :label-col="{ span: 5 }"
+                          :wrapper-col="{ span: 12 }"
+                        >
+                          <a-radio-group
+                            default-value="2"
+                            v-model="modelChoose"
                           >
-                          <a-radio :value="2"
-                            ><span style="color: #ced4ea;"
-                              >自动模式</span
-                            ></a-radio
-                          >
-                        </a-radio-group>
-                      </a-form-item>
-                      <a-form-item
-                        v-show="modelChoose === 2"
-                        label="开始时间"
-                        :label-col="{ span: 5 }"
-                        :wrapper-col="{ span: 12 }"
-                      >
-                        <a-date-picker
-                          :disabledDate="disabledStartDate"
-                          showTime
-                          format="YYYY-MM-DD HH:mm:ss"
-                          v-model="startValue"
-                          placeholder="开始时间"
-                          @openChange="handleStartOpenChange"
-                        />
-                      </a-form-item>
-                      <a-form-item
-                        v-show="modelChoose === 2"
-                        label="结束时间"
-                        :label-col="{ span: 5 }"
-                        :wrapper-col="{ span: 12 }"
-                      >
-                        <a-date-picker
-                          :disabledDate="disabledStartDate"
-                          showTime
-                          format="YYYY-MM-DD HH:mm:ss"
-                          v-model="endValue"
-                          placeholder="结束时间"
-                          @openChange="handleStartOpenChange"
-                        />
-                      </a-form-item>
-                      <a-form-item
-                        label="基本配置1"
-                        :label-col="{ span: 5 }"
-                        :wrapper-col="{ span: 12 }"
-                      >
-                        <a-input></a-input>
-                      </a-form-item>
-                      <a-form-item
-                        label="基本配置2"
-                        :label-col="{ span: 5 }"
-                        :wrapper-col="{ span: 12 }"
-                      >
-                        <a-input></a-input>
-                      </a-form-item>
-                      <a-form-item
-                        label="基本配置3"
-                        :label-col="{ span: 5 }"
-                        :wrapper-col="{ span: 12 }"
-                      >
-                        <a-input></a-input>
-                      </a-form-item>
-                      <a-form-item
-                        label="基本配置4"
-                        :label-col="{ span: 5 }"
-                        :wrapper-col="{ span: 12 }"
-                      >
-                        <a-input-number></a-input-number>
-                      </a-form-item>
-                    </a-form>
+                            <a-radio :value="1"
+                              ><span style="color: #ced4ea;"
+                                >手动模式</span
+                              ></a-radio
+                            >
+                            <a-radio :value="2"
+                              ><span style="color: #ced4ea;"
+                                >自动模式</span
+                              ></a-radio
+                            >
+                          </a-radio-group>
+                        </a-form-item>
+                        <a-form-item
+                          v-show="modelChoose === 2"
+                          label="开始时间"
+                          :label-col="{ span: 5 }"
+                          :wrapper-col="{ span: 12 }"
+                        >
+                          <a-date-picker
+                            :disabledDate="disabledStartDate"
+                            showTime
+                            format="YYYY-MM-DD HH:mm:ss"
+                            v-model="startValue"
+                            placeholder="开始时间"
+                            @openChange="handleStartOpenChange"
+                          />
+                        </a-form-item>
+                        <a-form-item
+                          v-show="modelChoose === 2"
+                          label="结束时间"
+                          :label-col="{ span: 5 }"
+                          :wrapper-col="{ span: 12 }"
+                        >
+                          <a-date-picker
+                            :disabledDate="disabledStartDate"
+                            showTime
+                            format="YYYY-MM-DD HH:mm:ss"
+                            v-model="endValue"
+                            placeholder="结束时间"
+                            @openChange="handleStartOpenChange"
+                          />
+                        </a-form-item>
+                        <a-form-item
+                          label="结束后操作"
+                          v-show="modelChoose === 2"
+                          :label-col="{ span: 5 }"
+                          :wrapper-col="{ span: 12 }"
+                        >
+                          <a-radio-group default-value="1">
+                            <a-radio :value="1"
+                              ><span style="color: #ced4ea;"
+                                >关机</span
+                              ></a-radio
+                            >
+                            <a-radio :value="2"
+                              ><span style="color: #ced4ea;"
+                                >待机</span
+                              ></a-radio
+                            >
+                          </a-radio-group>
+                        </a-form-item>
+                      </a-form>
+                    </dv-border-box-4>
                   </div>
                 </div>
                 <div class="setting-button-container">
@@ -294,7 +272,7 @@
                 </div>
               </div>
             </div>
-            <!--<div v-show="activeMode === 2" class="setting-info-container">
+            <div v-show="activeMode === 2" class="setting-info-container">
               数据标注
             </div>
             <div v-show="activeMode === 3" class="setting-info-container">
@@ -302,10 +280,12 @@
             </div>
             <div v-show="activeMode === 4" class="setting-info-container">
               推理识别
-            </div>-->
+            </div>
           </div>
         </div>
       </a-tab-pane>
+
+      <!--结果展示-->
       <a-tab-pane key="2">
         <span slot="tab">
           <a-icon type="file" />
@@ -318,35 +298,88 @@
             >
             <a-button type="primary">结束</a-button>
           </div>
-          <div class="flow-chart">
-            <a-steps :current="currentStep">
-              <a-step v-for="(item, index) in steps" :key="index">
-                <div
-                  class="custom-step"
-                  slot="icon"
-                  :class="{ 'current-step': currentStep === index }"
-                  @dblclick="setCurrentStep(index)"
-                >
-                  {{ item.title }}
+
+          <div class="result-show" v-show="activeMode === 1">
+            <dv-border-box-13 style="padding: 20px;">
+              <div class="flow-chart">
+                <div class="gather-device">
+                  <img src="../../assets/node.png" alt="" />
                 </div>
-              </a-step>
-            </a-steps>
+                <div class="link-line"></div>
+                <div class="gather-terminal">
+                  <img src="../../assets/server.png" alt="" />
+                </div>
+                <div
+                  class="gather-data-info"
+                  style="width: 300px;float: right;padding-top: 10px;"
+                >
+                  <div>设备ID: #2123</div>
+                  <div>设备状态: 正常</div>
+                  <div>采集速率: 500M/S</div>
+                </div>
+              </div>
+            </dv-border-box-13>
+            <dv-border-box-11
+              title="实时数据统计"
+              style="padding: 40px;margin-top: 20px;"
+            >
+              <div class="flow-detail">
+                <a-row :gutter="40">
+                  <a-col :span="8">
+                    <div
+                      id="line#1"
+                      style="width: 100%;min-height: 500px;"
+                    ></div>
+                  </a-col>
+                  <a-col :span="8">
+                    <div
+                      id="line#2"
+                      style="width: 100%;min-height: 500px;"
+                    ></div>
+                  </a-col>
+                  <a-col :span="8">
+                    <div
+                      id="line#3"
+                      style="width: 100%;min-height: 500px;"
+                    ></div>
+                  </a-col>
+                </a-row>
+              </div>
+            </dv-border-box-11>
           </div>
-          <div class="flow-detail">
-            <div class="flow-detail-title">
-              {{ steps[currentStep] ? steps[currentStep].title : '' }}
+          <div class="result-show" v-show="activeMode === 2">
+            <div class="flow-chart">
+              <a-steps :current="currentStep">
+                <a-step v-for="(item, index) in steps" :key="index">
+                  <div
+                    class="custom-step"
+                    slot="icon"
+                    :class="{ 'current-step': currentStep === index }"
+                    @dblclick="setCurrentStep(index)"
+                  >
+                    <dv-decoration-7 style="width:120px;height:30px;">{{
+                      item.title
+                    }}</dv-decoration-7>
+                  </div>
+                </a-step>
+              </a-steps>
             </div>
-            <div class="flow-detail-content">
-              <a-card title="流程结果" :bordered="false">
-                <template>
-                  <a-skeleton active />
-                </template>
-              </a-card>
-              <a-card title="流程结果" :bordered="false">
-                <template>
-                  <a-skeleton active />
-                </template>
-              </a-card>
+            <div class="flow-detail">
+              <div class="flow-detail-title">
+                {{ steps[currentStep] ? steps[currentStep].title : '' }}
+              </div>
+              <div class="flow-detail-content">
+                <a-card title="流程结果" :bordered="false">
+                  <template>
+                    <a-skeleton active />
+                  </template>
+                </a-card>
+                <a-card title="流程结果" :bordered="false">
+                  <template>
+                    <a-skeleton active />
+                  </template>
+                </a-card>
+              </div>
             </div>
           </div>
         </div>
@@ -415,9 +448,10 @@ export default {
     return {
       currentStep: 3,
       activeMode: 1,
-      modelChoose: 1,
+      modelChoose: 2,
       formLayout: 'horizontal',
       baseSettingForm: this.$form.createForm(this, { name: 'coordinated' }),
+      gatherSettingForm: this.$form.createForm(this, { name: 'coordinated' }),
       advanceSettingForm: this.$form.createForm(this, { name: 'coordinated' }),
       startValue: null,
       endValue: null,
@@ -440,7 +474,45 @@ export default {
           status: 0
         }
       ],
-      advanceFormVisible: false
+      advanceFormVisible: false,
+      gatherResourceList: [
+        { name: '采集设备1', id: '1', state: 1, type: 'PCIe' },
+        { name: '采集设备2', id: '2', state: 1, type: 'USB' },
+        { name: '采集设备3', id: '3', state: 0, type: '网口' },
+        { name: '采集设备4', id: '4', state: 0, type: 'PCIe' },
+        { name: '采集设备5', id: '5', state: 1, type: 'USB' }
+      ],
+      gatherColumns: [
+        {
+          title: '名称',
+          dataIndex: 'name',
+          align: 'center'
+        },
+        {
+          title: '类型',
+          dataIndex: 'type',
+          align: 'center'
+        },
+        {
+          title: '状态',
+          dataIndex: 'state',
+          align: 'center',
+          scopedSlots: { customRender: 'state' }
+        },
+        {
+          title: '设备ID',
+          dataIndex: 'id',
+          align: 'center'
+        }
+      ],
+      gatherSelectedRowKeys: [],
+      gatherPagination: {
+        defaultPageSize: 5,
+        showTotal: () => `共 ${this.gatherResourceList.length} 条数据`,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        pageSizeOptions: ['5', '10', '15', '20']
+      }
     }
   },
   methods: {
@@ -471,6 +543,178 @@ export default {
     },
     showAdvanceSettingForm() {
       this.advanceFormVisible = true
+    },
+    onGatherSelectChange(selectedRowKeys) {
+      this.gatherSelectedRowKeys = selectedRowKeys
+    },
+    initGatherChartOption(chartTitle) {
+      let option = {
+        backgroundColor: new this.$echarts.graphic.LinearGradient(
+          0,
+          0,
+          0,
+          1,
+          [
+            {
+              offset: 0,
+              color: 'rgba(69,72,200,0.4)'
+            },
+            {
+              offset: 1,
+              color: 'rgba(95,160,255,0.7)'
+            }
+          ],
+          false
+        ),
+        title: {
+          text: chartTitle,
+          left: 'center',
+          bottom: '5%',
+          textStyle: {
+            color: '#fff',
+            fontSize: 16
+          }
+        },
+        grid: {
+          top: '20%',
+          left: '10%',
+          right: '10%',
+          bottom: '15%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: ['14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
+          axisLabel: {
+            margin: 30,
+            color: '#ffffff63'
+          },
+          axisLine: {
+            // show: false
+            lineStyle: {
+              color: '#fff',
+              width: 2
+            }
+          },
+          axisTick: {
+            show: true,
+            length: 25,
+            lineStyle: {
+              color: '#ffffff1f'
+            }
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: '#ffffff1f'
+            }
+          }
+        },
+        yAxis: [
+          {
+            type: 'value',
+            position: 'left',
+            axisLabel: {
+              margin: 20,
+              color: '#ffffff63'
+            },
+
+            axisTick: {
+              show: true,
+              length: 15,
+              lineStyle: {
+                color: '#ffffff1f'
+              }
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: '#ffffff1f'
+              }
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#fff',
+                width: 2
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: '注册总量',
+            type: 'line',
+            smooth: false, //是否平滑曲线显示
+            showAllSymbol: true,
+            symbol: 'circle',
+            symbolSize: 6,
+            lineStyle: {
+              normal: {
+                color: '#fff' // 线条颜色
+              }
+            },
+            label: {
+              show: true,
+              position: 'top',
+              textStyle: {
+                color: '#fff'
+              }
+            },
+            itemStyle: {
+              color: 'red',
+              borderColor: '#fff',
+              borderWidth: 3
+            },
+            tooltip: {
+              show: false
+            },
+            areaStyle: {
+              normal: {
+                color: new this.$echarts.graphic.LinearGradient(
+                  0,
+                  0,
+                  0,
+                  1,
+                  [
+                    {
+                      offset: 0,
+                      color: '#2929fb'
+                    },
+                    {
+                      offset: 1,
+                      color: '#3fbbff0d'
+                    }
+                  ],
+                  false
+                )
+              }
+            },
+            data: [393, 438, 485, 631, 689, 824, 987, 1000, 1100, 1200]
+          }
+        ]
+      }
+      return option
+    },
+    initGatherChartLine() {
+      let option_1 = this.initGatherChartOption('时间_采集速率折线图')
+      let option_2 = this.initGatherChartOption('时间_信号幅度折线图')
+      let option_3 = this.initGatherChartOption('时间_信号频率折线图')
+      let chart_1 = this.$echarts.init(document.getElementById('line#1'))
+      let chart_2 = this.$echarts.init(document.getElementById('line#2'))
+      let chart_3 = this.$echarts.init(document.getElementById('line#3'))
+      chart_1.setOption(option_1)
+      chart_2.setOption(option_2)
+      chart_3.setOption(option_3)
+    },
+    onTabChange(tab) {
+      if (tab == 2) {
+        if (this.activeMode === 1) {
+          this.$nextTick(() => {
+            this.initGatherChartLine()
+          })
+        }
+      }
     }
   }
 }
@@ -485,7 +729,7 @@ export default {
   }
   .setting-type {
     background: rgba(127, 127, 127, 0.1);
-    padding: 20px;
+    // padding: 20px;
     border-radius: 4px;
     .ant-radio-group {
       label {
@@ -498,12 +742,12 @@ export default {
     .type-container {
       display: inline-block;
       // height: 60px;
-      line-height: 40px;
-      padding: 4px 26px;
-      margin: 10px 40px 10px 0;
-      background: #1c5ea3;
-      border-radius: 4px;
-      box-shadow: 0 2px 12px 0 rgba(39, 107, 270, 1);
+      // line-height: 60px;
+      // padding: 4px 26px;
+      // margin: 10px 40px 10px 0;
+      // background: #1c5ea3;
+      // border-radius: 4px;
+      // box-shadow: 0 2px 12px 0 rgba(39, 107, 270, 1);
     }
     .mode-icon {
       margin-right: 10px;
@@ -569,15 +813,16 @@ export default {
       margin-bottom: 10px;
     }
     .flow-chart {
-      background: rgba(127, 127, 127, 0.1);
+      //background: rgba(127, 127, 127, 0.1);
+      background: rgba(69, 72, 200, 0.2);
       padding: 20px;
       border-radius: 4px;
     }
     .flow-detail {
       height: calc(100% - 120px);
       margin-top: 20px;
-      background: rgba(127, 127, 127, 0.1);
-      padding: 20px 20px 0;
+      // background: rgba(127, 127, 127, 0.1);
+      // padding: 20px 20px 0;
       border-radius: 4px;
       .flow-detail-title {
         height: 40px;
@@ -589,11 +834,12 @@ export default {
   .custom-step {
     padding: 4px 20px;
     border-radius: 4px;
-    background: #607090;
+    // background: #4c6290;
     color: #ced4ea;
     cursor: pointer;
     &.current-step {
       background: #315cce;
+      color: #47ffee;
     }
     // 禁止选中文字
     -moz-user-select: none; /*火狐*/
@@ -608,6 +854,32 @@ export default {
   .advance-setting-btn {
     float: right;
     cursor: pointer;
+  }
+  .resource-container {
+    margin-top: 20px;
+    height: 50%;
+    min-height: 350px;
+    .resource-form,
+    .resource-list {
+      height: 100%;
+    }
+  }
+  .gather-device,
+  .gather-terminal {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    margin: 0 20px;
+  }
+  .link-line {
+    display: inline-block;
+    height: 2px;
+    width: 200px;
+    background: #00a0e9;
   }
 }
 </style>

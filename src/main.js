@@ -23,6 +23,8 @@ import '@ztree/ztree_v3/js/jquery.ztree.exedit.min.js'
 import '@ztree/ztree_v3/css/zTreeStyle/zTreeStyle.css'
 // import '@ztree/ztree_v3/css/metroStyle/metroStyle.css'
 
+import DataV from '@jiaminghi/data-view'
+
 Vue.prototype.$echarts = echarts
 Vue.prototype.$ = $
 
@@ -30,6 +32,7 @@ Vue.config.productionTip = false
 
 // mount axios Vue.$http and this.$http
 Vue.use(VueAxios)
+Vue.use(DataV)
 
 new Vue({
   router,

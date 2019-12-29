@@ -20,6 +20,9 @@
       @select="onSelect"
       style="padding: 16px 0px;"
     ></s-menu>
+    <dv-decoration-9
+      style="width:60px;height:60px;position: absolute;bottom: 20px;left: 10px;"
+    ></dv-decoration-9>
   </a-layout-sider>
 </template>
 

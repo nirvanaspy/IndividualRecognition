@@ -1,9 +1,8 @@
 <template>
   <div class="state-container">
-    <div class="view-title">
-      <div class="view-title-btn">状态监控</div>
-    </div>
-    <div id="state-chart"></div>
+    <dv-border-box-11 title="状态监控">
+      <div id="state-chart"></div>
+    </dv-border-box-11>
   </div>
 </template>
 
@@ -306,6 +305,7 @@ export default {
   }
 }
 </script>
+
 <style lang="less" scoped>
 .state-container {
   margin-right: 30px;
@@ -318,9 +318,9 @@ export default {
     // background-size: cover;
     height: 100%;
     // min-height: 600px;
-    background: rgba(3, 13, 23, 0.5);
-    border: 2px solid rgb(14, 65, 108);
-    border-radius: 4px;
+    // background: rgba(3, 13, 23, 0.5);
+    // border: 2px solid rgb(14, 65, 108);
+    // border-radius: 4px;
   }
 }
 </style>

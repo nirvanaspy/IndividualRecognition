@@ -1,57 +1,65 @@
 <template>
-  <div>
-    <div class="operate-btn-container">
-      <a-button
-        class="editable-add-btn"
-        type="primary"
-        style="margin-right: 10px;"
-        >查询</a-button
-      >
-      <a-button class="editable-add-btn" type="primary" @click="handleDelete"
-        >删除</a-button
-      >
-    </div>
-    <a-table
-      bordered
-      :dataSource="dataSource"
-      :rowSelection="{
-        selectedRowKeys: selectedRowKeys,
-        onChange: onSelectChange
-      }"
-      :columns="columns"
-      rowKey="id"
-      :pagination="pagination"
-    >
-      <template slot="name" slot-scope="text">
-        <editable-cell :text="text" />
-      </template>
-      <template slot="operation" slot-scope="name, record">
-        <a-popconfirm
-          v-if="dataSource.length"
-          title="确认删除吗"
-          @confirm="() => onDelete()"
+  <div class="user-manage-container">
+    <dv-border-box-3 style="padding: 30px 30px 20px 30px;">
+      <div class="operate-btn-container">
+        <dv-decoration-6 style="width:300px;height:30px;float: left;" />
+        <a-button
+          class="editable-add-btn"
+          type="primary"
+          style="margin-right: 10px;"
+          >查询</a-button
         >
-          <a href="javascript:;">删除</a>
-        </a-popconfirm>
-        <span style="margin-left: 10px">
-          <a href="javascript:;">修改</a>
-        </span>
-      </template>
-    </a-table>
-    <a-row :gutter="30">
+        <a-button class="editable-add-btn" type="primary" @click="handleDelete"
+          >删除</a-button
+        >
+      </div>
+      <a-table
+        bordered
+        :dataSource="dataSource"
+        :rowSelection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange
+        }"
+        :columns="columns"
+        rowKey="id"
+        :pagination="pagination"
+      >
+        <template slot="name" slot-scope="text">
+          <editable-cell :text="text" />
+        </template>
+        <template slot="operation" slot-scope="name, record">
+          <a-popconfirm
+            v-if="dataSource.length"
+            title="确认删除吗"
+            @confirm="() => onDelete()"
+          >
+            <a href="javascript:;">删除</a>
+          </a-popconfirm>
+          <span style="margin-left: 10px">
+            <a href="javascript:;">修改</a>
+          </span>
+        </template>
+      </a-table>
+    </dv-border-box-3>
+
+    <a-row :gutter="30" style="margin-top: 20px;">
       <a-col :span="12">
-        <div
-          id="userNumChart"
-          class="chart-box"
-          style="width: 100%; height: 100%;min-height: 600px;"
-        ></div>
+        <dv-border-box-4 style="padding: 20px 0 0 20px;">
+          <div
+            id="userNumChart"
+            class="chart-box"
+            style="width: 100%; height: 100%;min-height: 600px;"
+          ></div>
+        </dv-border-box-4>
       </a-col>
       <a-col :span="12">
-        <div
-          id="userTypeChart"
-          class="chart-box"
-          style="width: 100%; height: 100%;min-height: 600px;"
-        ></div>
+        <dv-border-box-4 style="padding: 20px 0 0 20px;">
+          <div
+            id="userTypeChart"
+            class="chart-box"
+            style="width: 100%; height: 100%;min-height: 600px;"
+          ></div>
+        </dv-border-box-4>
       </a-col>
     </a-row>
   </div>
@@ -242,6 +250,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.user-manage-container {
+  padding-bottom: 20px;
+}
 .app-list {
   .new-btn {
     background-color: #fff;

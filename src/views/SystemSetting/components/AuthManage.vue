@@ -1,54 +1,72 @@
 <template>
-  <div>
-    <div class="operate-btn-container">
-      <!--<a-button type="primary" @click="checkAuth">查看权限树</a-button>-->
-      <a-button
-        class="editable-add-btn"
-        type="primary"
-        style="margin-right: 10px;"
-        >查询</a-button
-      >
-      <a-button class="editable-add-btn" type="primary" @click="handleDelete"
-        >删除</a-button
-      >
-    </div>
-    <a-table
-      bordered
-      :dataSource="authList"
-      :columns="columns"
-      rowKey="id"
-      :pagination="pagination"
-      :rowSelection="{
-        selectedRowKeys: selectedRowKeys,
-        onChange: onSelectChange
-      }"
-    >
-      <template slot="name" slot-scope="text">
-        <editable-cell :text="text" />
-      </template>
-      <template slot="operation" slot-scope="name, record">
-        <a-popconfirm
-          v-if="authList.length"
-          title="确认删除吗"
-          @confirm="() => onDelete()"
+  <div class="auth-manage-container">
+    <dv-border-box-3 style="padding: 30px 30px 20px 30px;">
+      <div class="operate-btn-container">
+        <dv-decoration-6 style="width:300px;height:30px;float: left;" />
+        <a-button
+          class="editable-add-btn"
+          type="primary"
+          style="margin-right: 10px;"
+          >查询</a-button
         >
-          <a href="javascript:;">删除</a>
-        </a-popconfirm>
-        <span style="margin-left: 10px">
-          <a href="javascript:;">修改</a>
-        </span>
-      </template>
-    </a-table>
+        <a-button class="editable-add-btn" type="primary" @click="handleDelete"
+          >删除</a-button
+        >
+      </div>
+      <a-table
+        bordered
+        :dataSource="authList"
+        :columns="columns"
+        rowKey="id"
+        :pagination="pagination"
+        :rowSelection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange
+        }"
+      >
+        <template slot="name" slot-scope="text">
+          <editable-cell :text="text" />
+        </template>
+        <template slot="operation" slot-scope="name, record">
+          <a-popconfirm
+            v-if="authList.length"
+            title="确认删除吗"
+            @confirm="() => onDelete()"
+          >
+            <a href="javascript:;">删除</a>
+          </a-popconfirm>
+          <span style="margin-left: 10px">
+            <a href="javascript:;">修改</a>
+          </span>
+        </template>
+      </a-table>
+    </dv-border-box-3>
+
     <div class="tree-container">
       <a-row>
         <a-col :span="8">
-          <ul id="workMode" class="ztree"></ul>
+          <dv-border-box-5
+            :color="['#2629ff', '#1890ff']"
+            style="padding: 20px;"
+          >
+            <ul id="workMode" class="ztree"></ul>
+          </dv-border-box-5>
         </a-col>
         <a-col :span="8">
-          <ul id="signalMode" class="ztree"></ul>
+          <dv-border-box-5
+            :color="['#2629ff', '#1890ff']"
+            style="padding: 20px;"
+          >
+            <ul id="signalMode" class="ztree"></ul>
+          </dv-border-box-5>
         </a-col>
         <a-col :span="8">
-          <ul id="fileAuth" class="ztree"></ul>
+          <dv-border-box-5
+            :color="['#2629ff', '#1890ff']"
+            style="padding: 20px;"
+          >
+            <ul id="fileAuth" class="ztree"></ul>
+          </dv-border-box-5>
         </a-col>
       </a-row>
     </div>
@@ -282,8 +300,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.auth-manage-container {
+  width: 100%;
+  height: 100%;
+}
 .tree-container {
   // border: 1px solid #ddd;
+  margin-top: 20px;
   background: rgba(0, 0, 0, 0.2);
   padding: 10px;
 }

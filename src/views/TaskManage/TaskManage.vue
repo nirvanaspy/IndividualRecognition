@@ -1,65 +1,74 @@
 <template>
   <div class="task-manage-container">
-    <div class="view-title">
-      <div class="view-title-btn">任务管理</div>
-    </div>
-
-    <div class="operate-btn-container">
-      <a-button
-        class="editable-add-btn"
-        @click="handleAdd"
-        type="primary"
-        style="margin-right: 10px;"
-        >查询</a-button
-      >
-      <a-button class="editable-add-btn" type="primary" @click="handleDelete"
-        >删除</a-button
-      >
-    </div>
-
-    <a-table
-      bordered
-      :dataSource="taskList"
-      :columns="columns"
-      rowKey="id"
-      :pagination="pagination"
-      :rowSelection="{
-        selectedRowKeys: selectedRowKeys,
-        onChange: onSelectChange
-      }"
+    <dv-border-box-4
+      :color="['red', '#2c9dff']"
+      style="padding: 40px 20px 0 20px;width: 100%;"
     >
-      <template slot="name" slot-scope="text">
-        <editable-cell :text="text" />
-      </template>
-      <template slot="progress" slot-scope="progress, record">
-        <a-progress :percent="progress" status="active"></a-progress>
-      </template>
-      <template slot="operation" slot-scope="name, record">
-        <a-popconfirm
-          v-if="taskList.length"
-          title="确认重启吗"
-          @confirm="() => onRestart(record.id)"
+      <div class="operate-btn-container">
+        <dv-decoration-3 style="width:200px;height:30px;float: left;" />
+        <a-button
+          class="editable-add-btn"
+          @click="handleAdd"
+          type="primary"
+          style="margin-right: 10px;"
+          >查询</a-button
         >
-          <a href="javascript:;">重启</a>
-        </a-popconfirm>
-        <!--<span style="margin-left: 10px">
-          <a href="javascript:;">修改</a>
-        </span>-->
-      </template>
-    </a-table>
+        <a-button class="editable-add-btn" type="primary" @click="handleDelete"
+          >删除</a-button
+        >
+      </div>
+      <a-table
+        bordered
+        :dataSource="taskList"
+        :columns="columns"
+        rowKey="id"
+        :pagination="pagination"
+        :rowSelection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange
+        }"
+      >
+        <template slot="name" slot-scope="text">
+          <editable-cell :text="text" />
+        </template>
+        <template slot="progress" slot-scope="progress, record">
+          <a-progress :percent="progress" status="active"></a-progress>
+        </template>
+        <template slot="operation" slot-scope="name, record">
+          <a-popconfirm
+            v-if="taskList.length"
+            title="确认重启吗"
+            @confirm="() => onRestart(record.id)"
+          >
+            <a href="javascript:;">重启</a>
+          </a-popconfirm>
+          <!--<span style="margin-left: 10px">
+            <a href="javascript:;">修改</a>
+          </span>-->
+        </template>
+      </a-table>
+    </dv-border-box-4>
 
-    <div class="chart-container">
-      <a-row :gutter="40">
-        <a-col :span="4" v-for="(chart, index) in chartOptionList" :key="index">
-          <div class="chart-box">
-            <div
-              :id="`taskChart${index}`"
-              style="width: 100%; height: 100%;min-height: 400px;"
-            ></div>
-          </div>
-        </a-col>
-      </a-row>
-    </div>
+    <dv-border-box-3 style="padding: 20px 30px 40px 30px;margin-top: 20px;">
+      <div class="chart-container">
+        <a-row :gutter="20">
+          <a-col
+            :span="4"
+            v-for="(chart, index) in chartOptionList"
+            :key="index"
+          >
+            <dv-border-box-8>
+              <div class="chart-box">
+                <div
+                  :id="`taskChart${index}`"
+                  style="width: 100%; height: 100%;min-height: 400px;"
+                ></div>
+              </div>
+            </dv-border-box-8>
+          </a-col>
+        </a-row>
+      </div>
+    </dv-border-box-3>
 
     <a-modal title="新建任务" :width="800" v-model="visible" @ok="handleOk">
       <a-form :form="createForm">

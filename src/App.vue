@@ -1,7 +1,12 @@
 <template>
   <a-locale-provider :locale="locale">
     <div id="app">
-      <router-view />
+      <dv-border-box-1
+        title="个体识别深度学习系统"
+        style="width: 100%;height: 100%;"
+      >
+        <router-view />
+      </dv-border-box-1>
     </div>
   </a-locale-provider>
 </template>

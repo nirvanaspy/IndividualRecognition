@@ -109,7 +109,7 @@ body {
       transition: width 0.2s;
 
       &.ant-header-side-opened {
-        width: calc(100% - 300px);
+        width: calc(100% - 310px);
       }
 
       &.ant-header-side-closed {
@@ -538,9 +538,9 @@ body {
 
 // 自定义样式
 #app {
-  background: url('../assets/main_back1.png') no-repeat center center;
+  background: url('../assets/main_back4.png') no-repeat center center;
   background-size: 100% 100%;
-  padding-left: 40px;
+  // padding-left: 40px;
 
   #userLayout {
     margin-left: -40px;
@@ -550,13 +550,16 @@ body {
     height: 100%;
     background: transparent;
     .ant-layout-sider {
-      padding: 20px 0;
+      // padding: 20px 0;
+      padding: 10px 0;
+      margin-left: 10px;
       background: transparent;
       .ant-layout-sider-children {
         // background: rgba(14, 65, 108, 0.2);
         background: linear-gradient(
           160deg,
-          rgba(14, 65, 108, 0.5) 20%,
+          // rgba(14, 65, 108, 0.5) 20%,
+            rgba(32, 62, 165, 0.6) 20%,
           rgba(14, 65, 108, 0.1) 80%
         );
         border-radius: 3em 0;
@@ -592,7 +595,7 @@ body {
         .ant-layout-header {
           background: transparent;
           div.header {
-            margin-top: 20px;
+            margin-top: 10px;
             background: transparent;
             color: #fff;
           }
@@ -637,19 +640,22 @@ body {
   // 表格自定义样式
   .ant-table-thead {
     th {
-      background: #365a7b;
+      // background: #365a7b;
+      background: #253a7e;
       color: #fff;
     }
   }
   .ant-table-tbody {
     tr:nth-child(2n + 1) {
       td {
-        background: rgba(54, 90, 123, 0.6);
+        // background: rgba(54, 90, 123, 0.6);
+        background: rgba(19, 20, 60, 0.7);
       }
     }
     tr:nth-child(2n) {
       td {
-        background: rgba(54, 90, 123, 0.9);
+        // background: rgba(54, 90, 123, 0.9);
+        background: rgba(49, 51, 121, 0.6);
       }
     }
     tr:hover {
@@ -696,6 +702,8 @@ body {
         padding: 20px;
         border-radius: 4px;
         background: rgba(0, 0, 0, 0.3);
+        // background-color: rgba(6, 30, 93, 0.5);
+        // border-top: 2px solid rgba(1, 153, 209, 0.5);
 
         color: #fff;
 
@@ -726,8 +734,8 @@ body {
     text-align: center;
     color: #fff;
     .ant-pagination-item-link {
-      background: #274569;
-      border-color: #274569;
+      background: #4262c7;
+      border-color: #4262c7;
       color: #fff;
     }
   }
@@ -747,9 +755,18 @@ body {
 // add on 12.16
 .work-mode-container {
   .setting-type .ant-radio {
-    vertical-align: initial !important;
+    // vertical-align: initial !important;
+    position: relative;
+    top: -25px;
   }
-  .setting-form {
+  .ant-radio-wrapper-checked {
+    .mode-icon,
+    .mode-text {
+      color: #47ffee !important;
+    }
+  }
+  .setting-form,
+  .resource-form {
     .ant-form-item-label {
       label {
         font-size: 16px;
@@ -758,7 +775,8 @@ body {
       }
     }
     .ant-input {
-      background-color: #2a406b;
+      background-color: #253a7e;
+      // background-color: #22406a;
       border-color: #a6aec1;
       caret-color: #fff;
       width: 240px;
@@ -768,7 +786,7 @@ body {
       width: 240px !important;
     }
     .ant-input-number {
-      background-color: #2a406b;
+      background-color: #253a7e;
       border-color: #a6aec1;
       width: 240px;
       color: #fff;
@@ -803,10 +821,21 @@ body {
 }
 
 .ant-btn-primary {
-  background-color: #426996 !important;
-  border-color: #426996 !important;
+  // background-color: #426996 !important;
+  background-color: #4262c7 !important;
+  // border-color: #426996 !important;
+  border-color: #4262c7 !important;
   color: #d0dff1;
 }
+
+/*.sidemenu {
+  background: linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.2)
+  ) !important;
+}*/
 
 #userLayout {
   .ant-btn-primary {
@@ -846,4 +875,19 @@ body {
 
 .signal-box-shadow {
   box-shadow: #18183c 8px 12px 14px;
+}
+
+.ant-menu.ant-menu-dark .ant-menu-item-selected,
+.ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected {
+  background-color: #1890ff;
+  background: linear-gradient(45deg, #3874ce, transparent) !important;
+}
+
+.border-box-content {
+  overflow-y: auto !important;
+  .mode-icon svg {
+    position: unset;
+    width: 20px;
+    height: 20px;
+  }
 }
