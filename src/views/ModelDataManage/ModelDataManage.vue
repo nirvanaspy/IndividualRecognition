@@ -1,7 +1,7 @@
 <template>
   <div class="model-data-container">
     <dv-border-box-4
-      :color="['red', '#2c9dff']"
+      :color="['#124ef5', '#87ecf5']"
       style="padding: 40px 20px 0 20px;width: 100%;"
     >
       <dv-decoration-3 style="width:200px;height:30px;float: left;" />
@@ -43,7 +43,10 @@
     <div style="margin-top: 20px;">
       <a-row :gutter="30">
         <a-col :span="12">
-          <dv-border-box-4 style="padding: 20px 0 0 20px;">
+          <dv-border-box-4
+            :color="['#124ef5', '#87ecf5']"
+            style="padding: 20px 0 0 20px;"
+          >
             <div
               id="numChart"
               class="chart-box"
@@ -52,7 +55,10 @@
           </dv-border-box-4>
         </a-col>
         <a-col :span="12">
-          <dv-border-box-4 style="padding: 20px 0 0 20px;">
+          <dv-border-box-4
+            :color="['#124ef5', '#87ecf5']"
+            style="padding: 20px 0 0 20px;"
+          >
             <div
               id="typeChart"
               class="chart-box"

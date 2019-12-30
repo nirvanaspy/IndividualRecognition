@@ -44,10 +44,10 @@
             <user-menu class="header-index-right"></user-menu>
           </div>
         </div>
-        <dv-decoration-5
+        <!--<dv-decoration-5
           :color="['#124ef5', '#87ecf5']"
           style="width:400px;height:30px;position: absolute;left:50%;top:10px;margin: 0 auto;margin-left: -200px;"
-        />
+        />-->
       </a-layout-header>
     </div>
   </transition>

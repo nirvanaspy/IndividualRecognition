@@ -2,7 +2,7 @@
   <div class="user-manage-container">
     <dv-border-box-3 style="padding: 30px 30px 20px 30px;">
       <div class="operate-btn-container">
-        <dv-decoration-6 style="width:300px;height:30px;float: left;" />
+        <dv-decoration-3 style="width:300px;height:30px;float: left;" />
         <a-button
           class="editable-add-btn"
           type="primary"
@@ -44,7 +44,10 @@
 
     <a-row :gutter="30" style="margin-top: 20px;">
       <a-col :span="12">
-        <dv-border-box-4 style="padding: 20px 0 0 20px;">
+        <dv-border-box-4
+          :color="['#124ef5', '#87ecf5']"
+          style="padding: 20px 0 0 20px;"
+        >
           <div
             id="userNumChart"
             class="chart-box"
@@ -53,7 +56,10 @@
         </dv-border-box-4>
       </a-col>
       <a-col :span="12">
-        <dv-border-box-4 style="padding: 20px 0 0 20px;">
+        <dv-border-box-4
+          :color="['#124ef5', '#87ecf5']"
+          style="padding: 20px 0 0 20px;"
+        >
           <div
             id="userTypeChart"
             class="chart-box"

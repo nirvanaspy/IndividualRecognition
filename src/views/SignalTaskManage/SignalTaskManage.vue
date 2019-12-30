@@ -1,7 +1,7 @@
 <template>
   <div class="signal-task-container">
     <dv-border-box-4
-      :color="['red', '#2c9dff']"
+      :color="['#124ef5', '#87ecf5']"
       style="padding: 40px 20px 0 20px;width: 100%;"
     >
       <div class="signal-task-btn">
@@ -64,7 +64,10 @@
           v-for="(chart, index) in chartOptionList"
           :key="index"
         >
-          <dv-border-box-4 style="padding: 20px 0 0 20px;">
+          <dv-border-box-4
+            :color="['#124ef5', '#87ecf5']"
+            style="padding: 20px 0 0 20px;"
+          >
             <div class="chart-box">
               <div
                 :id="`signalTaskChart${index}`"

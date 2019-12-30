@@ -1,7 +1,7 @@
 <template>
   <div class="task-manage-container">
     <dv-border-box-4
-      :color="['red', '#2c9dff']"
+      :color="['#124ef5', '#87ecf5']"
       style="padding: 40px 20px 0 20px;width: 100%;"
     >
       <div class="operate-btn-container">

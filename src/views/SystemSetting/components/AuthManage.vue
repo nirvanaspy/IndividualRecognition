@@ -2,7 +2,7 @@
   <div class="auth-manage-container">
     <dv-border-box-3 style="padding: 30px 30px 20px 30px;">
       <div class="operate-btn-container">
-        <dv-decoration-6 style="width:300px;height:30px;float: left;" />
+        <dv-decoration-3 style="width:300px;height:30px;float: left;" />
         <a-button
           class="editable-add-btn"
           type="primary"

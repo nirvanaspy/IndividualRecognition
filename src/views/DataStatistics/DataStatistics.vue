@@ -1,6 +1,10 @@
 <template>
   <div class="data-statistics-container">
-    <dv-border-box-11 title="数据统计" style="padding: 60px 40px;">
+    <dv-border-box-11
+      :color="['#87ecf5', '#124ef5']"
+      title="数据统计"
+      style="padding: 60px 40px;"
+    >
       <div class="view-title">
         <div class="view-title-btn">数据统计</div>
         <a-button
