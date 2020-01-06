@@ -25,6 +25,9 @@ import '@ztree/ztree_v3/css/zTreeStyle/zTreeStyle.css'
 
 import DataV from '@jiaminghi/data-view'
 
+import 'element-ui/lib/theme-chalk/index.css'
+import { Carousel, CarouselItem } from 'element-ui'
+
 Vue.prototype.$echarts = echarts
 Vue.prototype.$ = $
 
@@ -33,6 +36,8 @@ Vue.config.productionTip = false
 // mount axios Vue.$http and this.$http
 Vue.use(VueAxios)
 Vue.use(DataV)
+Vue.use(Carousel)
+Vue.use(CarouselItem)
 
 new Vue({
   router,

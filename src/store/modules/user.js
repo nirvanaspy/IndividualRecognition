@@ -107,13 +107,15 @@ const user = {
         commit('SET_ROLES', [])
         Vue.ls.remove(ACCESS_TOKEN)
 
-        logout(state.token)
+        resolve()
+
+        /*logout(state.token)
           .then(() => {
             resolve()
           })
           .catch(() => {
             resolve()
-          })
+          })*/
       })
     }
   }

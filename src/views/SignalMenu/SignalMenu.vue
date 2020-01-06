@@ -1,48 +1,10 @@
 <template>
-  <!--<a-layout style="min-height: 100%;">
-    <div>
-      <a-layout-header>
-        <div :class="['top-nav-header-index', theme]">
-          <div class="header-index-wide">
-            <div class="signal-logo-box">
-              <span class="icon">
-                <svg-icon icon-class="logo"></svg-icon>
-              </span>
-              <span class="text">个体识别深度学习</span>
-            </div>
-            <div class="signal-user-menu">
-              <user-menu></user-menu>
-            </div>
-          </div>
-        </div>
-      </a-layout-header>
-    </div>
-    <a-layout-content>
-      <div class="signal-type-container">
-        <div
-          class="signal-item"
-          v-for="(signal, index) in signalList"
-          :key="index"
-          ondblclick="handleChooseSignal(signal.id)"
-        >
-          <span class="signal-icon" v-if="computeSignalIcon(signal.id)">
-            <svg-icon :icon-class="signal.id"></svg-icon>
-          </span>
-          <span class="signal-name-icon" v-else>{{ signal.name }}</span>
-          <span class="signal-name">{{ signal.name }}</span>
-        </div>
-      </div>
-    </a-layout-content>
-    <a-layout-footer>
-      <global-footer></global-footer>
-    </a-layout-footer>
-  </a-layout>-->
-  <div style="height: 100%;">
+  <div style="height: 100%;" class="signal-container">
     <div class="view-title">
       <div class="view-title-btn">信号导航</div>
     </div>
     <div class="signal-type-container">
-      <a-row :gutter="30">
+      <!--<a-row :gutter="60">
         <a-col :span="2"></a-col>
         <a-col v-for="(signal, index) in signalList" :key="index" :span="4">
           <div class="signal-menu signal-box-shadow">
@@ -70,15 +32,42 @@
           </div>
         </a-col>
         <a-col :span="2"></a-col>
-      </a-row>
-      <div>
-        <img src="" alt="" />
-      </div>
+      </a-row>-->
+
+      <el-carousel :interval="4000" type="card" height="600px">
+        <el-carousel-item v-for="(signal, index) in signalList" :key="index">
+          <div class="signal-menu">
+            <div
+                    class="signal-item"
+                    @dblclick="handleChooseSignal(signal.id)"
+                    @contextmenu.prevent="onSignalRightClick($event, signal)"
+            >
+              <div class="signal-icon">
+                <img :src="signal.src" alt="" />
+              </div>
+            </div>
+            <div class="signal-desc">
+              <div class="signal-name">
+                <span>{{ signal.name }}</span>
+              </div>
+              <div class="signal-info">
+                <div>识别模式5种</div>
+                <div>模型有1000个</div>
+              </div>
+            </div>
+          </div>
+          <div class="signal-item-specialEffects">
+            <img src="../../assets/spiner3.png" alt="" />
+          </div>
+        </el-carousel-item>
+      </el-carousel>
+
       <vue-context ref="signalContextMenu">
         <div style="padding: 0" slot-scope="signal">
           <li @click="changeImg(signal)">更换图片</li>
         </div>
       </vue-context>
+
       <a-modal
         title="更改图片"
         :visible="visible"
@@ -99,7 +88,8 @@ import { mapGetters } from 'vuex'
 import VueContext from 'vue-context'
 import 'vue-context/src/sass/vue-context.scss'
 
-import UploadImage from './comonents/UploadImage'
+import UploadImage from './components/UploadImage'
+
 export default {
   name: 'SignalMenu',
   components: {
@@ -137,14 +127,20 @@ export default {
           id: 'ais',
           src: require('./assets/ais.jpg')
         }
-      ],
-      existIcons: ['radar', 'connection']
+      ]
     }
   },
   methods: {
     handleChooseSignal(id) {
       console.log(id)
-      this.$router.push('/workMode')
+      // this.$router.push('/workMode')
+      let routeData = this.$router.resolve({
+        path: '/workMode',
+        query: {
+          workMode: id
+        }
+      })
+      window.open(routeData.href, '_blank')
     },
     onSignalRightClick(event, data) {
       this.$refs.signalContextMenu.open(event, data)
@@ -167,17 +163,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['theme']),
-    computeSignalIcon() {
-      return function(id) {
-        let icon = this.existIcons.find(icon => icon === id)
-        if (icon) {
-          return id
-        } else {
-          return null
-        }
-      }
-    }
+    ...mapGetters(['theme'])
   }
 }
 </script>
@@ -189,7 +175,7 @@ export default {
   min-width: 600px;
   min-height: 300px;
   position: relative;
-  top: 40%;
+  top: 30%;
   margin: -160px auto 0;
   text-align: center;
 
@@ -203,49 +189,26 @@ export default {
     display: inline-block;
     width: 100%;
     max-width: 400px;
-    // height: 300px;
-    height: 0;
-    padding-bottom: 100%;
+    // height: 0;
+    height: 400px;
+    padding: 14px;
     border-radius: 6px;
     text-align: center;
     cursor: pointer;
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     -o-transition: all 0.3s;
-    border: 2px solid rgb(14, 65, 108);
-    background: rgba(3, 13, 23, 0.3);
-    &:hover {
-      background: rgba(3, 13, 23, 0.5);
-      /*-webkit-transform: scale(1.1); !*1.1放大值*!
-      -moz-transform: scale(1.1);
-      -o-transform: scale(1.1);
-      -ms-transform: scale(1.1);*/
-    }
+    border: 1px solid #235fa8;
+    background: rgba(10, 77, 144, 0.4);
     .signal-icon {
       width: 100%;
+      height: 100%;
       text-align: center;
       img {
         width: 100%;
         height: 100%;
-        position: absolute;
-        left: 0;
       }
     }
-    /*.signal-name {
-      display: block;
-      font-size: 20px;
-    }
-    .signal-name-icon {
-      height: 120px;
-      line-height: 120px;
-      color: #3f51b5;
-      font-size: 80px;
-      background: linear-gradient(20deg, #1aabe2, #3f51b5);
-      -webkit-background-clip: text;
-      color: transparent;
-      -webkit-text-fill-color: transparent;
-      text-fill-color: transparent;
-    }*/
   }
   .signal-desc {
     .signal-name {
@@ -255,46 +218,52 @@ export default {
       color: #fff;
     }
     .signal-info {
-      color: #0677b4;
+      color: #82b3ce;
     }
   }
 }
 .signal-menu {
+  max-width: 400px;
+  text-align: center;
+  padding: 20px;
+  margin: 0 auto;
   cursor: pointer;
   position: relative;
-  padding: 15px;
+  // padding: 15px;
   // background: rgba(61, 61, 204, 0.3);
-  background: rgba(28, 61, 103, 0.5);
+  // background: rgba(28, 61, 103, 0.4);
   -webkit-box-reflect: below 10px -webkit-linear-gradient(transparent, transparent
         70%, rgba(255, 255, 255, 0.5));
   &:hover {
     // box-shadow: 0px 0px 30px #1153f7;
-    box-shadow: 0px 0px 30px #556eea;
-    -webkit-transition: all 0.3s;
+    // box-shadow: 0px 0px 30px #556eea;
+    /*-webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     -o-transition: all 0.3s;
-    -webkit-transform: scale(1.1); /*1.1放大值*/
+    -webkit-transform: scale(1.1); !*1.1放大值*!
     -moz-transform: scale(1.1);
     -o-transform: scale(1.1);
-    -ms-transform: scale(1.1);
+    -ms-transform: scale(1.1);*/
   }
 }
 
 .signal-item-specialEffects {
-  width: 100%;
+  height: 100%;
+  width: 400px;
   position: absolute;
-  top: 80%;
-  left: -1%;
+  top: 40%;
+  left: 50%;
+  margin-left: -200px;
   transform: rotateX(80deg);
   img {
     width: 100%;
-    animation-name: haizei;
+    animation-name: img-rotation;
     animation-duration: 20s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
   }
 }
-@keyframes haizei {
+@keyframes img-rotation {
   0% {
     transform: rotateZ(-0deg);
   }

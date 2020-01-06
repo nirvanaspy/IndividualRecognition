@@ -903,3 +903,27 @@ body {
     padding: 16px;
   }
 }
+
+.signal-container {
+  .el-carousel__mask {
+    background: transparent !important;
+  }
+  .el-carousel__item.is-in-stage {
+    .signal-item {
+      background: rgba(0, 0, 0, 0.4);
+      box-shadow: #01010c 8px 12px 14px;
+    }
+    &.is-active {
+      background: rgba(16, 36, 68, 0.95);
+      border-radius: 10px;
+      border: 2px solid #2466C3;
+      .signal-item {
+        background: rgba(10, 77, 144, 0.4);
+      }
+    }
+  }
+
+  .el-carousel__arrow, .el-carousel__arrow:hover {
+    background-color: rgb(36, 102, 195);
+  }
+}

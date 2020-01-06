@@ -14,7 +14,8 @@ import {
   gatherSymbol,
   advanceSymbol,
   fileSymbol,
-  dataSymbol
+  dataSymbol,
+  transferSymbol
 } from './symbols'
 export default {
   name: 'StateMonitor',
@@ -121,7 +122,9 @@ export default {
         {
           type: 'gatherNode',
           nodeName: '采集节点1',
-          nodeId: 'gatherNode1'
+          nodeId: 'gatherNode1',
+          alarm: true,
+          alarmMessage: '采集设备故障！'
         },
         {
           type: 'gatherNode',
@@ -385,8 +388,8 @@ export default {
 
       // 5大类中继节点
       let fileConcatNode = {
-        nodeName: '文件存储服务器',
-        symbol: fileSymbol,
+        nodeName: '交换机',
+        symbol: transferSymbol,
         symbolSize: this.symbolSize,
         type: 'fileConcat',
         value: [
@@ -404,8 +407,8 @@ export default {
       }
 
       let dataConcatNode = {
-        nodeName: '数据存储服务器',
-        symbol: dataSymbol,
+        nodeName: '交换机',
+        symbol: transferSymbol,
         symbolSize: this.symbolSize,
         type: 'dataConcat',
         value: [
@@ -423,8 +426,8 @@ export default {
       }
 
       let gatherConcatNode = {
-        nodeName: '采集服务器',
-        symbol: gatherSymbol,
+        nodeName: '交换机',
+        symbol: transferSymbol,
         symbolSize: this.symbolSize,
         type: 'gatherConcat',
         value: [
@@ -442,8 +445,8 @@ export default {
       }
 
       let normalConcatNode = {
-        nodeName: '常规计算节点',
-        symbol: nodeSymbol,
+        nodeName: '交换机',
+        symbol: transferSymbol,
         symbolSize: this.symbolSize,
         type: 'normalConcat',
         value: [
@@ -461,8 +464,8 @@ export default {
       }
 
       let advanceConcatNode = {
-        nodeName: '高级计算节点',
-        symbol: advanceSymbol,
+        nodeName: '交换机',
+        symbol: transferSymbol,
         symbolSize: this.symbolSize,
         type: 'advanceConcat',
         value: [

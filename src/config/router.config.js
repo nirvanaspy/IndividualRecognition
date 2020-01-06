@@ -8,18 +8,6 @@ import {
 } from '@/layouts'
 
 export const asyncRouterMap = [
-  /*{
-    path: '/signalChoose',
-    name: 'signalChoose',
-    hidden: true,
-    component: () => import('@/views/SignalMenu/SignalMenu'),
-    meta: {
-      title: '信号选择',
-      keepAlive: true,
-      icon: 'table',
-      permission: ['simApplication']
-    }
-  },*/
   {
     path: '/',
     name: 'index',

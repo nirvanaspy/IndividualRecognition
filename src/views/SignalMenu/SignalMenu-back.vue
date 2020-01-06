@@ -45,17 +45,12 @@
       <a-row :gutter="30">
         <a-col :span="2"></a-col>
         <a-col v-for="(signal, index) in signalList" :key="index" :span="4">
-          <div class="signal-menu">
+          <div class="signal-menu signal-box-shadow">
             <div
               class="signal-item"
               @dblclick="handleChooseSignal(signal.id)"
               @contextmenu.prevent="onSignalRightClick($event, signal)"
             >
-              <!--<div class="signal-icon" v-if="computeSignalIcon(signal.id)">
-                  <svg-icon :icon-class="signal.id"></svg-icon>
-                </div>
-                <div class="signal-name-icon" v-else>{{ signal.name }}</div>
-                <span class="signal-name">{{ signal.name }}</span>-->
               <div class="signal-icon">
                 <img :src="signal.src" alt="" />
               </div>
@@ -76,9 +71,9 @@
         </a-col>
         <a-col :span="2"></a-col>
       </a-row>
-      <div>
+      <!--<div>
         <img src="" alt="" />
-      </div>
+      </div>-->
       <vue-context ref="signalContextMenu">
         <div style="padding: 0" slot-scope="signal">
           <li @click="changeImg(signal)">更换图片</li>
@@ -104,7 +99,8 @@ import { mapGetters } from 'vuex'
 import VueContext from 'vue-context'
 import 'vue-context/src/sass/vue-context.scss'
 
-import UploadImage from './comonents/UploadImage'
+import UploadImage from './components/UploadImage'
+
 export default {
   name: 'SignalMenu',
   components: {
@@ -217,14 +213,14 @@ export default {
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     -o-transition: all 0.3s;
-    border: 3px dashed rgb(14, 65, 108);
+    border: 2px solid rgb(14, 65, 108);
     background: rgba(3, 13, 23, 0.3);
     &:hover {
       background: rgba(3, 13, 23, 0.5);
-      -webkit-transform: scale(1.1); /*1.1放大值*/
+      /*-webkit-transform: scale(1.1); !*1.1放大值*!
       -moz-transform: scale(1.1);
       -o-transform: scale(1.1);
-      -ms-transform: scale(1.1);
+      -ms-transform: scale(1.1);*/
     }
     .signal-icon {
       width: 100%;
@@ -265,11 +261,24 @@ export default {
   }
 }
 .signal-menu {
+  cursor: pointer;
   position: relative;
   padding: 15px;
-  background: rgba(61, 61, 204, 0.3);
+  // background: rgba(61, 61, 204, 0.3);
+  background: rgba(28, 61, 103, 0.5);
   -webkit-box-reflect: below 10px -webkit-linear-gradient(transparent, transparent
         70%, rgba(255, 255, 255, 0.5));
+  &:hover {
+    // box-shadow: 0px 0px 30px #1153f7;
+    box-shadow: 0px 0px 30px #556eea;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    -webkit-transform: scale(1.1); /*1.1放大值*/
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+  }
 }
 
 .signal-item-specialEffects {
@@ -294,4 +303,6 @@ export default {
     transform: rotateZ(-360deg);
   }
 }
+
+// 轮播图
 </style>
