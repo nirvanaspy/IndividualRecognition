@@ -327,18 +327,21 @@
                 <a-row :gutter="40">
                   <a-col :span="8">
                     <div
+                      class="chart-box"
                       id="line#1"
                       style="width: 100%;min-height: 500px;"
                     ></div>
                   </a-col>
                   <a-col :span="8">
                     <div
+                      class="chart-box"
                       id="line#2"
                       style="width: 100%;min-height: 500px;"
                     ></div>
                   </a-col>
                   <a-col :span="8">
                     <div
+                      class="chart-box"
                       id="line#3"
                       style="width: 100%;min-height: 500px;"
                     ></div>
