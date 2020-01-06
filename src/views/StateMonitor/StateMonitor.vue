@@ -7,7 +7,15 @@
 </template>
 
 <script>
-import { uiSymbol, serverSymbol, nodeSymbol } from './symbols'
+import {
+  uiSymbol,
+  serverSymbol,
+  nodeSymbol,
+  gatherSymbol,
+  advanceSymbol,
+  fileSymbol,
+  dataSymbol
+} from './symbols'
 export default {
   name: 'StateMonitor',
   data() {
@@ -263,15 +271,15 @@ export default {
             serverList.push(node)
             break
           case 'fileServer':
-            node.symbol = serverSymbol
+            node.symbol = fileSymbol
             fileServerList.push(node)
             break
           case 'dataServer':
-            node.symbol = serverSymbol
+            node.symbol = dataSymbol
             dataServerList.push(node)
             break
           case 'gatherNode':
-            node.symbol = nodeSymbol
+            node.symbol = gatherSymbol
             gatherNodeList.push(node)
             break
           case 'normalNode':
@@ -279,7 +287,7 @@ export default {
             normalNodeList.push(node)
             break
           case 'advanceNode':
-            node.symbol = nodeSymbol
+            node.symbol = advanceSymbol
             advanceNodeList.push(node)
             break
           default:
@@ -378,7 +386,7 @@ export default {
       // 5大类中继节点
       let fileConcatNode = {
         nodeName: '文件存储服务器',
-        symbol: serverSymbol,
+        symbol: fileSymbol,
         symbolSize: this.symbolSize,
         type: 'fileConcat',
         value: [
@@ -397,7 +405,7 @@ export default {
 
       let dataConcatNode = {
         nodeName: '数据存储服务器',
-        symbol: serverSymbol,
+        symbol: dataSymbol,
         symbolSize: this.symbolSize,
         type: 'dataConcat',
         value: [
@@ -416,7 +424,7 @@ export default {
 
       let gatherConcatNode = {
         nodeName: '采集服务器',
-        symbol: nodeSymbol,
+        symbol: gatherSymbol,
         symbolSize: this.symbolSize,
         type: 'gatherConcat',
         value: [
@@ -454,7 +462,7 @@ export default {
 
       let advanceConcatNode = {
         nodeName: '高级计算节点',
-        symbol: nodeSymbol,
+        symbol: advanceSymbol,
         symbolSize: this.symbolSize,
         type: 'advanceConcat',
         value: [
@@ -496,7 +504,11 @@ export default {
           linkList.push({
             fromNodeId: serverNode.nodeId,
             toNodeId: node.nodeId,
-            coords: [serverNode.value, node.value]
+            coords: [
+              serverNode.value,
+              [serverNode.value[0], node.value[1]],
+              node.value
+            ]
           })
         })
 
