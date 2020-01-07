@@ -256,10 +256,12 @@ export default {
       this.drawPie('numChart', this.userNumOption)
       this.drawPie('typeChart', this.userTypeOption)
       this.$nextTick(() => {
-        window.onresize = () => {
-          this.chartList.forEach(chart => {
-            chart.resize()
-          })
+        window.onresize = e => {
+          if (e.eventType !== 'routerChange') {
+            this.chartList.forEach(chart => {
+              chart.resize()
+            })
+          }
         }
       })
     })

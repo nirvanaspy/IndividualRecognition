@@ -154,6 +154,9 @@ export default {
           this.menus = this.menuBack.filter(item => item.meta.level !== 3)
         }
       }
+      this.$nextTick(() => {
+        triggerWindowResizeEvent('routerChange')
+      })
     }
   },
   created() {

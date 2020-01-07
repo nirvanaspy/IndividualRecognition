@@ -26,10 +26,15 @@ export function welcome() {
 /**
  * 触发 window.resize
  */
-export function triggerWindowResizeEvent() {
+export function triggerWindowResizeEvent(message) {
   const event = document.createEvent('HTMLEvents')
-  event.initEvent('resize', true, true)
-  event.eventType = 'message'
+  // event.initEvent('resize', true, true)
+  if (message === 'routerChange') {
+    event.initEvent('resize')
+  } else {
+    event.initEvent('resize', true, true)
+  }
+  event.eventType = message ? message : 'message'
   window.dispatchEvent(event)
 }
 

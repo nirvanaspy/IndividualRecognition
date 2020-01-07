@@ -189,10 +189,12 @@ export default {
       this.drawPie('dataMarkBaseChart', this.dataMarkOption)
       this.drawPie('modelBaseChart', this.modelOption)
       this.$nextTick(() => {
-        window.onresize = () => {
-          this.chartList.forEach(chart => {
-            chart.resize()
-          })
+        window.onresize = e => {
+          if (e.eventType !== 'routerChange') {
+            this.chartList.forEach(chart => {
+              chart.resize()
+            })
+          }
         }
       })
     })

@@ -423,10 +423,12 @@ export default {
         this.drawPie(`signalTaskChart${index}`, option)
       })
       this.$nextTick(() => {
-        window.onresize = () => {
-          this.chartList.forEach(chart => {
-            chart.resize()
-          })
+        window.onresize = e => {
+          if (e.eventType !== 'routerChange') {
+            this.chartList.forEach(chart => {
+              chart.resize()
+            })
+          }
         }
       })
     })

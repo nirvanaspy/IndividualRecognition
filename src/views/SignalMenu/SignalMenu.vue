@@ -33,8 +33,12 @@
         </a-col>
         <a-col :span="2"></a-col>
       </a-row>-->
-
-      <el-carousel :interval="4000" type="card" height="600px">
+      <el-carousel
+        :interval="4000"
+        type="card"
+        height="600px"
+        @change="carouselChange"
+      >
         <el-carousel-item v-for="(signal, index) in signalList" :key="index">
           <div class="signal-menu">
             <div
@@ -61,6 +65,16 @@
           </div>
         </el-carousel-item>
       </el-carousel>
+
+      <div class="carousel-dot">
+        <span
+          class="dot-signal-name"
+          v-for="(signal, index) in signalList"
+          :key="`signalName${signal.name}`"
+          :class="{ 'active-dot': index === activeCarousel }"
+          >{{ signal.name }}</span
+        >
+      </div>
 
       <vue-context ref="signalContextMenu">
         <div style="padding: 0" slot-scope="signal">
@@ -100,6 +114,7 @@ export default {
   data() {
     return {
       visible: false,
+      scaleSignalList: [3, 2],
       signalList: [
         {
           name: 'ADS-B',
@@ -126,7 +141,8 @@ export default {
           id: 'ais',
           src: require('./assets/ais.jpg')
         }
-      ]
+      ],
+      activeCarousel: 0
     }
   },
   methods: {
@@ -163,6 +179,9 @@ export default {
     handleCancel(e) {
       console.log('Clicked cancel button')
       this.visible = false
+    },
+    carouselChange(index) {
+      this.activeCarousel = index
     }
   },
   computed: {
@@ -272,6 +291,22 @@ export default {
   }
   100% {
     transform: rotateZ(-360deg);
+  }
+}
+
+.carousel-dot {
+  width: 100%;
+  position: relative;
+  top: -10px;
+  margin: 0;
+  color: #777;
+  .dot-signal-name {
+    display: inline-block;
+    width: 50px;
+    margin: 0 10px;
+    &.active-dot {
+      color: #fff;
+    }
   }
 }
 </style>

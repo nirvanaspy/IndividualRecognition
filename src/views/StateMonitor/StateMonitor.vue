@@ -165,9 +165,15 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.initChart()
-      window.onresize = () => {
-        if (this.chart) {
-          this.chart.resize()
+      window.onresize = e => {
+        if (e.eventType !== 'routerChange') {
+          if (this.chart) {
+            this.chart.resize()
+          }
+        } else {
+          if (this.chart) {
+            this.initChart()
+          }
         }
       }
     })
