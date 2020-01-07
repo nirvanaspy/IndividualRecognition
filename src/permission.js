@@ -51,11 +51,20 @@ router.beforeEach((to, from, next) => {
             })
             store.dispatch('Logout').then(() => {
               // next({ path: '/user/login', query: { redirect: to.fullPath } })
-              next({ path: '/user/login'})
+              next({ path: '/user/login' })
             })
           })
       } else {
-        next()
+        if (from.meta.level === 3 && !to.query.workMode) {
+          if (from.query.workMode) {
+            let mode = from.query.workMode
+            next({ ...to, query: { workMode: mode } })
+          } else {
+            next()
+          }
+        } else {
+          next()
+        }
       }
     }
   } else {
@@ -64,7 +73,7 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       // next({ path: '/user/login', query: { redirect: to.fullPath } })
-      next({ path: '/user/login', query: {redirect: '/signalChoose'}})
+      next({ path: '/user/login', query: { redirect: '/signalChoose' } })
       NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
     }
   }

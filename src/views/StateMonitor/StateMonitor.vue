@@ -1,6 +1,6 @@
 <template>
   <div class="state-container">
-    <dv-border-box-11 title="状态监控">
+    <dv-border-box-11 :color="['#87ecf5', '#124ef5']" title="状态监控">
       <div id="state-chart"></div>
     </dv-border-box-11>
   </div>
@@ -577,19 +577,13 @@ export default {
 <style lang="less" scoped>
 .state-container {
   margin-right: 30px;
-  height: calc(100% - 60px);
+  height: 100%;
 
   #state-chart {
     position: relative;
     height: 100%;
     width: 100%;
-    // background: url('1.jpeg') center center;
-    // background-size: cover;
     height: 100%;
-    // min-height: 600px;
-    // background: rgba(3, 13, 23, 0.5);
-    // border: 2px solid rgb(14, 65, 108);
-    // border-radius: 4px;
   }
 }
 </style>

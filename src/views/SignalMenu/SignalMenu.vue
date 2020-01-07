@@ -38,9 +38,9 @@
         <el-carousel-item v-for="(signal, index) in signalList" :key="index">
           <div class="signal-menu">
             <div
-                    class="signal-item"
-                    @dblclick="handleChooseSignal(signal.id)"
-                    @contextmenu.prevent="onSignalRightClick($event, signal)"
+              class="signal-item"
+              @dblclick="handleChooseSignal(signal.id)"
+              @contextmenu.prevent="onSignalRightClick($event, signal)"
             >
               <div class="signal-icon">
                 <img :src="signal.src" alt="" />
@@ -84,10 +84,9 @@
 // import GlobalFooter from '../../components/GlobalFooter/GlobalFooter'
 // import UserMenu from '../../components/tools/UserMenu'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import VueContext from 'vue-context'
 import 'vue-context/src/sass/vue-context.scss'
-
 import UploadImage from './components/UploadImage'
 
 export default {
@@ -131,6 +130,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      _setWorkMode: 'SET_WORK_MODE'
+    }),
     handleChooseSignal(id) {
       console.log(id)
       // this.$router.push('/workMode')
@@ -140,6 +142,7 @@ export default {
           workMode: id
         }
       })
+      this._setWorkMode(id)
       window.open(routeData.href, '_blank')
     },
     onSignalRightClick(event, data) {
@@ -188,7 +191,7 @@ export default {
     position: relative;
     display: inline-block;
     width: 100%;
-    max-width: 400px;
+    max-width: 450px;
     // height: 0;
     height: 400px;
     padding: 14px;
@@ -223,7 +226,7 @@ export default {
   }
 }
 .signal-menu {
-  max-width: 400px;
+  max-width: 600px;
   text-align: center;
   padding: 20px;
   margin: 0 auto;

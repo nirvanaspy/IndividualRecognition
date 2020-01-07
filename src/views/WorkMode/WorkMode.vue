@@ -445,6 +445,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'WorkMode',
   data() {
@@ -719,6 +721,9 @@ export default {
         }
       }
     }
+  },
+  computed: {
+    ...mapGetters(['workMode'])
   }
 }
 </script>
@@ -761,7 +766,7 @@ export default {
     height: calc(100% - 120px);
     margin-top: 20px;
     background: rgba(127, 127, 127, 0.1);
-    padding: 20px 20px 0;
+    padding: 20px 20px;
     border-radius: 4px;
     .setting-info-container {
       height: 100%;
@@ -778,6 +783,17 @@ export default {
       padding: 10px;
       background: rgba(0, 0, 0, 0.2);
       overflow-y: auto;
+      /*隐藏滚动条，当IE下溢出，仍然可以滚动*/
+      -ms-overflow-style: none;
+      /*火狐下隐藏滚动条*/
+      overflow: -moz-scrollbars-none;
+      scrollbar-width: none;
+
+      /*Chrome下隐藏滚动条，溢出可以透明滚动*/
+      &::-webkit-scrollbar {
+        width: 0px;
+        display: none;
+      }
     }
     .setting-title {
       color: #198efc;
