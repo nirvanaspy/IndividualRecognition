@@ -60,6 +60,23 @@
                       </a-radio-group>
                     </a-form-item>
                     <a-form-item
+                      label="数据精度"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-select
+                        defaultValue="interpretation"
+                        style="width: 240px"
+                        v-model="dataAccuracy"
+                      >
+                        <a-select-option value="0">chart</a-select-option>
+                        <a-select-option value="1">short</a-select-option>
+                        <a-select-option value="2">int</a-select-option>
+                        <a-select-option value="3">float</a-select-option>
+                        <a-select-option value="4">double</a-select-option>
+                      </a-select>
+                    </a-form-item>
+                    <a-form-item
                       label="中心频率"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
@@ -192,8 +209,8 @@ export default {
     return {
       // 采集
       formLayout: 'horizontal',
-      baseSettingForm: this.$form.createForm(this, { name: 'coordinated' }),
-      gatherSettingForm: this.$form.createForm(this, { name: 'coordinated' }),
+      baseSettingForm: this.$form.createForm(this),
+      gatherSettingForm: this.$form.createForm(this),
       gatherResourceList: [
         { name: '采集设备1', id: '1', state: 1, type: 'PCIe' },
         { name: '采集设备2', id: '2', state: 1, type: 'USB' },
@@ -213,15 +230,15 @@ export default {
           align: 'center'
         },
         {
+          title: '设备ID',
+          dataIndex: 'id',
+          align: 'center'
+        },
+        {
           title: '状态',
           dataIndex: 'state',
           align: 'center',
           scopedSlots: { customRender: 'state' }
-        },
-        {
-          title: '设备ID',
-          dataIndex: 'id',
-          align: 'center'
         }
       ],
       gatherSelectedRowKeys: [],
@@ -235,7 +252,8 @@ export default {
       modelChoose: 2,
       startValue: null,
       endValue: null,
-      endOpen: false
+      endOpen: false,
+      dataAccuracy: null
     }
   },
   methods: {

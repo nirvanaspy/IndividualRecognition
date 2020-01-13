@@ -277,7 +277,7 @@
 
             <!--数据标注-->
             <div v-show="activeMode === 2" class="setting-info-container">
-              <mark-mode></mark-mode>
+              <mark-mode @processChange="markProcessChange"></mark-mode>
             </div>
 
             <!--模型训练-->
@@ -287,7 +287,9 @@
 
             <!--推理识别-->
             <div v-show="activeMode === 4" class="setting-info-container">
-              <reasoning-mode></reasoning-mode>
+              <reasoning-mode
+                @reasonProcessChange="reasonProcessChange"
+              ></reasoning-mode>
             </div>
           </div>
         </div>
@@ -307,6 +309,7 @@
             <a-button type="primary">结束</a-button>
           </div>
 
+          <!--采集结果-->
           <div class="result-show" v-show="activeMode === 1">
             <dv-border-box-13 style="padding: 20px;">
               <div class="flow-chart">
@@ -358,38 +361,195 @@
               </div>
             </dv-border-box-11>
           </div>
+
+          <!--标注结果-->
           <div class="result-show" v-show="activeMode === 2">
             <div class="flow-chart">
-              <a-steps :current="currentStep">
-                <a-step v-for="(item, index) in steps" :key="index">
-                  <div
-                    class="custom-step"
-                    slot="icon"
-                    :class="{ 'current-step': currentStep === index }"
-                    @dblclick="setCurrentStep(index)"
-                  >
-                    <dv-decoration-7 style="width:120px;height:30px;">{{
-                      item.title
-                    }}</dv-decoration-7>
-                  </div>
-                </a-step>
-              </a-steps>
+              <div
+                class="my-custom-step"
+                v-for="(step, index) in markSteps"
+                :key="index"
+              >
+                <div
+                  class="step-title"
+                  :class="{ 'current-step': currentStep === index }"
+                  @dblclick="setCurrentStep(index)"
+                >
+                  <dv-decoration-11 style="width:200px;height:60px">
+                    {{ step.title }}
+                  </dv-decoration-11>
+                </div>
+                <div
+                  class="step-line"
+                  v-if="index !== markSteps.length - 1"
+                ></div>
+                <span
+                  class="line-arrow"
+                  v-if="index !== reasonSteps.length - 1"
+                ></span>
+              </div>
+              <div class="step-deal-num"></div>
             </div>
             <div class="flow-detail">
               <div class="flow-detail-title">
-                {{ steps[currentStep] ? steps[currentStep].title : '' }}
+                {{ markSteps[currentStep] ? markSteps[currentStep].title : '' }}
               </div>
               <div class="flow-detail-content">
-                <a-card title="流程结果" :bordered="false">
-                  <template>
-                    <a-skeleton active />
-                  </template>
-                </a-card>
-                <a-card title="流程结果" :bordered="false">
-                  <template>
-                    <a-skeleton active />
-                  </template>
-                </a-card>
+                <dv-border-box-4
+                  :color="['#124ef5', '#87ecf5']"
+                  style="padding: 40px 20px 0 20px;width: 100%;min-height: 300px"
+                >
+                  <dv-decoration-3
+                    style="width:200px;height:30px;float: left;"
+                  />
+                  <div class="operation-btn-container">
+                    <a-button type="primary" style="margin-right: 10px;"
+                      >编辑</a-button
+                    >
+                    <a-button type="primary" style="margin-right: 10px;"
+                      >入库</a-button
+                    >
+                    <a-button type="primary">删除</a-button>
+                  </div>
+                  <a-table
+                    bordered
+                    :dataSource="markLibList"
+                    :columns="markLibColumns"
+                    rowKey="id"
+                    :pagination="pagination"
+                  >
+                    <template slot="attribute" slot-scope="attribute">
+                      {{ attributeMap[attribute] }}
+                    </template>
+                  </a-table>
+                </dv-border-box-4>
+              </div>
+            </div>
+          </div>
+
+          <!--训练结果-->
+          <div class="result-show" v-show="activeMode === 3">
+            <dv-border-box-13 style="padding: 20px;">
+              <div class="flow-chart">
+                <div
+                  class="gather-data-info"
+                  style="width: 300px;padding-top: 10px;"
+                >
+                  <div
+                    style="height: 30px;line-height: 30px;font-size: 16px;color: #ddd;"
+                  >
+                    任务名称: #2123
+                  </div>
+                  <div
+                    style="height: 30px;line-height: 30px;font-size: 16px;color: #ddd;"
+                  >
+                    任务id : 正常
+                  </div>
+                  <div
+                    style="height: 30px;line-height: 30px;font-size: 16px;color: #ddd;"
+                  >
+                    当前已训练轮数: 20/24
+                  </div>
+                  <div
+                    style="height: 30px;line-height: 30px;font-size: 16px;color: #ddd;"
+                  >
+                    该训练轮数描述信息: xxxxxxxx
+                  </div>
+                  <div
+                    style="height: 30px;line-height: 30px;font-size: 16px;color: #ddd;"
+                  >
+                    预计训练结束时间: xxxxx
+                  </div>
+                </div>
+                <div style="position: absolute;top: 30px;right: 30px;">
+                  <a-button type="default">TensorBoard</a-button>
+                </div>
+              </div>
+            </dv-border-box-13>
+            <dv-border-box-11
+              title="结果统计图"
+              style="padding: 40px;margin-top: 20px;"
+            >
+              <div
+                v-for="(img, index) in 3"
+                :key="index"
+                style="display: inline-block; width: 25%;height: 300px;"
+              >
+                <img src="img" alt="" />
+              </div>
+            </dv-border-box-11>
+          </div>
+
+          <!--推理结果-->
+          <div class="result-show" v-show="activeMode === 4">
+            <div style="height: 40px;line-height: 40px;margin-bottom: 20px;">
+              <span>任务名称： xxxxxx</span>
+              <span>任务id： xxxxxx</span>
+              <span style="float: right;"
+                ><a-button>TensorBoard</a-button></span
+              >
+            </div>
+            <div class="flow-chart">
+              <div
+                class="my-custom-step"
+                v-for="(step, index) in reasonSteps"
+                :key="index"
+              >
+                <div
+                  class="step-title"
+                  :class="{ 'current-step': currentStep === index }"
+                  @dblclick="setCurrentStep(index)"
+                >
+                  <dv-decoration-11 style="width:200px;height:60px">
+                    {{ step.title }}
+                  </dv-decoration-11>
+                </div>
+                <div
+                  class="step-line"
+                  v-if="index !== reasonSteps.length - 1"
+                ></div>
+                <span
+                  class="line-arrow"
+                  v-if="index !== reasonSteps.length - 1"
+                ></span>
+              </div>
+              <div class="step-deal-num"></div>
+            </div>
+            <div class="flow-detail">
+              <div class="flow-detail-title">
+                {{
+                  reasonSteps[currentStep] ? reasonSteps[currentStep].title : ''
+                }}
+              </div>
+              <div class="flow-detail-content">
+                <dv-border-box-4
+                  :color="['#124ef5', '#87ecf5']"
+                  style="padding: 40px 20px 0 20px;width: 100%;min-height: 300px"
+                >
+                  <dv-decoration-3
+                    style="width:200px;height:30px;float: left;"
+                  />
+                  <div class="operation-btn-container">
+                    <a-button type="primary" style="margin-right: 10px;"
+                      >编辑</a-button
+                    >
+                    <a-button type="primary" style="margin-right: 10px;"
+                      >入库</a-button
+                    >
+                    <a-button type="primary">删除</a-button>
+                  </div>
+                  <a-table
+                    bordered
+                    :dataSource="reasonResList"
+                    :columns="reasonResColumns"
+                    rowKey="id"
+                    :pagination="pagination"
+                  >
+                    <template slot="attribute" slot-scope="attribute">
+                      {{ attributeMap[attribute] }}
+                    </template>
+                  </a-table>
+                </dv-border-box-4>
               </div>
             </div>
           </div>
@@ -422,7 +582,7 @@ export default {
       activeMode: 1,
       modelChoose: 2,
       formLayout: 'horizontal',
-      steps: [
+      markSteps: [
         {
           title: '流程1',
           status: 1
@@ -438,6 +598,276 @@ export default {
         {
           title: '流程4',
           status: 0
+        }
+      ],
+      // 标注流程列表
+      markProcessList: [],
+      // 数据标注 库列表
+      markLibList: [
+        {
+          index: 1,
+          label: 'xxxx',
+          flight: 'xxxxxx-xxxx',
+          country: 'EN',
+          lati: '30',
+          long: '120',
+          height: 8000,
+          type: 'xxxx',
+          attribute: 0,
+          confidence: 10,
+          frames: 10
+        },
+        {
+          index: 2,
+          label: 'xxxx',
+          flight: 'xxxxxx-xxxx',
+          country: 'EN',
+          lati: '30',
+          long: '120',
+          height: 8000,
+          type: 'xxxx',
+          attribute: 1,
+          confidence: 10,
+          frames: 10
+        },
+        {
+          index: 3,
+          label: 'xxxx',
+          flight: 'xxxxxx-xxxx',
+          country: 'EN',
+          lati: '30',
+          long: '120',
+          height: 8000,
+          type: 'xxxx',
+          attribute: 2,
+          confidence: 10,
+          frames: 10
+        },
+        {
+          index: 4,
+          label: 'xxxx',
+          flight: 'xxxxxx-xxxx',
+          country: 'EN',
+          lati: '30',
+          long: '120',
+          height: 8000,
+          type: 'xxxx',
+          attribute: 1,
+          confidence: 10,
+          frames: 10
+        },
+        {
+          index: 5,
+          label: 'xxxx',
+          flight: 'xxxxxx-xxxx',
+          country: 'EN',
+          lati: '30',
+          long: '120',
+          height: 8000,
+          type: 'xxxx',
+          attribute: 0,
+          confidence: 10,
+          frames: 10
+        },
+        {
+          index: 6,
+          label: 'xxxx',
+          flight: 'xxxxxx-xxxx',
+          country: 'EN',
+          lati: '30',
+          long: '120',
+          height: 8000,
+          type: 'xxxx',
+          attribute: 0,
+          confidence: 10,
+          frames: 10
+        },
+        {
+          index: 7,
+          label: 'xxxx',
+          flight: 'xxxxxx-xxxx',
+          country: 'EN',
+          lati: '30',
+          long: '120',
+          height: 8000,
+          type: 'xxxx',
+          attribute: 2,
+          confidence: 10,
+          frames: 10
+        }
+      ],
+      markLibColumns: [
+        {
+          title: '序号',
+          dataIndex: 'index',
+          align: 'center'
+        },
+        {
+          title: '标签',
+          dataIndex: 'label',
+          align: 'center'
+        },
+        {
+          title: '航班号',
+          dataIndex: 'flight',
+          align: 'center'
+        },
+        {
+          title: '国籍',
+          dataIndex: 'country',
+          align: 'center'
+        },
+        {
+          title: '经度',
+          dataIndex: 'long',
+          align: 'center'
+        },
+        {
+          title: '纬度',
+          dataIndex: 'lati',
+          align: 'center'
+        },
+        {
+          title: '飞机高度',
+          dataIndex: 'height',
+          align: 'center'
+        },
+        {
+          title: '飞机类型',
+          dataIndex: 'type',
+          align: 'center'
+        },
+        {
+          title: '军民属性',
+          dataIndex: 'attribute',
+          align: 'center',
+          scopedSlots: { customRender: 'attribute' }
+        },
+        {
+          title: '标注置信度',
+          dataIndex: 'confidence',
+          align: 'center'
+        },
+        {
+          title: '所在原始数据帧数',
+          dataIndex: 'frames',
+          align: 'center'
+        }
+      ],
+      pagination: {
+        defaultPageSize: 5,
+        showTotal: () => `共 ${this.markLibList.length} 条数据`,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        pageSizeOptions: ['5', '10', '15', '20']
+      },
+      attributeMap: {
+        0: '未知',
+        1: '军',
+        2: '民'
+      },
+
+      // 训练推理流程列表
+      reasonProcessList: [],
+      reasonSteps: [],
+
+      reasonResList: [
+        {
+          reasonIndex: 1,
+          serialNumber: 2,
+          name: 'xxxx',
+          maxPossibilityTarget: 'xxx',
+          maxConfidence: 'xx'
+        },
+        {
+          reasonIndex: 1,
+          serialNumber: 2,
+          name: 'xxxx',
+          maxPossibilityTarget: 'xxx',
+          maxConfidence: 'xx'
+        },
+        {
+          reasonIndex: 1,
+          serialNumber: 2,
+          name: 'xxxx',
+          maxPossibilityTarget: 'xxx',
+          maxConfidence: 'xx'
+        },
+        {
+          reasonIndex: 1,
+          serialNumber: 2,
+          name: 'xxxx',
+          maxPossibilityTarget: 'xxx',
+          maxConfidence: 'xx'
+        },
+        {
+          reasonIndex: 1,
+          serialNumber: 2,
+          name: 'xxxx',
+          maxPossibilityTarget: 'xxx',
+          maxConfidence: 'xx'
+        },
+        {
+          reasonIndex: 1,
+          serialNumber: 2,
+          name: 'xxxx',
+          maxPossibilityTarget: 'xxx',
+          maxConfidence: 'xx'
+        },
+        {
+          reasonIndex: 1,
+          serialNumber: 2,
+          name: 'xxxx',
+          maxPossibilityTarget: 'xxx',
+          maxConfidence: 'xx'
+        },
+        {
+          reasonIndex: 1,
+          serialNumber: 2,
+          name: 'xxxx',
+          maxPossibilityTarget: 'xxx',
+          maxConfidence: 'xx'
+        },
+        {
+          reasonIndex: 1,
+          serialNumber: 2,
+          name: 'xxxx',
+          maxPossibilityTarget: 'xxx',
+          maxConfidence: 'xx'
+        },
+        {
+          reasonIndex: 1,
+          serialNumber: 2,
+          name: 'xxxx',
+          maxPossibilityTarget: 'xxx',
+          maxConfidence: 'xx'
+        }
+      ],
+      reasonResColumns: [
+        {
+          title: '编号',
+          dataIndex: 'reasonIndex',
+          align: 'center'
+        },
+        {
+          title: '个体名称',
+          dataIndex: 'name',
+          align: 'center'
+        },
+        {
+          title: '序号',
+          dataIndex: 'serialNumber',
+          align: 'center'
+        },
+        {
+          title: '最大可能目标',
+          dataIndex: 'maxPossibilityTarget',
+          align: 'center'
+        },
+        {
+          title: '最大置信度',
+          dataIndex: 'maxConfidence',
+          align: 'center'
         }
       ]
     }
@@ -617,6 +1047,32 @@ export default {
     },
     modeRadioChange() {
       triggerWindowResizeEvent()
+    },
+
+    // 数据标注流程改变
+    markProcessChange(val) {
+      this.markProcessList = val
+      this.markSteps = []
+      this.markProcessList.forEach(process => {
+        let step = {
+          title: process,
+          status: 0
+        }
+        this.markSteps.push(step)
+      })
+    },
+
+    // 推理识别流程改变
+    reasonProcessChange(val) {
+      this.reasonProcessList = val
+      this.reasonSteps = []
+      this.reasonProcessList.forEach(process => {
+        let step = {
+          title: process,
+          status: 0
+        }
+        this.reasonSteps.push(step)
+      })
     }
   },
   computed: {
@@ -729,8 +1185,8 @@ export default {
       margin-bottom: 10px;
     }
     .flow-chart {
-      //background: rgba(127, 127, 127, 0.1);
-      background: rgba(69, 72, 200, 0.2);
+      background: rgba(200, 200, 200, 0.1);
+      // background: rgba(69, 72, 200, 0.2);
       padding: 20px;
       border-radius: 4px;
     }
@@ -762,6 +1218,51 @@ export default {
     -webkit-user-select: none; /*webkit浏览器*/
     -ms-user-select: none; /*IE10*/
     user-select: none;
+  }
+  .my-custom-step {
+    display: inline-block;
+    margin: 6px 0;
+    position: relative;
+    .step-title {
+      display: inline-block;
+      padding: 4px 20px;
+      border-radius: 4px;
+      height: 60px;
+      line-height: 60px;
+      font-size: 24px;
+      color: #ced4ea;
+      cursor: pointer;
+      &.current-step {
+        // background: #315cce;
+        color: #47ffee;
+        -webkit-transform: scale(1.2);
+        transform: scale(1.2);
+      }
+      // 禁止选中文字
+      -moz-user-select: none; /*火狐*/
+      -webkit-user-select: none; /*webkit浏览器*/
+      -ms-user-select: none; /*IE10*/
+      user-select: none;
+    }
+    .step-line {
+      display: inline-block;
+      width: 100px;
+      height: 2px;
+      background: #3dbcda;
+      position: relative;
+      top: -28px;
+      margin: 0 20px 0 0;
+    }
+    .line-arrow {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      top: 20px;
+      right: 6px;
+      position: absolute;
+      background: url('../../assets/arrow.png') center center;
+      background-size: cover;
+    }
   }
   .ant-card {
     background: rgba(0, 0, 0, 0.2);
@@ -796,6 +1297,11 @@ export default {
     height: 2px;
     width: 200px;
     background: #00a0e9;
+  }
+
+  .operation-btn-container {
+    text-align: right;
+    margin-bottom: 10px;
   }
 }
 </style>

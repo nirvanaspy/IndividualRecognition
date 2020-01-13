@@ -1,9 +1,10 @@
 module.exports = {
   presets: [
     '@vue/app',
-    ['env',      //添加 babel-preset-env 配置
+    [
+      '@babel/env', //添加 babel-preset-env 配置
       {
-        'modules': false
+        modules: false
       }
     ]
   ],
@@ -11,8 +12,8 @@ module.exports = {
     [
       'component',
       {
-        'libraryName': 'element-ui',
-        'styleLibraryName': 'theme-chalk'
+        libraryName: 'element-ui',
+        styleLibraryName: 'theme-chalk'
       }
     ]
   ]

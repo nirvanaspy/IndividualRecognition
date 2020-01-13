@@ -787,7 +787,8 @@ body {
         color: #ced4ea !important;
       }
     }
-    .ant-input {
+    .ant-input,
+    .ant-select-selection {
       background-color: #253a7e;
       // background-color: #22406a;
       border-color: #a6aec1;
@@ -877,6 +878,9 @@ body {
     font-size: 16px;
     padding: 10px 16px !important;
   }
+  .ant-table-row-expand-icon {
+    background: transparent;
+  }
 }
 
 .ant-row {
@@ -957,5 +961,55 @@ body {
   &::-webkit-scrollbar {
     width: 0px;
     display: none;
+  }
+}
+
+// 弹框自定义样式
+.cus-modal {
+  background: url('../assets/modal-back4.png') center no-repeat;
+  background-size: 100% 100%;
+  padding: 46px !important;
+  .ant-modal-content {
+    // background: rgba(40, 107, 154, 0.9);
+    // background: rgba(50, 50, 50, 0.9);
+    max-height: 700px;
+    overflow-y: auto;
+    background: linear-gradient(
+      160deg,
+      rgba(17, 73, 154, 0.9) 20%,
+      rgba(14, 65, 108, 0.8) 80%
+    );
+
+    /*隐藏滚动条，当IE下溢出，仍然可以滚动*/
+    -ms-overflow-style: none;
+    /*火狐下隐藏滚动条*/
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+
+    /*Chrome下隐藏滚动条，溢出可以透明滚动*/
+    &::-webkit-scrollbar {
+      width: 0px;
+      display: none;
+    }
+
+    .ant-modal-header {
+      border-bottom: 1px solid #3182c7;
+      background: transparent;
+      .ant-modal-title {
+        text-align: center;
+        color: #fff;
+        font-size: 20px;
+      }
+    }
+    .ant-modal-close-x {
+      color: #fff;
+    }
+    .ant-modal-footer {
+      border-top: 1px solid #3182c7;
+    }
+    label {
+      color: #fff;
+      font-size: 16px;
+    }
   }
 }

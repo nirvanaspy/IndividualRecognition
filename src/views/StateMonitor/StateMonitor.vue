@@ -3,10 +3,18 @@
     <dv-border-box-11 :color="['#87ecf5', '#124ef5']" title="状态监控">
       <div id="state-chart"></div>
     </dv-border-box-11>
+
+    <vue-context ref="nodeContextMenu">
+      <div style="padding: 0">
+        <li>重启软件</li>
+      </div>
+    </vue-context>
   </div>
 </template>
 
 <script>
+import VueContext from 'vue-context'
+import 'vue-context/src/sass/vue-context.scss'
 import {
   uiSymbol,
   serverSymbol,
@@ -17,8 +25,12 @@ import {
   dataSymbol,
   transferSymbol
 } from './symbols'
+
 export default {
   name: 'StateMonitor',
+  components: {
+    VueContext
+  },
   data() {
     return {
       height: '100%',
@@ -40,17 +52,41 @@ export default {
         {
           type: 'fileServer',
           nodeName: '文件服务器1',
-          nodeId: 'fileServer1'
+          nodeId: 'fileServer1',
+          deviceInfo: {
+            id: 'ui',
+            cpu: '34%',
+            gpu: '40%',
+            disk: '46%',
+            ram: '30%',
+            cpuNum: 8
+          }
         },
         {
           type: 'fileServer',
           nodeName: '文件服务器2',
-          nodeId: 'fileServer2'
+          nodeId: 'fileServer2',
+          deviceInfo: {
+            id: 'ui',
+            cpu: '34%',
+            gpu: '40%',
+            disk: '46%',
+            ram: '30%',
+            cpuNum: 8
+          }
         },
         {
           type: 'fileServer',
           nodeName: '文件服务器3',
-          nodeId: 'fileServer3'
+          nodeId: 'fileServer3',
+          deviceInfo: {
+            id: 'ui',
+            cpu: '34%',
+            gpu: '40%',
+            disk: '46%',
+            ram: '30%',
+            cpuNum: 8
+          }
         },
         // 数据服务器
         {
@@ -72,12 +108,28 @@ export default {
         {
           type: 'normalNode',
           nodeName: '常规计算节点1',
-          nodeId: 'normalNode1'
+          nodeId: 'normalNode1',
+          deviceInfo: {
+            id: 'ui',
+            cpu: '34%',
+            gpu: '40%',
+            disk: '46%',
+            ram: '30%',
+            cpuNum: 8
+          }
         },
         {
           type: 'normalNode',
           nodeName: '常规计算节点2',
-          nodeId: 'normalNode2'
+          nodeId: 'normalNode2',
+          deviceInfo: {
+            id: 'ui',
+            cpu: '34%',
+            gpu: '40%',
+            disk: '46%',
+            ram: '30%',
+            cpuNum: 8
+          }
         },
         {
           type: 'normalNode',
@@ -163,8 +215,16 @@ export default {
     }
   },
   mounted() {
+    //去除默认的鼠标事件
+    document.getElementById('state-chart').oncontextmenu = function() {
+      return false
+    }
     this.$nextTick(() => {
       this.initChart()
+      this.chart.on('contextmenu', params => {
+        console.log(params)
+        this.$refs.nodeContextMenu.open(params.event.event, params.data)
+      })
       window.onresize = e => {
         if (e.eventType !== 'routerChange') {
           if (this.chart) {
@@ -205,6 +265,33 @@ export default {
           max: this.yMax,
           show: false,
           type: 'value'
+        },
+        tooltip: {
+          formatter: function(x) {
+            let res
+            if (x.data.deviceInfo) {
+              res =
+                '<div><p>设备id：' +
+                x.data.deviceInfo.id +
+                '</p></div>' +
+                '<div><p>CPU使用率：' +
+                x.data.deviceInfo.cpu +
+                '</p></div>' +
+                '<div><p>GPU使用率：' +
+                x.data.deviceInfo.gpu +
+                '</p></div>' +
+                '<div><p>磁盘使用率：' +
+                x.data.deviceInfo.disk +
+                '</p></div>' +
+                '<div><p>内存使用率：' +
+                x.data.deviceInfo.ram +
+                '</p></div>' +
+                '<div><p>CPU核心数：' +
+                x.data.deviceInfo.cpuNum +
+                '</p></div>'
+            }
+            return res
+          }
         },
         series: [
           {
@@ -337,7 +424,7 @@ export default {
 
       // client节点坐标
       if (clientLength > 1) {
-        serverList.forEach((node, index) => {
+        clientList.forEach((node, index) => {
           node.value = [
             this.xMargin + (index + 1) * this.xDivide,
             this.yMax - this.xMargin
@@ -383,7 +470,6 @@ export default {
       })
 
       this.chartData.nodes = serverList.concat(
-        serverList,
         clientList,
         fileServerList,
         dataServerList,
