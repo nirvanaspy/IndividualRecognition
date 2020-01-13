@@ -91,6 +91,13 @@
                 >
                   <a-form :form="baseSettingForm">
                     <a-form-item
+                      label="任务名称"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input></a-input>
+                    </a-form-item>
+                    <a-form-item
                       label="标注方式"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"

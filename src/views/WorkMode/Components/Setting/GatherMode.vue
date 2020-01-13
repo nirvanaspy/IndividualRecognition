@@ -19,11 +19,13 @@
                     :dataSource="gatherResourceList"
                     :rowSelection="{
                       selectedRowKeys: gatherSelectedRowKeys,
-                      onChange: onGatherSelectChange
+                      onChange: onGatherSelectChange,
+                      onSelect: onRowSelcet
                     }"
                     :columns="gatherColumns"
                     rowKey="id"
                     :pagination="false"
+                    :customRow="gatherRowClick"
                   >
                     <template slot="state" slot-scope="state">
                       <span
@@ -38,19 +40,29 @@
                 </dv-border-box-4>
               </div>
             </a-col>
+
+            <!--采集设备参数设置-->
             <a-col :span="12" style="height: 100%;">
               <div class="resource-form">
+                <span
+                  v-if="currentRow"
+                  style="font-size: 18px;color: #3a81c7;position: absolute;top: 20px;left: 70px;"
+                  >{{ currentRow.name }}</span
+                >
                 <dv-border-box-4
                   :color="['#124ef5', '#87ecf5']"
                   style="padding: 40px;"
                 >
-                  <a-form :form="gatherSettingForm">
+                  <a-form :form="gatherSettingForm" v-if="currentRow">
                     <a-form-item
                       label="采集模式"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
                     >
-                      <a-radio-group default-value="1">
+                      <a-radio-group
+                        default-value="1"
+                        v-model="currentRow.gatherMode"
+                      >
                         <a-radio :value="1"
                           ><span style="color: #ced4ea;">盲采</span></a-radio
                         >
@@ -65,9 +77,8 @@
                       :wrapper-col="{ span: 12 }"
                     >
                       <a-select
-                        defaultValue="interpretation"
                         style="width: 240px"
-                        v-model="dataAccuracy"
+                        v-model="currentRow.dataAccuracy"
                       >
                         <a-select-option value="0">chart</a-select-option>
                         <a-select-option value="1">short</a-select-option>
@@ -81,42 +92,117 @@
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
                     >
-                      <a-input></a-input>
+                      <a-input v-model="currentRow.centerFreq"></a-input>
                     </a-form-item>
                     <a-form-item
                       label="采样率"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
                     >
-                      <a-input></a-input>
+                      <a-input v-model="currentRow.sampleFreq"></a-input>
                     </a-form-item>
                     <a-form-item
                       label="每帧数据点个数"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
                     >
-                      <a-input></a-input>
+                      <a-input v-model="currentRow.freqNum"></a-input>
                     </a-form-item>
                     <a-form-item
                       label="单文件最大存储容量"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
                     >
-                      <a-input-number></a-input-number>
+                      <a-input-number
+                        v-model="currentRow.fileMaxCap"
+                      ></a-input-number>
                     </a-form-item>
                     <a-form-item
                       label="文件存储路径"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
                     >
-                      <a-input></a-input>
+                      <a-input v-model="currentRow.filePath"></a-input>
                     </a-form-item>
                     <a-form-item
                       label="文件名前缀"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
                     >
-                      <a-input></a-input>
+                      <a-input v-model="currentRow.filePrefix"></a-input>
+                    </a-form-item>
+                  </a-form>
+                  <a-form :form="gatherSettingForm" v-else>
+                    <a-form-item
+                      label="采集模式"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-radio-group default-value="1" disabled>
+                        <a-radio :value="1"
+                          ><span style="color: #ced4ea;">盲采</span></a-radio
+                        >
+                        <a-radio :value="2"
+                          ><span style="color: #ced4ea;">触发采</span></a-radio
+                        >
+                      </a-radio-group>
+                    </a-form-item>
+                    <a-form-item
+                      label="数据精度"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-select style="width: 240px" disabled>
+                        <a-select-option value="0">chart</a-select-option>
+                        <a-select-option value="1">short</a-select-option>
+                        <a-select-option value="2">int</a-select-option>
+                        <a-select-option value="3">float</a-select-option>
+                        <a-select-option value="4">double</a-select-option>
+                      </a-select>
+                    </a-form-item>
+                    <a-form-item
+                      label="中心频率"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                      disabled=""
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="采样率"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                      disabled=""
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="每帧数据点个数"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="单文件最大存储容量"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input-number disabled></a-input-number>
+                    </a-form-item>
+                    <a-form-item
+                      label="文件存储路径"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="文件名前缀"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input disabled></a-input>
                     </a-form-item>
                   </a-form>
                 </dv-border-box-4>
@@ -132,6 +218,13 @@
             style="padding: 40px;height: 300px;"
           >
             <a-form :form="baseSettingForm">
+              <a-form-item
+                label="任务名称"
+                :label-col="{ span: 5 }"
+                :wrapper-col="{ span: 12 }"
+              >
+                <a-input></a-input>
+              </a-form-item>
               <a-form-item
                 label="工作模式"
                 :label-col="{ span: 5 }"
@@ -253,12 +346,16 @@ export default {
       startValue: null,
       endValue: null,
       endOpen: false,
-      dataAccuracy: null
+      dataAccuracy: null,
+      currentRow: null
     }
   },
   methods: {
     onGatherSelectChange(selectedRowKeys) {
       this.gatherSelectedRowKeys = selectedRowKeys
+    },
+    onRowSelcet(row) {
+      this.currentRow = row
     },
     disabledStartDate(startValue) {
       const endValue = this.endValue
@@ -281,6 +378,16 @@ export default {
     },
     handleEndOpenChange(open) {
       this.endOpen = open
+    },
+    gatherRowClick(record, index) {
+      return {
+        on: {
+          click: () => {
+            // console.log(record, index)
+            this.currentRow = record
+          }
+        }
+      }
     }
   }
 }

@@ -26,13 +26,6 @@
                 >
                   <a-form :form="taskInfoForm">
                     <a-form-item
-                      label="任务名称"
-                      :label-col="{ span: 5 }"
-                      :wrapper-col="{ span: 12 }"
-                    >
-                      <a-input></a-input>
-                    </a-form-item>
-                    <a-form-item
                       label="推理方式"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
@@ -52,14 +45,14 @@
                     </a-form-item>
                   </a-form>
                   <a-table
-                    v-show="reasoningMode === 1"
                     bordered
-                    :dataSource="reasoningResourceList"
+                    v-show="reasoningMode === 1"
+                    :dataSource="gatherResourceList"
                     :rowSelection="{
-                      selectedRowKeys: reasoningSelectedRowKeys,
-                      onChange: onReasoningSelectChange
+                      selectedRowKeys: gatherSelectedRowKeys,
+                      onChange: onGatherSelectChange
                     }"
-                    :columns="reasoningResourceColumns"
+                    :columns="gatherColumns"
                     rowKey="id"
                     :pagination="false"
                   >
@@ -73,6 +66,24 @@
                       </span>
                     </template>
                   </a-table>
+
+                  <!--资源列表树-->
+                  <div class="tree-columns-title">
+                    <span class="cus-tree-text">资源索引</span>
+                    <span class="cus-tree-text">型号</span>
+                    <span class="cus-tree-text">容量</span>
+                    <span class="cus-tree-text">使用率</span>
+                  </div>
+                  <a-tree :treeData="reasoningResourceList" checkable>
+                    <template slot="title" slot-scope="record">
+                      <span class="cus-tree-text">
+                        {{ record.resourceIndex }}
+                      </span>
+                      <span class="cus-tree-text"> {{ record.type }} </span>
+                      <span class="cus-tree-text"> {{ record.capacity }} </span>
+                      <span class="cus-tree-text"> {{ record.usage }} </span>
+                    </template>
+                  </a-tree>
                 </dv-border-box-4>
               </div>
             </a-col>
@@ -137,6 +148,13 @@
             style="padding: 40px;height: 300px;"
           >
             <a-form :form="baseSettingForm">
+              <a-form-item
+                label="任务名称"
+                :label-col="{ span: 5 }"
+                :wrapper-col="{ span: 12 }"
+              >
+                <a-input></a-input>
+              </a-form-item>
               <a-form-item
                 label="工作模式"
                 :label-col="{ span: 5 }"
@@ -298,9 +316,15 @@ export default {
       advanceSettingForm: this.$form.createForm(this),
       modelSettingForm: this.$form.createForm(this),
       taskInfoForm: this.$form.createForm(this),
+
+      // 在线资源列表
       reasoningResourceList: [
         {
           resourceIndex: '推理设备1',
+          title: '推理设备1',
+          scopedSlots: {
+            title: 'title'
+          },
           id: '1',
           type: 'a',
           capacity: '1TB',
@@ -308,6 +332,10 @@ export default {
           children: [
             {
               resourceIndex: '推理设备1-卡1',
+              title: '推理设备1-卡1',
+              scopedSlots: {
+                title: 'title'
+              },
               id: '6',
               type: 'a',
               capacity: '1TB',
@@ -315,6 +343,10 @@ export default {
             },
             {
               resourceIndex: '推理设备1-卡2',
+              title: '推理设备1-卡2',
+              scopedSlots: {
+                title: 'title'
+              },
               id: '7',
               type: 'a',
               capacity: '1TB',
@@ -324,6 +356,10 @@ export default {
         },
         {
           resourceIndex: '推理设备2',
+          title: '推理设备2',
+          scopedSlots: {
+            title: 'title'
+          },
           id: '2',
           type: 'b',
           capacity: '1TB',
@@ -331,6 +367,10 @@ export default {
         },
         {
           resourceIndex: '推理设备3',
+          title: '推理设备3',
+          scopedSlots: {
+            title: 'title'
+          },
           id: '3',
           type: 'c',
           capacity: '1TB',
@@ -338,6 +378,10 @@ export default {
         },
         {
           resourceIndex: '推理设备4',
+          title: '推理设备4',
+          scopedSlots: {
+            title: 'title'
+          },
           id: '4',
           type: 'd',
           capacity: '1TB',
@@ -345,6 +389,10 @@ export default {
         },
         {
           resourceIndex: '推理设备5',
+          title: '推理设备5',
+          scopedSlots: {
+            title: 'title'
+          },
           id: '5',
           type: 'e',
           capacity: '1TB',
@@ -373,7 +421,40 @@ export default {
           align: 'center'
         }
       ],
-      reasoningSelectedRowKeys: [],
+
+      // 采集设备列表
+      gatherResourceList: [
+        { name: '采集设备1', id: '1', state: 1, type: 'PCIe' },
+        { name: '采集设备2', id: '2', state: 1, type: 'USB' },
+        { name: '采集设备3', id: '3', state: 0, type: '网口' },
+        { name: '采集设备4', id: '4', state: 0, type: 'PCIe' },
+        { name: '采集设备5', id: '5', state: 1, type: 'USB' }
+      ],
+      gatherColumns: [
+        {
+          title: '名称',
+          dataIndex: 'name',
+          align: 'center'
+        },
+        {
+          title: '类型',
+          dataIndex: 'type',
+          align: 'center'
+        },
+        {
+          title: '设备ID',
+          dataIndex: 'id',
+          align: 'center'
+        },
+        {
+          title: '状态',
+          dataIndex: 'state',
+          align: 'center',
+          scopedSlots: { customRender: 'state' }
+        }
+      ],
+
+      gatherSelectedRowKeys: [],
       reasoningPagination: {
         defaultPageSize: 5,
         showTotal: () => `共 ${this.reasoningResourceList.length} 条数据`,
@@ -453,8 +534,8 @@ export default {
     }
   },
   methods: {
-    onReasoningSelectChange(selectedRowKeys) {
-      this.reasoningSelectedRowKeys = selectedRowKeys
+    onGatherSelectChange(selectedRowKeys) {
+      this.gatherSelectedRowKeys = selectedRowKeys
     },
     disabledStartDate(startValue) {
       const endValue = this.endValue
@@ -561,5 +642,18 @@ export default {
   font-size: 18px;
   color: #3dbcda;
   font-weight: 700;
+}
+
+.tree-columns-title {
+  padding-left: 50px;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #3a81c7;
+}
+.cus-tree-text {
+  display: inline-block;
+  min-width: 100px;
+  margin-right: 20px;
 }
 </style>

@@ -26,13 +26,6 @@
                 >
                   <a-form :form="taskInfoForm">
                     <a-form-item
-                      label="任务名称"
-                      :label-col="{ span: 5 }"
-                      :wrapper-col="{ span: 12 }"
-                    >
-                      <a-input></a-input>
-                    </a-form-item>
-                    <a-form-item
                       label="选择数据文件"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
@@ -129,19 +122,11 @@
           >
             <a-form :form="baseSettingForm">
               <a-form-item
-                label="标注方式"
+                label="任务名称"
                 :label-col="{ span: 5 }"
                 :wrapper-col="{ span: 12 }"
               >
-                <a-select
-                  defaultValue="interpretation"
-                  style="width: 240px"
-                  v-model="trainType"
-                >
-                  <a-select-option value="interpretation"
-                    >解译标注</a-select-option
-                  >
-                </a-select>
+                <a-input></a-input>
               </a-form-item>
               <a-form-item
                 label="工作模式"
