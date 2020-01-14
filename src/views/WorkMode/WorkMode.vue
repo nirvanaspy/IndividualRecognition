@@ -105,18 +105,19 @@
               <div class="flow-chart">
                 <div class="gather-device">
                   <img src="../../assets/node.png" alt="" />
+                  <div class="gather-description">采集设备</div>
                 </div>
                 <div class="link-line"></div>
                 <div class="gather-terminal">
                   <img src="../../assets/server.png" alt="" />
+                  <div class="gather-description">采集终端</div>
                 </div>
-                <div
-                  class="gather-data-info"
-                  style="width: 300px;float: right;padding-top: 10px;"
-                >
-                  <div>设备ID: #2123</div>
-                  <div>设备状态: 正常</div>
-                  <div>采集速率: 500M/S</div>
+                <div class="gather-data-info">
+                  <div class="info-text">任务名称: 常规采集任务</div>
+                  <div class="info-text">任务ID: 2020011112</div>
+                  <div class="info-text">设备ID: #2123</div>
+                  <div class="info-text">设备状态: 正常</div>
+                  <div class="info-text">采集速率: 500M/S</div>
                 </div>
               </div>
             </dv-border-box-13>
@@ -154,6 +155,10 @@
 
           <!--标注结果-->
           <div class="result-show" v-show="activeMode === 2">
+            <div class="task-info-box">
+              <span class="tesk-name">任务名称： xxxxxx</span>
+              <span class="task-id">任务id： xxxxxx</span>
+            </div>
             <div class="flow-chart">
               <div
                 class="my-custom-step"
@@ -221,38 +226,28 @@
           <div class="result-show" v-show="activeMode === 3">
             <dv-border-box-13 style="padding: 20px;">
               <div class="flow-chart">
-                <div
-                  class="gather-data-info"
-                  style="width: 300px;padding-top: 10px;"
-                >
-                  <div
-                    style="height: 30px;line-height: 30px;font-size: 16px;color: #ddd;"
-                  >
+                <dv-decoration-3
+                  style="width:300px;height:30px;position: absolute;top: 26px;left: 48px;"
+                />
+                <div class="train-data-info">
+                  <div class="task-title">
                     任务名称: #2123
                   </div>
-                  <div
-                    style="height: 30px;line-height: 30px;font-size: 16px;color: #ddd;"
-                  >
+                  <div class="info-text">
                     任务id : 正常
                   </div>
-                  <div
-                    style="height: 30px;line-height: 30px;font-size: 16px;color: #ddd;"
-                  >
+                  <div class="info-text">
                     当前已训练轮数: 20/24
                   </div>
-                  <div
-                    style="height: 30px;line-height: 30px;font-size: 16px;color: #ddd;"
-                  >
+                  <div class="info-text">
                     该训练轮数描述信息: xxxxxxxx
                   </div>
-                  <div
-                    style="height: 30px;line-height: 30px;font-size: 16px;color: #ddd;"
-                  >
+                  <div class="info-text">
                     预计训练结束时间: xxxxx
                   </div>
                 </div>
                 <div style="position: absolute;top: 30px;right: 30px;">
-                  <a-button type="default">TensorBoard</a-button>
+                  <a-button type="primary">TensorBoard</a-button>
                 </div>
               </div>
             </dv-border-box-13>
@@ -260,23 +255,52 @@
               title="结果统计图"
               style="padding: 40px;margin-top: 20px;"
             >
-              <div
-                v-for="(img, index) in 3"
-                :key="index"
-                style="display: inline-block; width: 25%;height: 300px;"
-              >
-                <img src="img" alt="" />
-              </div>
+              <a-row :gutter="30">
+                <a-col :span="6">
+                  <div style="height: 400px;">
+                    <img
+                      src="../../assets/chart1.png"
+                      alt=""
+                      style="width: 100%;height: 100%;"
+                    />
+                  </div>
+                </a-col>
+                <a-col :span="6">
+                  <div
+                    class="chart-box"
+                    id="line#4"
+                    style="width: 100%;min-height: 400px;"
+                  ></div>
+                </a-col>
+                <a-col :span="6">
+                  <div
+                    class="chart-box"
+                    id="line#5"
+                    style="width: 100%;min-height: 400px;"
+                  ></div>
+                </a-col>
+                <a-col :span="6">
+                  <div style="height: 400px;">
+                    <img
+                      src="../../assets/chart2.png"
+                      alt=""
+                      style="width: 100%;height: 100%;"
+                    />
+                  </div>
+                </a-col>
+              </a-row>
             </dv-border-box-11>
           </div>
 
           <!--推理结果-->
           <div class="result-show" v-show="activeMode === 4">
+            <div class="task-info-box">
+              <span class="tesk-name">任务名称： xxxxxx</span>
+              <span class="task-id">任务id： xxxxxx</span>
+            </div>
             <div style="height: 40px;line-height: 40px;margin-bottom: 20px;">
-              <span>任务名称： xxxxxx</span>
-              <span>任务id： xxxxxx</span>
               <span style="float: right;"
-                ><a-button>TensorBoard</a-button></span
+                ><a-button type="primary">TensorBoard</a-button></span
               >
             </div>
             <div class="flow-chart">
@@ -819,16 +843,22 @@ export default {
       let option_1 = this.initGatherChartOption('时间_采集速率折线图')
       let option_2 = this.initGatherChartOption('时间_信号幅度折线图')
       let option_3 = this.initGatherChartOption('时间_信号频率折线图')
+      let option_4 = this.initGatherChartOption('')
+      let option_5 = this.initGatherChartOption('')
       let chart_1 = this.$echarts.init(document.getElementById('line#1'))
       let chart_2 = this.$echarts.init(document.getElementById('line#2'))
       let chart_3 = this.$echarts.init(document.getElementById('line#3'))
+      let chart_4 = this.$echarts.init(document.getElementById('line#4'))
+      let chart_5 = this.$echarts.init(document.getElementById('line#5'))
       chart_1.setOption(option_1)
       chart_2.setOption(option_2)
       chart_3.setOption(option_3)
+      chart_4.setOption(option_4)
+      chart_5.setOption(option_5)
     },
     onTabChange(tab) {
       if (tab == 2) {
-        if (this.activeMode === 1) {
+        if (this.activeMode === 1 || this.activeMode === 3) {
           this.$nextTick(() => {
             this.initGatherChartLine()
           })
@@ -966,6 +996,20 @@ export default {
     text-align: right;
   }
 
+  .result-show {
+    position: relative;
+    .task-info-box {
+      position: absolute;
+      left: 4px;
+      top: -40px;
+      color: #4ac7d9;
+      font-size: 18px;
+      font-weight: 500;
+      .task-title {
+        margin-right: 10px;
+      }
+    }
+  }
   .work-mode-result {
     height: 100%;
     .flow-btn-container {
@@ -977,7 +1021,7 @@ export default {
     .flow-chart {
       background: rgba(200, 200, 200, 0.1);
       // background: rgba(69, 72, 200, 0.2);
-      padding: 20px;
+      padding: 40px;
       border-radius: 4px;
     }
     .flow-detail {
@@ -989,7 +1033,10 @@ export default {
       .flow-detail-title {
         height: 40px;
         line-height: 40px;
-        font-size: 20px;
+        padding-left: 10px;
+        font-size: 24px;
+        color: #4ac7d9;
+        font-weight: 500;
       }
     }
   }
@@ -1073,14 +1120,22 @@ export default {
   }
   .gather-device,
   .gather-terminal {
+    position: relative;
     display: inline-block;
     width: 80px;
     height: 80px;
+    margin: 0 20px;
     img {
       width: 100%;
       height: 100%;
     }
-    margin: 0 20px;
+    .gather-description {
+      position: absolute;
+      bottom: -26px;
+      left: 6px;
+      width: 100%;
+      text-align: center;
+    }
   }
   .link-line {
     display: inline-block;
@@ -1092,6 +1147,36 @@ export default {
   .operation-btn-container {
     text-align: right;
     margin-bottom: 10px;
+  }
+
+  .gather-data-info {
+    width: 300px;
+    position: absolute;
+    right: 0;
+    top: 30px;
+    .info-text {
+      font-size: 18px;
+      color: #4ac7d9;
+    }
+  }
+  .train-data-info {
+    width: 300px;
+    padding-top: 10px;
+    .task-title,
+    .info-text {
+      color: #4ac7d9;
+    }
+    .task-title {
+      height: 30px;
+      line-height: 30px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .info-text {
+      height: 24px;
+      line-height: 24px;
+      font-size: 16px;
+    }
   }
 }
 </style>
