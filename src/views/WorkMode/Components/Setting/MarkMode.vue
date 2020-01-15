@@ -16,16 +16,24 @@
         </div>
 
         <!--资源列表及配置信息-->
-        <div class="resource-container mark-container">
+        <div
+          class="resource-container mark-container"
+          :class="{ 'full-height': markMode !== 1 }"
+        >
           <a-row :gutter="40">
-            <a-col :span="12" style="height: 100%;">
+            <!--采集设备资源列表-->
+            <a-col :span="12" style="height: 100%;margin-bottom: 20px;">
               <div class="resource-form">
                 <dv-border-box-4
                   :color="['#124ef5', '#87ecf5']"
-                  style="padding: 40px;"
+                  style="padding: 30px;"
                 >
                   <div class="mark-mode-box" style="margin-bottom: 20px;">
-                    <a-radio-group default-value="1" v-model="markMode">
+                    <a-radio-group
+                      default-value="1"
+                      v-model="markMode"
+                      @change="modeChange"
+                    >
                       <a-radio :value="1"
                         ><span style="color: #ced4ea;">在线标注</span></a-radio
                       >
@@ -34,29 +42,35 @@
                       >
                     </a-radio-group>
                   </div>
-                  <a-table
-                    v-show="markMode === 1"
-                    bordered
-                    :dataSource="markResourceList"
-                    :rowSelection="{
-                      selectedRowKeys: markResourceSelectedRowKeys,
-                      onChange: onMarkResourceSelectChange
-                    }"
-                    :columns="markResourceColumns"
-                    rowKey="id"
-                    :pagination="false"
-                  >
-                    <template slot="state" slot-scope="state">
-                      <span
-                        :style="{
-                          color: state === 0 ? 'red' : 'green'
-                        }"
-                      >
-                        {{ state === 0 ? '忙碌' : '空闲' }}
-                      </span>
-                    </template>
-                  </a-table>
-                  <a-table
+
+                  <!--采集设备资源列表-->
+                  <div v-show="markMode === 1">
+                    <div class="user-operation">选择采集设备</div>
+                    <a-table
+                      bordered
+                      :dataSource="markResourceList"
+                      :rowSelection="{
+                        selectedRowKeys: markResourceSelectedRowKeys,
+                        onChange: onMarkResourceSelectChange,
+                        onSelect: onRowSelect
+                      }"
+                      :columns="markResourceColumns"
+                      rowKey="id"
+                      :pagination="false"
+                      :customRow="markRowClick"
+                    >
+                      <template slot="state" slot-scope="state">
+                        <span
+                          :style="{
+                            color: state === 0 ? 'red' : 'green'
+                          }"
+                        >
+                          {{ state === 0 ? '忙碌' : '空闲' }}
+                        </span>
+                      </template>
+                    </a-table>
+                  </div>
+                  <!--<a-table
                     v-show="markMode === 2"
                     bordered
                     :dataSource="markFileList"
@@ -78,12 +92,251 @@
                       </span>
                       {{ name }}
                     </template>
-                  </a-table>
+                  </a-table>-->
+
+                  <!--文件树-->
+                  <div>
+                    <div class="user-operation">选择文件</div>
+                    <div class="tree-columns-title">
+                      <span class="cus-tree-text">名称</span>
+                      <span class="cus-tree-text">路径</span>
+                    </div>
+                    <a-tree :treeData="markFileList" defaultExpandAll checkable>
+                      <template slot="title" slot-scope="record">
+                        <span class="cus-tree-text">
+                          <span>
+                            <svg-icon
+                              icon-class="folder"
+                              v-if="record.isFile === false"
+                            ></svg-icon>
+                            <svg-icon icon-class="file" v-else></svg-icon>
+                          </span>
+                          {{ record.name }}
+                        </span>
+                        <span class="cus-tree-text"> {{ record.path }} </span>
+                      </template>
+                    </a-tree>
+                  </div>
                 </dv-border-box-4>
               </div>
             </a-col>
-            <a-col :span="12" style="height: 100%;">
+
+            <!--采集设备参数配置-->
+            <a-col
+              v-if="markMode === 1"
+              :span="12"
+              style="height: 100%;margin-bottom: 20px"
+            >
               <!--基本设置form-->
+              <div class="resource-form">
+                <span
+                  v-if="currentRow && markMode === 1"
+                  style="font-size: 18px;color: #3a81c7;position: absolute;top: 20px;left: 70px;"
+                  >{{ currentRow.name }}</span
+                >
+                <dv-border-box-4
+                  :color="['#124ef5', '#87ecf5']"
+                  style="padding: 40px;"
+                >
+                  <a-form v-if="currentRow && markMode === 1">
+                    <a-form-item
+                      label="采集模式"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-radio-group
+                        default-value="1"
+                        v-model="currentRow.gatherMode"
+                      >
+                        <a-radio :value="1"
+                          ><span style="color: #ced4ea;">盲采</span></a-radio
+                        >
+                        <a-radio :value="2"
+                          ><span style="color: #ced4ea;">触发采</span></a-radio
+                        >
+                      </a-radio-group>
+                    </a-form-item>
+                    <a-form-item
+                      label="数据精度"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-select
+                        style="width: 240px"
+                        v-model="currentRow.dataAccuracy"
+                      >
+                        <a-select-option value="0">chart</a-select-option>
+                        <a-select-option value="1">short</a-select-option>
+                        <a-select-option value="2">int</a-select-option>
+                        <a-select-option value="3">float</a-select-option>
+                        <a-select-option value="4">double</a-select-option>
+                      </a-select>
+                    </a-form-item>
+                    <a-form-item
+                      label="中心频率"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input v-model="currentRow.centerFreq"></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="采样率"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input v-model="currentRow.sampleFreq"></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="帧头"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input v-model="currentRow.frameHeader"></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="长度"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input v-model="currentRow.frameLength"></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="帧尾"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input v-model="currentRow.frameTail"></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="每帧数据点个数"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input v-model="currentRow.freqNum"></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="单文件最大存储容量"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input-number
+                        v-model="currentRow.fileMaxCap"
+                      ></a-input-number>
+                    </a-form-item>
+                    <a-form-item
+                      label="文件存储路径"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input v-model="currentRow.filePath"></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="文件名前缀"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input v-model="currentRow.filePrefix"></a-input>
+                    </a-form-item>
+                  </a-form>
+                  <a-form v-else>
+                    <a-form-item
+                      label="采集模式"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-radio-group default-value="1" disabled>
+                        <a-radio :value="1"
+                          ><span style="color: #ced4ea;">盲采</span></a-radio
+                        >
+                        <a-radio :value="2"
+                          ><span style="color: #ced4ea;">触发采</span></a-radio
+                        >
+                      </a-radio-group>
+                    </a-form-item>
+                    <a-form-item
+                      label="数据精度"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-select style="width: 240px" disabled>
+                        <a-select-option value="0">chart</a-select-option>
+                        <a-select-option value="1">short</a-select-option>
+                        <a-select-option value="2">int</a-select-option>
+                        <a-select-option value="3">float</a-select-option>
+                        <a-select-option value="4">double</a-select-option>
+                      </a-select>
+                    </a-form-item>
+                    <a-form-item
+                      label="中心频率"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                      disabled=""
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="采样率"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                      disabled=""
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="帧头"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="长度"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="帧尾"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="每帧数据点个数"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="单文件最大存储容量"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input-number disabled></a-input-number>
+                    </a-form-item>
+                    <a-form-item
+                      label="文件存储路径"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="文件名前缀"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                  </a-form>
+                </dv-border-box-4>
+              </div>
+            </a-col>
+
+            <a-col :span="markMode === 1 ? 24 : 12" style="height: 100%;">
               <div class="resource-form">
                 <dv-border-box-4
                   :color="['#124ef5', '#87ecf5']"
@@ -181,6 +434,98 @@
             </a-col>
           </a-row>
         </div>
+
+        <!--基本配置表单-->
+        <!--<div class="setting-form">
+          <dv-border-box-4
+            :color="['#124ef5', '#87ecf5']"
+            style="padding: 40px;"
+          >
+            <a-form :form="baseSettingForm">
+              <a-form-item
+                label="任务名称"
+                :label-col="{ span: 5 }"
+                :wrapper-col="{ span: 12 }"
+              >
+                <a-input></a-input>
+              </a-form-item>
+              <a-form-item
+                label="标注方式"
+                :label-col="{ span: 5 }"
+                :wrapper-col="{ span: 12 }"
+              >
+                <a-select
+                  defaultValue="interpretation"
+                  style="width: 240px"
+                  v-model="markType"
+                >
+                  <a-select-option value="interpretation"
+                    >解译标注</a-select-option
+                  >
+                </a-select>
+              </a-form-item>
+              <a-form-item
+                label="工作模式"
+                :label-col="{ span: 5 }"
+                :wrapper-col="{ span: 12 }"
+              >
+                <a-radio-group default-value="2" v-model="modelChoose">
+                  <a-radio :value="1"
+                    ><span style="color: #ced4ea;">手动模式</span></a-radio
+                  >
+                  <a-radio :value="2"
+                    ><span style="color: #ced4ea;">自动模式</span></a-radio
+                  >
+                </a-radio-group>
+              </a-form-item>
+              <a-form-item
+                v-show="modelChoose === 2"
+                label="开始时间"
+                :label-col="{ span: 5 }"
+                :wrapper-col="{ span: 12 }"
+              >
+                <a-date-picker
+                  :disabledDate="disabledStartDate"
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  v-model="startValue"
+                  placeholder="开始时间"
+                  @openChange="handleStartOpenChange"
+                />
+              </a-form-item>
+              <a-form-item
+                v-show="modelChoose === 2"
+                label="结束时间"
+                :label-col="{ span: 5 }"
+                :wrapper-col="{ span: 12 }"
+              >
+                <a-date-picker
+                  :disabledDate="disabledStartDate"
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  v-model="endValue"
+                  placeholder="结束时间"
+                  @openChange="handleStartOpenChange"
+                />
+              </a-form-item>
+              <a-form-item
+                label="结束后操作"
+                v-show="modelChoose === 2"
+                :label-col="{ span: 5 }"
+                :wrapper-col="{ span: 12 }"
+              >
+                <a-radio-group default-value="1">
+                  <a-radio :value="1"
+                    ><span style="color: #ced4ea;">关机</span></a-radio
+                  >
+                  <a-radio :value="2"
+                    ><span style="color: #ced4ea;">待机</span></a-radio
+                  >
+                </a-radio-group>
+              </a-form-item>
+            </a-form>
+          </dv-border-box-4>
+        </div>-->
       </div>
       <div class="setting-button-container">
         <a-button type="primary" style="margin: 12px 20px">启动</a-button>
@@ -244,13 +589,15 @@
         </a-radio-group>
       </div>
       <div class="reset-box">
-        <a-button type="default">恢复出厂设置</a-button>
+        <a-button type="default">重置</a-button>
       </div>
     </a-modal>
   </div>
 </template>
 
 <script>
+import { triggerWindowResizeEvent } from '@/utils/util'
+
 export default {
   name: 'MarkMode',
   data() {
@@ -272,82 +619,161 @@ export default {
           name: 'Dir1',
           path: 'D:/data/Dir1',
           isFile: false,
+          scopedSlots: {
+            title: 'title'
+          },
           children: [
-            { name: 'file1', path: 'D:/data/Dir1/file1', isFile: true },
-            { name: 'file2', path: 'D:/data/Dir1/file2', isFile: true },
-            { name: 'file3', path: 'D:/data/Dir1/file3', isFile: true },
-            { name: 'file4', path: 'D:/data/Dir1/file4', isFile: true }
+            {
+              name: 'file1',
+              path: 'D:/data/Dir1/file1',
+              isFile: true,
+              scopedSlots: {
+                title: 'title'
+              }
+            },
+            {
+              name: 'file2',
+              path: 'D:/data/Dir1/file2',
+              isFile: true,
+              scopedSlots: {
+                title: 'title'
+              }
+            },
+            {
+              name: 'file3',
+              path: 'D:/data/Dir1/file3',
+              isFile: true,
+              scopedSlots: {
+                title: 'title'
+              }
+            },
+            {
+              name: 'file4',
+              path: 'D:/data/Dir1/file4',
+              isFile: true,
+              scopedSlots: {
+                title: 'title'
+              }
+            }
           ]
         },
         {
           name: 'Dir2',
           path: 'D:/data/Dir2',
           isFile: false,
+          scopedSlots: {
+            title: 'title'
+          },
           children: [
             {
               name: 'file1',
               path: 'D:/data/Dir2/file1',
               isFile: false,
+              scopedSlots: {
+                title: 'title'
+              },
               children: [
                 {
                   name: 'file1-1-1',
                   path: 'D:/data/Dir2/file2/file1-1-1',
+                  scopedSlots: {
+                    title: 'title'
+                  },
                   isFile: true
                 }
               ]
             },
-            { name: 'file2', path: 'D:/data/Dir2/file2', isFile: true },
-            { name: 'file3', path: 'D:/data/Dir2/file3', isFile: true },
-            { name: 'file4', path: 'D:/data/Dir2/file4', isFile: true }
+            {
+              name: 'file2',
+              path: 'D:/data/Dir2/file2',
+              isFile: true,
+              scopedSlots: {
+                title: 'title'
+              }
+            },
+            {
+              name: 'file3',
+              path: 'D:/data/Dir2/file3',
+              scopedSlots: {
+                title: 'title'
+              },
+              isFile: true
+            },
+            {
+              name: 'file4',
+              path: 'D:/data/Dir2/file4',
+              scopedSlots: {
+                title: 'title'
+              },
+              isFile: true
+            }
           ]
         },
         {
           name: 'Dir3',
           path: 'D:/data/Dir3',
           isFile: false,
+          scopedSlots: {
+            title: 'title'
+          },
           children: [
-            { name: 'file1', path: 'D:/data/Dir3/file1', isFile: true },
-            { name: 'file2', path: 'D:/data/Dir3/file2', isFile: true },
-            { name: 'file3', path: 'D:/data/Dir3/file3', isFile: true },
-            { name: 'file4', path: 'D:/data/Dir3/file4', isFile: true }
-          ]
-        },
-        {
-          name: 'Dir',
-          path: 'D:/data/Dir4',
-          isFile: false,
-          children: [
-            { name: 'file1', path: 'D:/data/Dir4/file1', isFile: true },
-            { name: 'file2', path: 'D:/data/Dir4/file2', isFile: true },
-            { name: 'file3', path: 'D:/data/Dir4/file3', isFile: true },
-            { name: 'file4', path: 'D:/data/Dir4/file4', isFile: true }
-          ]
-        },
-        {
-          name: 'Dir5',
-          path: 'D:/data/Dir5',
-          isFile: false,
-          children: [
-            { name: 'file1', path: 'D:/data/Dir5/file1', isFile: true },
-            { name: 'file2', path: 'D:/data/Dir5/file2', isFile: true },
-            { name: 'file3', path: 'D:/data/Dir5/file3', isFile: true },
-            { name: 'file4', path: 'D:/data/Dir5/file4', isFile: true }
+            {
+              name: 'file1',
+              path: 'D:/data/Dir3/file1',
+              scopedSlots: {
+                title: 'title'
+              },
+              isFile: true
+            },
+            {
+              name: 'file2',
+              path: 'D:/data/Dir3/file2',
+              scopedSlots: {
+                title: 'title'
+              },
+              isFile: true
+            },
+            {
+              name: 'file3',
+              path: 'D:/data/Dir3/file3',
+              scopedSlots: {
+                title: 'title'
+              },
+              isFile: true
+            },
+            {
+              name: 'file4',
+              path: 'D:/data/Dir3/file4',
+              scopedSlots: {
+                title: 'title'
+              },
+              isFile: true
+            }
           ]
         },
         {
           name: 'file1-1',
           path: 'D:/data/Dir1/file1-1',
+          scopedSlots: {
+            title: 'title'
+          },
           isFile: true
         },
         {
           name: 'file1-2',
           path: 'D:/data/Dir1/file1-2',
+          scopedSlots: {
+            title: 'title'
+          },
           isFile: true
         },
         {
           name: 'file1-3',
           path: 'D:/data/Dir1/file1-3',
-          isFile: true
+          isFile: true,
+          scopedSlots: {
+            title: 'title'
+          }
         }
       ],
       markResourceColumns: [
@@ -421,16 +847,34 @@ export default {
       ],
       userSelectOption: null,
       selectedSysProcess: [],
-      selectedUserProcess: []
+      selectedUserProcess: [],
+      currentRow: null
     }
   },
   methods: {
     onMarkResourceSelectChange(selectedRowKeys) {
       this.markResourceSelectedRowKeys = selectedRowKeys
     },
+
     onMarkFileSelectChange(selectedRowKeys) {
       this.markFileSelectedRowKeys = selectedRowKeys
     },
+
+    onRowSelect(row) {
+      this.currentRow = row
+    },
+
+    markRowClick(record, index) {
+      return {
+        on: {
+          click: () => {
+            // console.log(record, index)
+            this.currentRow = record
+          }
+        }
+      }
+    },
+
     disabledStartDate(startValue) {
       const endValue = this.endValue
       if (!startValue || !endValue) {
@@ -438,6 +882,7 @@ export default {
       }
       return startValue.valueOf() > endValue.valueOf()
     },
+
     disabledEndDate(endValue) {
       const startValue = this.startValue
       if (!endValue || !startValue) {
@@ -445,20 +890,28 @@ export default {
       }
       return startValue.valueOf() >= endValue.valueOf()
     },
+
     handleStartOpenChange(open) {
       if (!open) {
         this.endOpen = true
       }
     },
+
     handleEndOpenChange(open) {
       this.endOpen = open
     },
+
     showAdvanceSettingForm() {
       this.advanceFormVisible = true
     },
+
     onSysProcessOptionChange(checkedValues) {
       this.selectedSysProcess = checkedValues
       this.$emit('processChange', this.selectedSysProcess)
+    },
+
+    modeChange() {
+      triggerWindowResizeEvent('routerChange')
     }
   }
 }
@@ -491,6 +944,6 @@ export default {
   margin-top: 0;
 }
 .resource-container.mark-container {
-  height: calc(100% - 80px);
+  // height: calc(100% - 80px);
 }
 </style>

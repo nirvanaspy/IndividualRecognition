@@ -5,22 +5,25 @@
         <div class="setting-title">
           <span>基本设置</span>
         </div>
+
         <!--资源列表及采集设备配置信息-->
         <div class="resource-container">
           <a-row :gutter="40">
+            <!--采集设备列表-->
             <a-col :span="12" style="height: 100%;">
               <div class="resource-list">
                 <dv-border-box-4
                   :color="['#124ef5', '#87ecf5']"
                   style="padding: 40px;"
                 >
+                  <div class="user-operation">选择采集设备</div>
                   <a-table
                     bordered
                     :dataSource="gatherResourceList"
                     :rowSelection="{
                       selectedRowKeys: gatherSelectedRowKeys,
                       onChange: onGatherSelectChange,
-                      onSelect: onRowSelcet
+                      onSelect: onRowSelect
                     }"
                     :columns="gatherColumns"
                     rowKey="id"
@@ -102,6 +105,27 @@
                       <a-input v-model="currentRow.sampleFreq"></a-input>
                     </a-form-item>
                     <a-form-item
+                      label="帧头"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input v-model="currentRow.frameHeader"></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="长度"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input v-model="currentRow.frameLength"></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="帧尾"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input v-model="currentRow.frameTail"></a-input>
+                    </a-form-item>
+                    <a-form-item
                       label="每帧数据点个数"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
@@ -164,7 +188,6 @@
                       label="中心频率"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
-                      disabled=""
                     >
                       <a-input disabled></a-input>
                     </a-form-item>
@@ -172,7 +195,27 @@
                       label="采样率"
                       :label-col="{ span: 5 }"
                       :wrapper-col="{ span: 12 }"
-                      disabled=""
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="帧头"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="长度"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input disabled></a-input>
+                    </a-form-item>
+                    <a-form-item
+                      label="帧尾"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
                     >
                       <a-input disabled></a-input>
                     </a-form-item>
@@ -215,7 +258,7 @@
         <div class="setting-form">
           <dv-border-box-4
             :color="['#124ef5', '#87ecf5']"
-            style="padding: 40px;height: 300px;"
+            style="padding: 40px;"
           >
             <a-form :form="baseSettingForm">
               <a-form-item
@@ -288,6 +331,7 @@
           </dv-border-box-4>
         </div>
       </div>
+
       <div class="setting-button-container">
         <a-button type="primary" style="margin: 12px 20px">启动</a-button>
       </div>
@@ -354,7 +398,7 @@ export default {
     onGatherSelectChange(selectedRowKeys) {
       this.gatherSelectedRowKeys = selectedRowKeys
     },
-    onRowSelcet(row) {
+    onRowSelect(row) {
       this.currentRow = row
     },
     disabledStartDate(startValue) {

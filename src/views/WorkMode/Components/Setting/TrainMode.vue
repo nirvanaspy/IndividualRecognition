@@ -24,7 +24,7 @@
                   :color="['#124ef5', '#87ecf5']"
                   style="padding: 30px;"
                 >
-                  <a-form :form="taskInfoForm">
+                  <!--<a-form :form="taskInfoForm">
                     <a-form-item
                       label="选择数据文件"
                       :label-col="{ span: 5 }"
@@ -39,8 +39,8 @@
                         >
                       </a-select>
                     </a-form-item>
-                  </a-form>
-                  <a-table
+                  </a-form>-->
+                  <!--<a-table
                     v-show="trainMode === 1"
                     bordered
                     :dataSource="trainResourceList"
@@ -61,7 +61,53 @@
                         {{ state === 0 ? '忙碌' : '空闲' }}
                       </span>
                     </template>
-                  </a-table>
+                  </a-table>-->
+
+                  <!--文件树-->
+                  <div>
+                    <div class="user-operation">选择文件</div>
+                    <div class="tree-columns-title">
+                      <span class="cus-tree-text">名称</span>
+                      <span class="cus-tree-text">路径</span>
+                    </div>
+                    <a-tree :treeData="trainFileList" checkable>
+                      <template slot="title" slot-scope="record">
+                        <span class="cus-tree-text">
+                          <span>
+                            <svg-icon
+                              icon-class="folder"
+                              v-if="record.isFile === false"
+                            ></svg-icon>
+                            <svg-icon icon-class="file" v-else></svg-icon>
+                          </span>
+                          {{ record.name }}
+                        </span>
+                        <span class="cus-tree-text"> {{ record.path }} </span>
+                      </template>
+                    </a-tree>
+                  </div>
+                  <!--资源列表树-->
+                  <div class="user-operation">选择计算资源</div>
+                  <div class="tree-columns-title">
+                    <span class="cus-tree-text">资源索引</span>
+                    <span class="cus-tree-text">型号</span>
+                    <span class="cus-tree-text">容量</span>
+                    <span class="cus-tree-text">使用率</span>
+                  </div>
+                  <a-tree
+                    :treeData="trainResourceList"
+                    defaultExpandAll
+                    checkable
+                  >
+                    <template slot="title" slot-scope="record">
+                      <span class="cus-tree-text">
+                        {{ record.resourceIndex }}
+                      </span>
+                      <span class="cus-tree-text"> {{ record.type }} </span>
+                      <span class="cus-tree-text"> {{ record.capacity }} </span>
+                      <span class="cus-tree-text"> {{ record.usage }} </span>
+                    </template>
+                  </a-tree>
                 </dv-border-box-4>
               </div>
             </a-col>
@@ -118,7 +164,7 @@
         <div class="setting-form">
           <dv-border-box-4
             :color="['#124ef5', '#87ecf5']"
-            style="padding: 40px;height: 300px;"
+            style="padding: 40px;"
           >
             <a-form :form="baseSettingForm">
               <a-form-item
@@ -191,6 +237,7 @@
           </dv-border-box-4>
         </div>
       </div>
+
       <div class="setting-button-container">
         <a-button type="primary" style="margin: 12px 20px">启动</a-button>
       </div>
@@ -312,48 +359,55 @@
             </a-row>
           </div>
 
-          <!--数据集划分比例-->
-          <div class="data-rate-box">
-            <div class="rate-box-title">数据集划分比例</div>
-            <div class="rate-box-input">
-              <span class="rate-input">
-                <a-input placeholder="训练集"></a-input>
-              </span>
-              <span class="rate-input">
-                <a-input placeholder="测试集"></a-input>
-              </span>
-              <span class="rate-input">
-                <a-input placeholder="验证集"></a-input>
-              </span>
-            </div>
-          </div>
-
-          <!--流程选择-->
-          <div class="feature-box">
-            <div class="feature-box-title">变换与特征</div>
-            <a-checkbox-group
-              @change="onFeatureOptionChange"
-              style="width: 100%;"
-            >
-              <div class="feature-option-box">
-                <div class="feature-option-title"></div>
-                <div
-                  class="option-box"
-                  v-for="(option, index) in featureOptions"
-                  :key="`process${index}`"
-                >
-                  <a-checkbox :value="option.value">{{
-                    option.label
-                  }}</a-checkbox>
-                  <span
-                    style="position:absolute;color: #000;"
-                    v-if="option.setting"
-                  >
-                    <a-button icon="ellipsis" size="small"></a-button>
-                  </span>
+          <div>
+            <a-row :gutter="30">
+              <a-col :span="12">
+                <!--数据集划分比例-->
+                <div class="data-rate-box">
+                  <div class="rate-box-title">数据集划分比例</div>
+                  <div class="rate-box-input">
+                    <span class="rate-input">
+                      <a-input placeholder="训练集"></a-input>
+                    </span>
+                    <span class="rate-input">
+                      <a-input placeholder="测试集"></a-input>
+                    </span>
+                    <span class="rate-input">
+                      <a-input placeholder="验证集"></a-input>
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </a-checkbox-group>
+              </a-col>
+              <a-col :span="12">
+                <!--流程选择-->
+                <div class="feature-box">
+                  <div class="feature-box-title">变换与特征</div>
+                  <a-checkbox-group
+                    @change="onFeatureOptionChange"
+                    style="width: 100%;"
+                  >
+                    <div class="feature-option-box">
+                      <div class="feature-option-title"></div>
+                      <div
+                        class="option-box"
+                        v-for="(option, index) in featureOptions"
+                        :key="`process${index}`"
+                      >
+                        <a-checkbox :value="option.value">{{
+                          option.label
+                        }}</a-checkbox>
+                        <span
+                          style="position:absolute;color: #000;"
+                          v-if="option.setting"
+                        >
+                          <a-button icon="ellipsis" size="small"></a-button>
+                        </span>
+                      </div>
+                    </div>
+                  </a-checkbox-group>
+                </div>
+              </a-col>
+            </a-row>
           </div>
 
           <!--自定义参数设置-->
@@ -372,7 +426,12 @@
                   placeholder="请输入参数名称"
                   style="width: 200px; margin-right: 8px"
                 />
-                <a-select
+                <a-input
+                  placeholder="请选择类型"
+                  v-model="k.value"
+                  style="width: 140px; margin-right: 8px;"
+                ></a-input>
+                <!--<a-select
                   placeholder="请选择类型"
                   style="width: 140px; margin-right: 8px;"
                   v-model="k.type"
@@ -381,7 +440,7 @@
                   <a-select-option value="1">double</a-select-option>
                   <a-select-option value="2">string</a-select-option>
                   <a-select-option value="3">boolean</a-select-option>
-                </a-select>
+                </a-select>-->
                 <a-icon
                   v-if="attributeList.length > 0"
                   class="dynamic-delete-button"
@@ -428,21 +487,33 @@ export default {
       taskInfoForm: this.$form.createForm(this),
       trainResourceList: [
         {
-          resourceIndex: '训练设备1',
+          resourceIndex: '推理设备1',
+          title: '推理设备1',
+          scopedSlots: {
+            title: 'title'
+          },
           id: '1',
           type: 'a',
           capacity: '1TB',
           usage: '20%',
           children: [
             {
-              resourceIndex: '训练设备1-卡1',
+              resourceIndex: '推理设备1-卡1',
+              title: '推理设备1-卡1',
+              scopedSlots: {
+                title: 'title'
+              },
               id: '6',
               type: 'a',
               capacity: '1TB',
               usage: '20%'
             },
             {
-              resourceIndex: '训练设备1-卡2',
+              resourceIndex: '推理设备1-卡2',
+              title: '推理设备1-卡2',
+              scopedSlots: {
+                title: 'title'
+              },
               id: '7',
               type: 'a',
               capacity: '1TB',
@@ -451,28 +522,44 @@ export default {
           ]
         },
         {
-          resourceIndex: '训练设备2',
+          resourceIndex: '推理设备2',
+          title: '推理设备2',
+          scopedSlots: {
+            title: 'title'
+          },
           id: '2',
           type: 'b',
           capacity: '1TB',
           usage: '20%'
         },
         {
-          resourceIndex: '训练设备3',
+          resourceIndex: '推理设备3',
+          title: '推理设备3',
+          scopedSlots: {
+            title: 'title'
+          },
           id: '3',
           type: 'c',
           capacity: '1TB',
           usage: '20%'
         },
         {
-          resourceIndex: '训练设备4',
+          resourceIndex: '推理设备4',
+          title: '推理设备4',
+          scopedSlots: {
+            title: 'title'
+          },
           id: '4',
           type: 'd',
           capacity: '1TB',
           usage: '20%'
         },
         {
-          resourceIndex: '训练设备5',
+          resourceIndex: '推理设备5',
+          title: '推理设备5',
+          scopedSlots: {
+            title: 'title'
+          },
           id: '5',
           type: 'e',
           capacity: '1TB',
@@ -537,6 +624,170 @@ export default {
         { name: 'file7', id: 'model7' }
       ],
 
+      // 推理文件列表
+      trainFileList: [
+        {
+          name: 'Dir1',
+          path: 'D:/data/Dir1',
+          isFile: false,
+          scopedSlots: {
+            title: 'title'
+          },
+          children: [
+            {
+              name: 'file1',
+              path: 'D:/data/Dir1/file1',
+              isFile: true,
+              scopedSlots: {
+                title: 'title'
+              }
+            },
+            {
+              name: 'file2',
+              path: 'D:/data/Dir1/file2',
+              isFile: true,
+              scopedSlots: {
+                title: 'title'
+              }
+            },
+            {
+              name: 'file3',
+              path: 'D:/data/Dir1/file3',
+              isFile: true,
+              scopedSlots: {
+                title: 'title'
+              }
+            },
+            {
+              name: 'file4',
+              path: 'D:/data/Dir1/file4',
+              isFile: true,
+              scopedSlots: {
+                title: 'title'
+              }
+            }
+          ]
+        },
+        {
+          name: 'Dir2',
+          path: 'D:/data/Dir2',
+          isFile: false,
+          scopedSlots: {
+            title: 'title'
+          },
+          children: [
+            {
+              name: 'file1',
+              path: 'D:/data/Dir2/file1',
+              isFile: false,
+              scopedSlots: {
+                title: 'title'
+              },
+              children: [
+                {
+                  name: 'file1-1-1',
+                  path: 'D:/data/Dir2/file2/file1-1-1',
+                  scopedSlots: {
+                    title: 'title'
+                  },
+                  isFile: true
+                }
+              ]
+            },
+            {
+              name: 'file2',
+              path: 'D:/data/Dir2/file2',
+              isFile: true,
+              scopedSlots: {
+                title: 'title'
+              }
+            },
+            {
+              name: 'file3',
+              path: 'D:/data/Dir2/file3',
+              scopedSlots: {
+                title: 'title'
+              },
+              isFile: true
+            },
+            {
+              name: 'file4',
+              path: 'D:/data/Dir2/file4',
+              scopedSlots: {
+                title: 'title'
+              },
+              isFile: true
+            }
+          ]
+        },
+        {
+          name: 'Dir3',
+          path: 'D:/data/Dir3',
+          isFile: false,
+          scopedSlots: {
+            title: 'title'
+          },
+          children: [
+            {
+              name: 'file1',
+              path: 'D:/data/Dir3/file1',
+              scopedSlots: {
+                title: 'title'
+              },
+              isFile: true
+            },
+            {
+              name: 'file2',
+              path: 'D:/data/Dir3/file2',
+              scopedSlots: {
+                title: 'title'
+              },
+              isFile: true
+            },
+            {
+              name: 'file3',
+              path: 'D:/data/Dir3/file3',
+              scopedSlots: {
+                title: 'title'
+              },
+              isFile: true
+            },
+            {
+              name: 'file4',
+              path: 'D:/data/Dir3/file4',
+              scopedSlots: {
+                title: 'title'
+              },
+              isFile: true
+            }
+          ]
+        },
+        {
+          name: 'file1-1',
+          path: 'D:/data/Dir1/file1-1',
+          scopedSlots: {
+            title: 'title'
+          },
+          isFile: true
+        },
+        {
+          name: 'file1-2',
+          path: 'D:/data/Dir1/file1-2',
+          scopedSlots: {
+            title: 'title'
+          },
+          isFile: true
+        },
+        {
+          name: 'file1-3',
+          path: 'D:/data/Dir1/file1-3',
+          isFile: true,
+          scopedSlots: {
+            title: 'title'
+          }
+        }
+      ],
+
       // 高级设置表单内容
       labelCol: { span: 8 },
       wrapperCol: { span: 16 },
@@ -595,6 +846,7 @@ export default {
       this.attributeList.push({
         name: '',
         type: '',
+        value: '',
         id: uniqid.time()
       })
     },
@@ -649,8 +901,9 @@ export default {
   }
   .rate-box-input {
     .rate-input {
-      display: inline-block;
-      margin-right: 20px;
+      display: block;
+      width: 70%;
+      margin: 0 auto 20px;
     }
   }
 }

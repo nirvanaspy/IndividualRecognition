@@ -72,6 +72,7 @@
       line-height: 30px;
     }
     .setting-form {
+      height: 50%;
       margin-top: 20px;
       .ant-radio-group {
         label {
@@ -147,6 +148,9 @@
     margin-top: 20px;
     height: 50%;
     min-height: 350px;
+    &.full-height {
+      height: calc(100% - 60px);
+    }
     .resource-form,
     .resource-list {
       height: 100%;
@@ -169,4 +173,28 @@
     width: 200px;
     background: #00a0e9;
   }
+}
+
+.tree-columns-title {
+  padding-left: 50px;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #3a81c7;
+}
+.cus-tree-text {
+  display: inline-block;
+  min-width: 100px;
+  margin-right: 20px;
+}
+
+.user-operation {
+  height: 40px;
+  line-height: 40px;
+  color: #4ac7d9;
+  font-weight: 500;
+  font-size: 18px;
+  margin: 10px 0;
+  padding-left: 10px;
+  background: linear-gradient(90deg, #123690, transparent) !important;
 }
