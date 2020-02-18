@@ -70,29 +70,6 @@
                       </template>
                     </a-table>
                   </div>
-                  <!--<a-table
-                    v-show="markMode === 2"
-                    bordered
-                    :dataSource="markFileList"
-                    :rowSelection="{
-                      selectedRowKeys: markFileSelectedRowKeys,
-                      onChange: onMarkFileSelectChange
-                    }"
-                    :columns="markFileColumns"
-                    rowKey="path"
-                    :pagination="false"
-                  >
-                    <template slot="name" slot-scope="name, record">
-                      <span>
-                        <svg-icon
-                          icon-class="folder"
-                          v-if="record.isFile === false"
-                        ></svg-icon>
-                        <svg-icon icon-class="file" v-else></svg-icon>
-                      </span>
-                      {{ name }}
-                    </template>
-                  </a-table>-->
 
                   <!--文件树-->
                   <div>
@@ -434,98 +411,6 @@
             </a-col>
           </a-row>
         </div>
-
-        <!--基本配置表单-->
-        <!--<div class="setting-form">
-          <dv-border-box-4
-            :color="['#124ef5', '#87ecf5']"
-            style="padding: 40px;"
-          >
-            <a-form :form="baseSettingForm">
-              <a-form-item
-                label="任务名称"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-input></a-input>
-              </a-form-item>
-              <a-form-item
-                label="标注方式"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-select
-                  defaultValue="interpretation"
-                  style="width: 240px"
-                  v-model="markType"
-                >
-                  <a-select-option value="interpretation"
-                    >解译标注</a-select-option
-                  >
-                </a-select>
-              </a-form-item>
-              <a-form-item
-                label="工作模式"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-radio-group default-value="2" v-model="modelChoose">
-                  <a-radio :value="1"
-                    ><span style="color: #ced4ea;">手动模式</span></a-radio
-                  >
-                  <a-radio :value="2"
-                    ><span style="color: #ced4ea;">自动模式</span></a-radio
-                  >
-                </a-radio-group>
-              </a-form-item>
-              <a-form-item
-                v-show="modelChoose === 2"
-                label="开始时间"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-date-picker
-                  :disabledDate="disabledStartDate"
-                  showTime
-                  format="YYYY-MM-DD HH:mm:ss"
-                  v-model="startValue"
-                  placeholder="开始时间"
-                  @openChange="handleStartOpenChange"
-                />
-              </a-form-item>
-              <a-form-item
-                v-show="modelChoose === 2"
-                label="结束时间"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-date-picker
-                  :disabledDate="disabledStartDate"
-                  showTime
-                  format="YYYY-MM-DD HH:mm:ss"
-                  v-model="endValue"
-                  placeholder="结束时间"
-                  @openChange="handleStartOpenChange"
-                />
-              </a-form-item>
-              <a-form-item
-                label="结束后操作"
-                v-show="modelChoose === 2"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-radio-group default-value="1">
-                  <a-radio :value="1"
-                    ><span style="color: #ced4ea;">关机</span></a-radio
-                  >
-                  <a-radio :value="2"
-                    ><span style="color: #ced4ea;">待机</span></a-radio
-                  >
-                </a-radio-group>
-              </a-form-item>
-            </a-form>
-          </dv-border-box-4>
-        </div>-->
       </div>
       <div class="setting-button-container">
         <a-button type="primary" style="margin: 12px 20px">启动</a-button>

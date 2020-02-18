@@ -262,11 +262,14 @@
           >
             <a-form :form="baseSettingForm">
               <a-form-item
+                hasFeedback
                 label="任务名称"
                 :label-col="{ span: 5 }"
                 :wrapper-col="{ span: 12 }"
+                :validate-status="getFieldStatus('taskName')"
+                :help="getFieldText('taskName')"
               >
-                <a-input></a-input>
+                <a-input v-model="taskName"></a-input>
               </a-form-item>
               <a-form-item
                 label="工作模式"
@@ -391,10 +394,26 @@ export default {
       endValue: null,
       endOpen: false,
       dataAccuracy: null,
-      currentRow: null
+      currentRow: null,
+
+      taskName: null
     }
   },
   methods: {
+    getFieldStatus(key) {
+      if (!this[key]) {
+        return 'warning'
+      } else {
+        return 'success'
+      }
+    },
+    getFieldText(key) {
+      if (this[key]) {
+        return ''
+      } else {
+        return '请输入'
+      }
+    },
     onGatherSelectChange(selectedRowKeys) {
       this.gatherSelectedRowKeys = selectedRowKeys
     },

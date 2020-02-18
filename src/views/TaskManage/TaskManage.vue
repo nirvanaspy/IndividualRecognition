@@ -42,9 +42,9 @@
           >
             <a href="javascript:;">重启</a>
           </a-popconfirm>
-          <!--<span style="margin-left: 10px">
-            <a href="javascript:;">修改</a>
-          </span>-->
+          <span style="margin-left: 10px" @click="getTaskLogFile(record.id)">
+            <a href="javascript:;">日志信息</a>
+          </span>
         </template>
       </a-table>
     </dv-border-box-4>
@@ -251,6 +251,7 @@ export default {
           title: '操作',
           dataIndex: 'operation',
           align: 'center',
+          width: '300px',
           scopedSlots: { customRender: 'operation' }
         }
       ],
@@ -376,6 +377,11 @@ export default {
           console.log('Cancel')
         }
       })
+    },
+
+    // 获取日志文件
+    getTaskLogFile() {
+      alert(1)
     }
   },
   mounted() {

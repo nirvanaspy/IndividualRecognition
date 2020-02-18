@@ -104,6 +104,12 @@
                     checkable
                   >
                     <template slot="title" slot-scope="record">
+                      <span style="margin-right: 3px;">
+                        <svg-icon
+                          icon-class="computer"
+                          v-if="record.children"
+                        ></svg-icon>
+                      </span>
                       <span class="cus-tree-text">
                         {{ record.resourceIndex }}
                       </span>
@@ -381,6 +387,15 @@
                   style="padding: 30px;"
                 >
                   <a-form :form="baseSettingForm">
+                    <!--任务名称-->
+                    <a-form-item
+                      label="任务名称"
+                      :label-col="{ span: 5 }"
+                      :wrapper-col="{ span: 12 }"
+                    >
+                      <a-input></a-input>
+                    </a-form-item>
+
                     <!--模型配置-->
                     <a-form-item
                       label="模型类型"
@@ -424,13 +439,6 @@
                     </a-form-item>
 
                     <!--任务配置-->
-                    <a-form-item
-                      label="任务名称"
-                      :label-col="{ span: 5 }"
-                      :wrapper-col="{ span: 12 }"
-                    >
-                      <a-input></a-input>
-                    </a-form-item>
                     <a-form-item
                       label="工作模式"
                       :label-col="{ span: 5 }"
@@ -503,119 +511,6 @@
             </a-col>
           </a-row>
         </div>
-
-        <!--基本设置form-->
-        <!--<div class="setting-form">
-          <dv-border-box-4
-            :color="['#124ef5', '#87ecf5']"
-            style="padding: 40px;"
-          >
-            <a-form :form="baseSettingForm">
-              &lt;!&ndash;模型配置&ndash;&gt;
-              <a-form-item
-                label="模型类型"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-radio-group default-value="1" v-model="modelTypeChoose">
-                  <a-radio :value="1"
-                    ><span style="color: #ced4ea;">系统预置模型</span></a-radio
-                  >
-                  <a-radio :value="2"
-                    ><span style="color: #ced4ea;">用户导入模型</span></a-radio
-                  >
-                  <a-radio :value="3"
-                    ><span style="color: #ced4ea;"
-                      >系统中训练模型</span
-                    ></a-radio
-                  >
-                </a-radio-group>
-              </a-form-item>
-              <a-form-item
-                label="选择模型"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-select v-model="selectedModel" style="width: 240px">
-                  <a-select-option
-                    v-for="(model, index) in modelList"
-                    :key="index"
-                    :value="model.id"
-                    >{{ model.label }}</a-select-option
-                  >
-                </a-select>
-              </a-form-item>
-
-              &lt;!&ndash;任务配置&ndash;&gt;
-              <a-form-item
-                label="任务名称"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-input></a-input>
-              </a-form-item>
-              <a-form-item
-                label="工作模式"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-radio-group default-value="2" v-model="operateModelChoose">
-                  <a-radio :value="1"
-                    ><span style="color: #ced4ea;">手动模式</span></a-radio
-                  >
-                  <a-radio :value="2"
-                    ><span style="color: #ced4ea;">自动模式</span></a-radio
-                  >
-                </a-radio-group>
-              </a-form-item>
-              <a-form-item
-                v-show="operateModelChoose === 2"
-                label="开始时间"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-date-picker
-                  :disabledDate="disabledStartDate"
-                  showTime
-                  format="YYYY-MM-DD HH:mm:ss"
-                  v-model="startValue"
-                  placeholder="开始时间"
-                  @openChange="handleStartOpenChange"
-                />
-              </a-form-item>
-              <a-form-item
-                v-show="operateModelChoose === 2"
-                label="结束时间"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-date-picker
-                  :disabledDate="disabledStartDate"
-                  showTime
-                  format="YYYY-MM-DD HH:mm:ss"
-                  v-model="endValue"
-                  placeholder="结束时间"
-                  @openChange="handleStartOpenChange"
-                />
-              </a-form-item>
-              <a-form-item
-                label="结束后操作"
-                v-show="operateModelChoose === 2"
-                :label-col="{ span: 5 }"
-                :wrapper-col="{ span: 12 }"
-              >
-                <a-radio-group default-value="1">
-                  <a-radio :value="1"
-                    ><span style="color: #ced4ea;">关机</span></a-radio
-                  >
-                  <a-radio :value="2"
-                    ><span style="color: #ced4ea;">待机</span></a-radio
-                  >
-                </a-radio-group>
-              </a-form-item>
-            </a-form>
-          </dv-border-box-4>
-        </div>-->
       </div>
 
       <div class="setting-button-container">
@@ -765,7 +660,8 @@ export default {
           id: '2',
           type: 'b',
           capacity: '1TB',
-          usage: '20%'
+          usage: '20%',
+          children: []
         },
         {
           resourceIndex: '推理设备3',
@@ -776,7 +672,8 @@ export default {
           id: '3',
           type: 'c',
           capacity: '1TB',
-          usage: '20%'
+          usage: '20%',
+          children: []
         },
         {
           resourceIndex: '推理设备4',
@@ -787,7 +684,8 @@ export default {
           id: '4',
           type: 'd',
           capacity: '1TB',
-          usage: '20%'
+          usage: '20%',
+          children: []
         },
         {
           resourceIndex: '推理设备5',
@@ -798,7 +696,8 @@ export default {
           id: '5',
           type: 'e',
           capacity: '1TB',
-          usage: '20%'
+          usage: '20%',
+          children: []
         }
       ],
       reasoningResourceColumns: [

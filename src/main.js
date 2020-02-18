@@ -28,6 +28,8 @@ import DataV from '@jiaminghi/data-view'
 import 'element-ui/lib/theme-chalk/index.css'
 import { Carousel, CarouselItem } from 'element-ui'
 
+import uploader from 'vue-simple-uploader'
+
 Vue.prototype.$echarts = echarts
 Vue.prototype.$ = $
 
@@ -38,6 +40,7 @@ Vue.use(VueAxios)
 Vue.use(DataV)
 Vue.use(Carousel)
 Vue.use(CarouselItem)
+Vue.use(uploader)
 
 new Vue({
   router,

@@ -1012,6 +1012,12 @@ body {
       font-size: 16px;
     }
   }
+  &.uploader-modal {
+    padding: 46px 76px !important;
+    .ant-modal-content {
+      height: 100%;
+    }
+  }
 }
 
 // 树
@@ -1023,5 +1029,28 @@ body {
   }
   .ant-tree-title {
     color: #fff;
+  }
+}
+
+// 上传控件
+.uploader {
+  .uploader-btn {
+    border: 1px solid #fff;
+  }
+  .uploader-file[status='error'] {
+    border-bottom: 1px solid #4ac7d9;
+    .uploader-file-progress {
+      background: #d87676 !important;
+    }
+  }
+}
+
+.cus-tree-text {
+  color: #fff;
+}
+ant-tree-node-content-wrapper:hover,
+.ant-tree-node-selected {
+  .cus-tree-text {
+    color: #000 !important;
   }
 }

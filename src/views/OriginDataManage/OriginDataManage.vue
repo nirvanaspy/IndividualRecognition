@@ -16,7 +16,11 @@
           style="margin: 0 10px"
           >查询</a-button
         >
-        <a-button class="editable-add-btn" type="primary" style="margin: 0 10px"
+        <a-button
+          class="editable-add-btn"
+          type="primary"
+          @click="showUploader"
+          style="margin: 0 10px"
           >导入</a-button
         >
         <a-button class="editable-add-btn" type="primary" style="margin: 0 10px"
@@ -68,9 +72,20 @@
         </a-col>
       </a-row>
     </div>
+
+    <a-modal
+      v-model="ifShowUploader"
+      width="60%"
+      style="height: 60%"
+      class="cus-modal uploader-modal"
+      :footer="null"
+    >
+      <uploader-reviewer></uploader-reviewer>
+    </a-modal>
   </div>
 </template>
 <script>
+import UploaderReviewer from '@/components/Uploader/UploaderFolder'
 const dataSource = []
 // dataSource.push(null)
 for (let i = 0; i < 11; i++) {
@@ -96,6 +111,9 @@ for (let i = 0; i < 11; i++) {
 }
 export default {
   name: 'OriginDataManage',
+  components: {
+    UploaderReviewer
+  },
   data() {
     return {
       chartList: [],
@@ -214,7 +232,8 @@ export default {
             center: ['50%', '50%']
           }
         ]
-      }
+      },
+      ifShowUploader: false
     }
   },
   methods: {
@@ -249,6 +268,11 @@ export default {
           console.log('Cancel')
         }
       })
+    },
+
+    // 显示上传文件控件
+    showUploader() {
+      this.ifShowUploader = true
     }
   },
   mounted() {

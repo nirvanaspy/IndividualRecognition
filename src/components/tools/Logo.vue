@@ -50,7 +50,7 @@ export default {
   height: 30px;
   position: absolute;
   font-size: 14px;
-  top: 40px;
+  top: 44px;
   left: 50%;
   margin-left: -50px;
   line-height: 30px;

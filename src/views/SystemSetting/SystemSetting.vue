@@ -34,7 +34,9 @@
           <a-icon type="lock" />
           加密授权
         </span>
-        加密授权
+        <div class="tab-pane-container">
+          <encryption-and-auth></encryption-and-auth>
+        </div>
       </a-tab-pane>
       <a-tab-pane key="5">
         <span slot="tab">
@@ -45,6 +47,15 @@
           <system-intro></system-intro>
         </div>
       </a-tab-pane>
+      <a-tab-pane key="6">
+        <span slot="tab">
+          <a-icon type="copy" />
+          系统运行日志
+        </span>
+        <div class="tab-pane-container">
+          <system-log></system-log>
+        </div>
+      </a-tab-pane>
     </a-tabs>
   </div>
 </template>
@@ -52,12 +63,16 @@
 import UserManage from './components/UserManage'
 import AuthManage from './components/AuthManage'
 import SystemIntro from './components/SystemIntro'
+import SystemLog from './components/SystemLog'
+import EncryptionAndAuth from './components/EncryptionAndAuth'
 export default {
   name: 'SystemSetting',
   components: {
     UserManage,
     AuthManage,
-    SystemIntro
+    SystemIntro,
+    SystemLog,
+    EncryptionAndAuth
   }
 }
 </script>
