@@ -130,7 +130,8 @@ export default {
         return '0'
       }
       if (this.sidebarOpened) {
-        return '300px'
+        // return '300px'
+        return '0'
       }
       return '80px'
     },

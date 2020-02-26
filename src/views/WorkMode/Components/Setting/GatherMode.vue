@@ -395,7 +395,6 @@ export default {
       endOpen: false,
       dataAccuracy: null,
       currentRow: null,
-
       taskName: null
     }
   },

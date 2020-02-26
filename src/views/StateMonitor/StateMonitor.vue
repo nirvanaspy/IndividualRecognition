@@ -5,8 +5,31 @@
     </dv-border-box-11>
 
     <vue-context ref="nodeContextMenu">
-      <div style="padding: 0">
-        <li>重启软件</li>
+      <div style="padding: 0" slot-scope="node">
+        <div class="context-node-name" v-if="node.data">
+          {{ node.data.nodeName }}
+        </div>
+        <div
+          v-for="(item, index) in processList"
+          :key="index"
+          class="process-box"
+        >
+          <span class="process-name">{{ item.name }}</span>
+          <span class="process-state" :class="computeState(item.state)">{{
+            stateMap[item.state]
+          }}</span>
+          <div class="process-operation">
+            <a-button size="small" type="primary" v-if="item.state === 2"
+              >启动</a-button
+            >
+            <a-button size="small" type="primary" v-if="item.state === 1"
+              >暂停</a-button
+            >
+            <a-button size="small" type="primary" v-if="item.state === 0"
+              >重启</a-button
+            >
+          </div>
+        </div>
       </div>
     </vue-context>
   </div>
@@ -211,7 +234,19 @@ export default {
       yDivide: 400, // y坐标轴每个坐标间的间隔
       symbolSize: 40,
       yMargin: 800,
-      xMargin: 200
+      xMargin: 200,
+      processList: [
+        { name: '软件1', id: 1, state: 0 },
+        { name: '软件2', id: 2, state: 1 },
+        { name: '软件3', id: 3, state: 2 },
+        { name: '软件4', id: 4, state: 1 },
+        { name: '软件5', id: 5, state: 0 }
+      ],
+      stateMap: {
+        0: '故障',
+        1: '正常',
+        2: '未运行'
+      }
     }
   },
   mounted() {
@@ -222,7 +257,6 @@ export default {
     this.$nextTick(() => {
       this.initChart()
       this.chart.on('contextmenu', params => {
-        console.log(params)
         this.$refs.nodeContextMenu.open(params.event.event, params.data)
       })
       window.onresize = e => {
@@ -662,6 +696,24 @@ export default {
       this.chartData.lines = linkList
     }
   },
+  computed: {
+    computeState() {
+      return function(state) {
+        let status = ''
+        switch (state) {
+          case 0:
+            status = 'error'
+            break
+          case 1:
+            status = 'normal'
+            break
+          case 2:
+            status = 'default'
+        }
+        return status
+      }
+    }
+  },
   watch: {}
 }
 </script>
@@ -676,6 +728,38 @@ export default {
     height: 100%;
     width: 100%;
     height: 100%;
+  }
+
+  .context-node-name {
+    padding-left: 10px;
+    color: #333;
+    font-weight: 500;
+  }
+
+  .process-box {
+    padding: 0 10px;
+    &:hover {
+      background: rgba(30, 140, 250, 0.5);
+    }
+    .process-state {
+      margin-left: 10px;
+      display: inline-block;
+      width: 60px;
+      &.error {
+        color: red;
+      }
+      &.normal {
+        color: green;
+      }
+      &.default {
+        color: gray;
+      }
+    }
+  }
+  .process-operation {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
   }
 }
 </style>

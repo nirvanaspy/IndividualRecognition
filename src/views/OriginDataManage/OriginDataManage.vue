@@ -12,10 +12,17 @@
         <a-button
           class="editable-add-btn"
           type="primary"
-          @click="handleDelete"
           style="margin: 0 10px"
+          @click="handleFilter"
           >查询</a-button
         >
+        <!--<a-button
+                class="editable-add-btn"
+                type="primary"
+                @click="handleDelete"
+                style="margin: 0 10px"
+        >删除</a-button
+        >-->
         <a-button
           class="editable-add-btn"
           type="primary"
@@ -82,10 +89,21 @@
     >
       <uploader-reviewer></uploader-reviewer>
     </a-modal>
+
+    <a-modal
+      v-model="ifShowFilterDialog"
+      width="60%"
+      style="height: 60%"
+      class="cus-modal uploader-modal"
+      :footer="null"
+    >
+      <search-panel></search-panel>
+    </a-modal>
   </div>
 </template>
 <script>
 import UploaderReviewer from '@/components/Uploader/UploaderFolder'
+import SearchPanel from '@/components/SearchPanel/SearchPanel'
 const dataSource = []
 // dataSource.push(null)
 for (let i = 0; i < 11; i++) {
@@ -112,7 +130,8 @@ for (let i = 0; i < 11; i++) {
 export default {
   name: 'OriginDataManage',
   components: {
-    UploaderReviewer
+    UploaderReviewer,
+    SearchPanel
   },
   data() {
     return {
@@ -233,7 +252,8 @@ export default {
           }
         ]
       },
-      ifShowUploader: false
+      ifShowUploader: false,
+      ifShowFilterDialog: false
     }
   },
   methods: {
@@ -273,6 +293,11 @@ export default {
     // 显示上传文件控件
     showUploader() {
       this.ifShowUploader = true
+    },
+
+    // 显示筛选框
+    handleFilter() {
+      this.ifShowFilterDialog = true
     }
   },
   mounted() {

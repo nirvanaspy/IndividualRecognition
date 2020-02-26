@@ -2,7 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/'
-import { VueAxios } from './utils/request'
+import { VueAxios, axios } from './utils/request'
+import axiosOrigin from 'axios'
 
 // mock
 import './mock'
@@ -40,11 +41,35 @@ Vue.use(VueAxios)
 Vue.use(DataV)
 Vue.use(Carousel)
 Vue.use(CarouselItem)
+
 Vue.use(uploader)
 
-new Vue({
-  router,
-  store,
-  created: bootstrap,
-  render: h => h(App)
-}).$mount('#app')
+function getServerConfig() {
+  return new Promise((resolve, reject) => {
+    axiosOrigin
+      .get('./serverConfig.json')
+      .then(result => {
+        let config = result.data
+        for (let key in config) {
+          Vue.prototype[key] = config[key]
+        }
+        resolve()
+      })
+      .catch(() => {
+        reject()
+      })
+  })
+}
+
+async function main() {
+  await getServerConfig()
+  axios.defaults.baseURL = Vue.prototype.baseUrl
+  new Vue({
+    router,
+    store,
+    created: bootstrap,
+    render: h => h(App)
+  }).$mount('#app')
+}
+
+main()

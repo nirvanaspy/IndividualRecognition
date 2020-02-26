@@ -35,7 +35,7 @@
     </uploader>
 
     <!--文件树结构预览-->
-    <a-tree :treeData="fileList" checkable>
+    <a-tree :treeData="fileList">
       <template slot="title" slot-scope="record">
         <span class="cus-tree-text">
           <span style="color: #fff;">
@@ -47,13 +47,55 @@
           </span>
           {{ record.name }}
         </span>
-        <span
+        <!--<span
           v-if="record.isFolder && (record.level === 1 || record.level === 2)"
           ><a-input v-model="record.name" class="edit-file-input"></a-input
-        ></span>
-        <!--<span><a-button @click="record.resume()">上传</a-button></span>-->
+        ></span>-->
       </template>
     </a-tree>
+
+    <!--文件字段信息修改-->
+    <div class="file-edit-container">
+      <span class="file-edit-box">
+        <a-select style="width: 120px" placeholder="数据精度">
+          <a-select-option value="chart">chart</a-select-option>
+          <a-select-option value="short">short</a-select-option>
+          <a-select-option value="int">int</a-select-option>
+          <a-select-option value="float">float</a-select-option>
+          <a-select-option value="double">double</a-select-option>
+        </a-select>
+      </span>
+      <span class="file-edit-box">
+        <a-input-number
+          placeholder="中心频率"
+          style="width: 120px"
+        ></a-input-number>
+      </span>
+      <span class="file-edit-box">
+        <a-date-picker style="width: 160px"></a-date-picker>
+      </span>
+
+      <span class="file-edit-btn">
+        <a-button type="primary">修改</a-button>
+      </span>
+    </div>
+
+    <!--文件校验列表-->
+    <a-table
+      bordered
+      :columns="columns"
+      :dataSource="fileDataList"
+      :pagination="false"
+      :rowSelection="{
+        selectedRowKeys: selectedRowKeys,
+        onChange: onSelectChange
+      }"
+      rowKey="fileId"
+    >
+      <template slot="operation" slot-scope="record">
+        <a-button type="primary">修改</a-button>
+      </template>
+    </a-table>
 
     <!--文件列表弹框-->
     <!--<a-modal
@@ -109,13 +151,15 @@
 <script>
 import SparkMD5 from 'spark-md5'
 import Vue from 'vue'
-import qs from 'qs'
-import uniqId from 'uniqid'
+// import qs from 'qs'
+// import uniqId from 'uniqid'
 import _ from 'lodash'
 
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-import { hasMd5, mergeFile } from '@/api/files'
+import { hasMd5, mergeFile } from '@/api/gtsb_folder_files'
 // import { hasMd5, mergeFile } from '@/api/gtsb_files'
+
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   name: 'UploaderTool',
@@ -125,14 +169,14 @@ export default {
       // 文件上传配置项
       options: {
         // target: 'http://192.168.31.232:23412/files/chunks',
-        target: 'http://127.0.0.1:8080/apis/files/chunks',
+        target: 'http://192.168.31.204:23412/folder/files/chunks',
         headers: {
           Authorization: `bearer${Vue.ls.get(ACCESS_TOKEN)}`
         },
         chunkSize: 10 * 1024 * 1024,
         simultaneousUploads: 20,
         autoStart: false,
-        testChunks: true
+        testChunks: false
         // checkChunkUploadedByResponse: function(chunk, message) {
         //   let objMessage = JSON.parse(message)
         //   if (objMessage.skipUpload) {
@@ -161,18 +205,142 @@ export default {
           dataIndex: 'name'
         },
         {
-          title: '校验名',
-          key: 'nameVerify',
-          scopedSlots: { customRender: 'nameVerify' }
+          title: '数据精度',
+          dataIndex: 'dataAccuracy',
+          align: 'center'
         },
+        {
+          title: '中心频率',
+          dataIndex: 'centerFrequency',
+          align: 'center'
+        },
+        /*{
+          title: '数据精度',
+          key: 'dataAccuracy',
+          align: 'center',
+          scopedSlots: { customRender: 'dataAccuracy' }
+        },
+        {
+          title: '中心频率',
+          key: 'centerFrequency',
+          align: 'center',
+          scopedSlots: { customRender: 'centerFrequency' }
+        },
+        {
+          title: '日期',
+          key: 'date',
+          align: 'center',
+          scopedSlots: { customRender: 'date' }
+        },*/
         {
           title: '操作',
           key: 'actions',
+          align: 'center',
           scopedSlots: { customRender: 'operation' }
         }
       ],
       selectedRowKeys: [],
-      visible: false
+      visible: false,
+      fileTableList: [
+        {
+          children: [
+            {
+              children: [
+                {
+                  children: [
+                    {
+                      fileId: '{ca15b37c-43e7-4341-ac6f-25125742a7b3}',
+                      isFolder: false,
+                      level: 3,
+                      name: 'ddddddd.txt',
+                      relativePath:
+                        './import_ADS-B_OrignalSignal_char_200/ip24/five'
+                    }
+                  ],
+                  fileId: '{e230bb13-0df1-46e5-9790-505881664657}',
+                  isFolder: true,
+                  level: 3,
+                  name: 'five',
+                  relativePath: './import_ADS-B_OrignalSignal_char_200/ip24'
+                },
+                {
+                  children: [
+                    {
+                      fileId: '{9fa77c77-864a-4441-b405-ed9f96796a08}',
+                      isFolder: false,
+                      level: 3,
+                      name: '24hebi.txt',
+                      relativePath:
+                        './import_ADS-B_OrignalSignal_char_200/ip24/folder'
+                    }
+                  ],
+                  fileId: '{5e76bf48-0ad4-4ecd-9653-40f658b2b4ee}',
+                  isFolder: true,
+                  level: 3,
+                  name: 'folder',
+                  relativePath: './import_ADS-B_OrignalSignal_char_200/ip24'
+                }
+              ],
+              fileId: '{d0e4dbad-b2d9-4d6f-be8e-8ec2c3e43274}',
+              isFolder: true,
+              level: 2,
+              name: 'ip24',
+              relativePath: './import_ADS-B_OrignalSignal_char_200'
+            },
+            {
+              children: [
+                {
+                  children: [
+                    {
+                      fileId: '{c63b554d-1f47-45c3-bcd0-cfeabce971df}',
+                      isFolder: false,
+                      level: 3,
+                      name: 'yyyyyyyyyy.txt',
+                      relativePath:
+                        './import_ADS-B_OrignalSignal_char_200/ip25/five'
+                    }
+                  ],
+                  fileId: '{a0cdcecb-b565-48d9-846d-bb14b8db53c6}',
+                  isFolder: true,
+                  level: 3,
+                  name: 'five',
+                  relativePath: './import_ADS-B_OrignalSignal_char_200/ip25'
+                },
+                {
+                  children: [
+                    {
+                      fileId: '{d5b5af04-323d-4051-9ae3-20dd14b7f285}',
+                      isFolder: false,
+                      level: 3,
+                      name: '25hebi.txt',
+                      relativePath:
+                        './import_ADS-B_OrignalSignal_char_200/ip25/folder'
+                    }
+                  ],
+                  fileId: '{5aafa4e8-2446-4e9c-a8f3-9c12f147826d}',
+                  isFolder: true,
+                  level: 3,
+                  name: 'folder',
+                  relativePath: './import_ADS-B_OrignalSignal_char_200/ip25'
+                }
+              ],
+              fileId: '{8374de8b-eb2d-4d74-99db-e4a40b44595c}',
+              isFolder: true,
+              level: 2,
+              name: 'ip25',
+              relativePath: './import_ADS-B_OrignalSignal_char_200'
+            }
+          ],
+          fileId: '{5f23ef79-1deb-4517-94ad-9429f5767345}',
+          isFolder: true,
+          level: 1,
+          name: 'import_ADS-B_OrignalSignal_char_200',
+          relativePath: './import_ADS-B_OrignalSignal_char_200'
+        }
+      ],
+      fileDataList: [],
+      dataAccuracy: '',
+      centerFrequency: 0
     }
   },
 
@@ -201,8 +369,7 @@ export default {
       let P = new Promise((resolve, reject) => {
         // console.log(fileInfo)
         this.statusSet(fileInfo.fileId, 'merging')
-        // mergeFile(fileInfo)
-        mergeFile(qs.stringify(fileInfo))
+        mergeFile(fileInfo)
           .then(res => {
             this.statusRemove(fileInfo.fileId)
             resolve(res.data.data.id)
@@ -228,36 +395,58 @@ export default {
           this.generateFileTree(childFile, file.level)
         })
       } else {
+        // this.fileTableList.push(file)
         return
       }
     },
 
+    // 扁平化树结构json
+    flatFolderJson(fileList, resList) {
+      let infoArr = []
+      fileList.forEach(file => {
+        if (file.level === 1) {
+          infoArr = file.name.split('_')
+          if (infoArr[3]) {
+            this.dataAccuracy = infoArr[3]
+          }
+          if (infoArr[4]) {
+            this.centerFrequency = parseInt(infoArr[4])
+          }
+        }
+        if (file.isFolder === true && file.children) {
+          this.flatFolderJson(file.children, resList)
+        } else if (file.isFolder === false) {
+          file.dataAccuracy = file.dataAccuracy
+            ? file.dataAccuracy
+            : this.dataAccuracy
+          file.centerFrequency = file.centerFrequency
+            ? file.centerFrequency
+            : this.centerFrequency
+          resList.push(file)
+          return
+        }
+      })
+      return resList
+    },
+
     // 选中文件夹
     onFilesAdd(files, fileList) {
+      this.uploader.pause()
+      // this.fileTableList = []
+      let folderId = uuidv4()
       files.forEach(file => {
-        let tag = uniqId.time()
-        file.pause()
+        let tag = uuidv4()
         file.fileId = tag
         file.nameVerify = file.name
+        file.folderId = folderId
+        file.uniqueIdentifier = folderId + ';' + tag
       })
-      // this.fileList = _.cloneDeep(files)
-      // this.fileList = _.cloneDeep(fileList)
       this.fileList = fileList
       this.fileList.forEach(file => {
-        /*file.scopedSlots = {
-          title: 'title'
-        }
-        if (file.isFolder) {
-          file.children = file.fileList
-          file.children.forEach(file => {
-            file.scopedSlots = {
-              title: 'title'
-            }
-          })
-        }*/
         this.generateFileTree(file, 0)
       })
-      this.visible = true
+      /*this.visible = true*/
+      this.uploader.upload()
     },
 
     // 计算文件MD5的方法
@@ -320,6 +509,7 @@ export default {
       })
       file.uniqueIdentifier = md5
       let fileInfo = this.fileInfoFactory(file)
+      console.log(fileInfo)
       this.statusRemove(file.fileId)
       this.$(`.file_${file.fileId} .uploader-file-actions`).css({
         display: 'unset'
@@ -470,11 +660,16 @@ export default {
     }
   },
 
+  created() {
+    this.fileDataList = this.flatFolderJson(this.fileTableList, [])
+    console.log(this.fileDataList)
+  },
+
   watch: {}
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .manage-uploader ul {
   padding: 0;
   margin-top: 20px;
@@ -503,5 +698,14 @@ li {
   width: 100px;
   padding: 0;
   text-align: center;
+}
+.file-edit-container {
+  margin-bottom: 10px;
+  .file-edit-box {
+    margin-right: 10px;
+  }
+  .file-edit-btn {
+    float: right;
+  }
 }
 </style>

@@ -8,12 +8,13 @@
     :file-status-text="statusText"
   >
     <uploader-unsupport></uploader-unsupport>
-    <uploader-drop>
+    <!--<uploader-drop>
       <p>Drop files here to upload or</p>
       <uploader-btn>select files</uploader-btn>
       <uploader-btn :attrs="attrs">select images</uploader-btn>
       <uploader-btn :directory="true">select folder</uploader-btn>
-    </uploader-drop>
+    </uploader-drop>-->
+    <uploader-btn>选择文件</uploader-btn>
     <uploader-list>
       <div class="file-panel" slot-scope="props">
         <ul class="file-list">
@@ -173,7 +174,6 @@ export default {
 
     // 计算MD5成功后的回调
     computeMD5Success(md5, file) {
-      alert(md5)
       // 将自定义参数直接加载uploader实例的opts上
       Object.assign(this.uploader.opts, {
         query: {

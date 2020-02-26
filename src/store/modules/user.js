@@ -94,7 +94,7 @@ const user = {
             'support'
           ]
         }
-        commit('SET_NAME', { name: result.username, welcome: welcome() })
+        // commit('SET_NAME', { name: result.username, welcome: welcome() })
         commit('SET_ROLES', result.role)
         resolve(result)
       })

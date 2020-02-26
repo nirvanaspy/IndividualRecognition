@@ -1018,6 +1018,85 @@ body {
       height: 100%;
     }
   }
+
+  // 表格自定义样式
+  .ant-table-thead {
+    th {
+      // background: #365a7b;
+      background: #314d7e;
+      color: #fff;
+    }
+  }
+  .ant-table-tbody {
+    tr:nth-child(2n + 1) {
+      td {
+        // background: rgba(54, 90, 123, 0.6);
+        background: rgba(19, 20, 60, 0.7);
+      }
+    }
+    tr:nth-child(2n) {
+      td {
+        // background: rgba(54, 90, 123, 0.9);
+        background: rgba(104, 179, 255, 0.4);
+      }
+    }
+    tr:hover {
+      td {
+        background: #2c3f80 !important;
+      }
+    }
+    tr.ant-table-row-selected {
+      td {
+        // background: #406180;
+        background: #1c4183;
+        // background: #0a446a;
+      }
+    }
+    td {
+      color: #fff;
+    }
+    .ant-progress-text {
+      color: #fff;
+    }
+  }
+  .ant-table-placeholder {
+    background: transparent;
+    border-color: #728ac7;
+    border-left-color: #728ac7 !important;
+    border-right-color: #728ac7 !important;
+    color: #ccc;
+  }
+
+  .ant-form-item-label {
+    label {
+      font-size: 16px;
+      font-weight: 500;
+      color: #ced4ea !important;
+    }
+  }
+  .ant-input,
+  .ant-select-selection {
+    background-color: #253a7e;
+    // background-color: #22406a;
+    border-color: #a6aec1;
+    caret-color: #fff;
+    color: #fff;
+  }
+  .ant-calendar-picker {
+    width: 240px !important;
+  }
+  .ant-input-number {
+    background-color: #253a7e;
+    border-color: #a6aec1;
+    width: 240px;
+    color: #fff;
+  }
+  .ant-input-number-handler-wrap {
+    background: #1c5ea3;
+  }
+  i {
+    color: #fff !important;
+  }
 }
 
 // 树
@@ -1037,6 +1116,9 @@ body {
   .uploader-btn {
     border: 1px solid #fff;
   }
+  .uploader-file {
+    color: #fff;
+  }
   .uploader-file[status='error'] {
     border-bottom: 1px solid #4ac7d9;
     .uploader-file-progress {
@@ -1048,7 +1130,7 @@ body {
 .cus-tree-text {
   color: #fff;
 }
-ant-tree-node-content-wrapper:hover,
+.ant-tree-node-content-wrapper:hover,
 .ant-tree-node-selected {
   .cus-tree-text {
     color: #000 !important;

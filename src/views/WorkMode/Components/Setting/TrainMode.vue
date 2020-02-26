@@ -363,7 +363,11 @@
                           style="position:absolute;color: #000;"
                           v-if="option.setting"
                         >
-                          <a-button icon="ellipsis" size="small"></a-button>
+                          <a-button
+                            icon="ellipsis"
+                            size="small"
+                            @click="showProcessSetting(option)"
+                          ></a-button>
                         </span>
                       </div>
                     </div>
@@ -421,6 +425,62 @@
         <a-button type="default" style="margin-right: 20px;">取消</a-button>
         <a-button type="default">重置</a-button>
       </div>
+    </a-modal>
+
+    <!--流程配置-->
+    <a-modal
+      :title="`${currentProcess ? currentProcess.label : ''}配置`"
+      v-model="processSettingVisible"
+      width="800px"
+      class="cus-modal"
+      :footer="null"
+    >
+      <a-form :form="form" @submit="handleSubmit">
+        <a-form-item
+          label="Note"
+          :label-col="{ span: 5 }"
+          :wrapper-col="{ span: 12 }"
+        >
+          <a-input
+            v-decorator="[
+              'note',
+              {
+                rules: [{ required: true, message: 'Please input your note!' }]
+              }
+            ]"
+          />
+        </a-form-item>
+        <a-form-item
+          label="Gender"
+          :label-col="{ span: 5 }"
+          :wrapper-col="{ span: 12 }"
+        >
+          <a-select
+            v-decorator="[
+              'gender',
+              {
+                rules: [
+                  { required: true, message: 'Please select your gender!' }
+                ]
+              }
+            ]"
+            placeholder="Select a option and change input text above"
+            @change="handleSelectChange"
+          >
+            <a-select-option value="male">
+              male
+            </a-select-option>
+            <a-select-option value="female">
+              female
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+          <a-button type="primary" html-type="submit">
+            Submit
+          </a-button>
+        </a-form-item>
+      </a-form>
     </a-modal>
   </div>
 </template>
@@ -764,7 +824,10 @@ export default {
         { label: '包络信息', value: '包络信息' },
         { label: '相位信息', value: '相位信息' }
       ],
-      selectedFeatureProcess: []
+      selectedFeatureProcess: [],
+      processSettingVisible: false,
+      currentProcess: null,
+      form: this.$form.createForm(this, { name: 'coordinated' })
     }
   },
   methods: {
@@ -811,13 +874,37 @@ export default {
         this.$message.error('对不起，最多添加9个自定义参数')
       }
     },
+
     attRemove(k) {
       const arr = this.attributeList
       arr.splice(arr.findIndex(item => item.id === k.attrId), 1)
       console.log(k)
     },
+
     onFeatureOptionChange(checkedValues) {
       this.selectedFeatureProcess = checkedValues
+    },
+
+    showProcessSetting(process) {
+      // console.log(process)
+      this.currentProcess = process
+      this.processSettingVisible = true
+    },
+
+    handleSubmit(e) {
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+        }
+      })
+    },
+
+    handleSelectChange(value) {
+      console.log(value)
+      this.form.setFieldsValue({
+        note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`
+      })
     }
   }
 }

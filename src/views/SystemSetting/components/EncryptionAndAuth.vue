@@ -1,22 +1,27 @@
 <template>
   <div class="encryption-container">
-    <div class="operation-container">
-      <a-button type="primary" style="margin-right: 10px;">生成序列号</a-button>
-      <a-button type="primary">激活</a-button>
-    </div>
-    <div class="data-container">
-      <a-table
-        bordered
-        :dataSource="deviceList"
-        :columns="columns"
-        rowKey="id"
-        :pagination="pagination"
-        :rowSelection="{
-          selectedRowKeys: selectedRowKeys,
-          onChange: onSelectChange
-        }"
-      ></a-table>
-    </div>
+    <dv-border-box-3 style="padding: 30px 30px 20px 30px;">
+      <div class="operation-container">
+        <dv-decoration-3 style="width:300px;height:30px;float: left;" />
+        <a-button type="primary" style="margin-right: 10px;"
+          >生成序列号</a-button
+        >
+        <a-button type="primary">激活</a-button>
+      </div>
+      <div class="data-container">
+        <a-table
+          bordered
+          :dataSource="deviceList"
+          :columns="columns"
+          rowKey="id"
+          :pagination="pagination"
+          :rowSelection="{
+            selectedRowKeys: selectedRowKeys,
+            onChange: onSelectChange
+          }"
+        ></a-table>
+      </div>
+    </dv-border-box-3>
   </div>
 </template>
 

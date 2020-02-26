@@ -161,20 +161,19 @@ export default {
           : ['mobile', 'captcha']
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         const loginParams = { ...values }
-        const loginForm = qs.stringify({
+        /*const loginForm = qs.stringify({
           username: loginParams.username,
           password: loginParams.password,
           grant_type: 'password',
           scope: 'SCOPES',
           client_id: 'OAUTH_CLIENT_ID',
           enctype: 'OAUTH_CLIENT_ID'
-        })
-        console.log(loginForm)
+        })*/
         if (!err) {
           delete loginParams.username
           loginParams[!state.loginType ? 'email' : 'username'] = values.username
           // loginParams.password = md5(values.password)
-          Login(loginForm)
+          Login(loginParams)
             .then(res => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))
             .finally(() => {

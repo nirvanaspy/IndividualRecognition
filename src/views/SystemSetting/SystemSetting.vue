@@ -27,7 +27,7 @@
           <a-icon type="setting" />
           系统设置
         </span>
-        权限管理
+        <sys-setting></sys-setting>
       </a-tab-pane>
       <a-tab-pane key="4">
         <span slot="tab">
@@ -65,6 +65,7 @@ import AuthManage from './components/AuthManage'
 import SystemIntro from './components/SystemIntro'
 import SystemLog from './components/SystemLog'
 import EncryptionAndAuth from './components/EncryptionAndAuth'
+import SysSetting from './components/SysSetting'
 export default {
   name: 'SystemSetting',
   components: {
@@ -72,7 +73,8 @@ export default {
     AuthManage,
     SystemIntro,
     SystemLog,
-    EncryptionAndAuth
+    EncryptionAndAuth,
+    SysSetting
   }
 }
 </script>

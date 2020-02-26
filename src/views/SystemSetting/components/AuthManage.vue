@@ -23,6 +23,7 @@
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange
         }"
+        :customRow="userRowClick"
       >
         <template slot="name" slot-scope="text">
           <editable-cell :text="text" />
@@ -43,6 +44,9 @@
     </dv-border-box-3>
 
     <div class="tree-container">
+      <div class="tree-container-description">
+        用户权限详情 {{ currentRow ? `--${currentRow.name}` : '' }}
+      </div>
       <a-row>
         <a-col :span="8">
           <dv-border-box-5
@@ -70,23 +74,6 @@
         </a-col>
       </a-row>
     </div>
-    <!--<a-drawer
-      title="权限树"
-      placement="right"
-      width="300"
-      :closable="false"
-      @close="onClose"
-      :visible="drawerVisible"
-    >
-      <a-tabs defaultActiveKey="1">
-        <a-tab-pane tab="工作模式" key="1">
-          <ul id="workMode" class="ztree"></ul>
-        </a-tab-pane>
-        <a-tab-pane tab="信号类型" key="2" forceRender>
-          <ul id="signalMode" class="ztree"></ul>
-        </a-tab-pane>
-      </a-tabs>
-    </a-drawer>-->
   </div>
 </template>
 
@@ -188,7 +175,11 @@ export default {
         }
       ],
       drawerVisible: false,
-      setting: {},
+      setting: {
+        check: {
+          enable: true
+        }
+      },
       workModeNodes: [
         {
           name: '工作模式',
@@ -246,7 +237,8 @@ export default {
         showSizeChanger: true,
         showQuickJumper: true,
         pageSizeOptions: ['5', '10', '15', '20']
-      }
+      },
+      currentRow: null
     }
   },
   methods: {
@@ -289,6 +281,16 @@ export default {
           console.log('Cancel')
         }
       })
+    },
+    userRowClick(record, index) {
+      return {
+        on: {
+          click: () => {
+            // console.log(record, index)
+            this.currentRow = record
+          }
+        }
+      }
     }
   },
   mounted() {
@@ -309,5 +311,15 @@ export default {
   margin-top: 20px;
   background: rgba(0, 0, 0, 0.2);
   padding: 10px;
+  .tree-container-description {
+    height: 40px;
+    line-height: 40px;
+    color: #4ac7d9;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 10px 0;
+    padding-left: 10px;
+    background: linear-gradient(90deg, #123690, transparent) !important;
+  }
 }
 </style>
