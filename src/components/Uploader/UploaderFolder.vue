@@ -160,6 +160,7 @@ import { hasMd5, mergeFile } from '@/api/gtsb_folder_files'
 // import { hasMd5, mergeFile } from '@/api/gtsb_files'
 
 import { v4 as uuidv4 } from 'uuid'
+import { axios } from '@/utils/request'
 
 export default {
   name: 'UploaderTool',
@@ -168,8 +169,8 @@ export default {
     return {
       // 文件上传配置项
       options: {
-        // target: 'http://192.168.31.232:23412/files/chunks',
-        target: 'http://192.168.31.204:23412/folder/files/chunks',
+        // target: 'http://192.168.31.17:23412/folder/files/chunks',
+        target: `${axios.defaults.baseURL}/folder/files/chunks`,
         headers: {
           Authorization: `bearer${Vue.ls.get(ACCESS_TOKEN)}`
         },
@@ -368,10 +369,10 @@ export default {
     mergeFileFactory(fileInfo) {
       let P = new Promise((resolve, reject) => {
         // console.log(fileInfo)
-        this.statusSet(fileInfo.fileId, 'merging')
+        // this.statusSet(fileInfo.fileId, 'merging')
         mergeFile(fileInfo)
           .then(res => {
-            this.statusRemove(fileInfo.fileId)
+            // this.statusRemove(fileInfo.fileId)
             resolve(res.data.data.id)
           })
           .catch(() => {
@@ -459,7 +460,7 @@ export default {
       let chunks = Math.ceil(file.size / chunkSize)
       let spark = new SparkMD5.ArrayBuffer()
 
-      this.statusSet(file.fileId, 'md5')
+      // this.statusSet(file.fileId, 'md5')
       //file.pause()
 
       this.$(`.file_${file.fileId} .uploader-file-actions`).css({
@@ -510,7 +511,7 @@ export default {
       file.uniqueIdentifier = md5
       let fileInfo = this.fileInfoFactory(file)
       console.log(fileInfo)
-      this.statusRemove(file.fileId)
+      // this.statusRemove(file.fileId)
       this.$(`.file_${file.fileId} .uploader-file-actions`).css({
         display: 'unset'
       })

@@ -490,7 +490,7 @@
       class="cus-modal"
       :footer="null"
     >
-      <a-form :form="form" @submit="handleSubmit">
+      <!--<a-form :form="form" @submit="handleSubmit">
         <a-form-item
           label="Note"
           :label-col="{ span: 5 }"
@@ -535,16 +535,28 @@
             Submit
           </a-button>
         </a-form-item>
-      </a-form>
+      </a-form>-->
+      <data-cleaning
+        v-if="currentProcess && currentProcess.label === '数据清洗'"
+      ></data-cleaning>
+      <quality-assessment
+        v-if="currentProcess && currentProcess.label === '质量评估'"
+      ></quality-assessment>
     </a-modal>
   </div>
 </template>
 
 <script>
 import { triggerWindowResizeEvent } from '@/utils/util'
+import DataCleaning from './ProcessSetting/DataCleaning'
+import QualityAssessment from './ProcessSetting/QualityAssessment'
 
 export default {
   name: 'MarkMode',
+  components: {
+    DataCleaning,
+    QualityAssessment
+  },
   data() {
     return {
       formLayout: 'horizontal',
@@ -779,7 +791,28 @@ export default {
         { label: '脉冲质量分析', value: '脉冲质量分析', setting: {} },
         { label: '模式检测', value: '模式检测' },
         { label: '质量评估', value: '质量评估', setting: {} },
-        { label: '数据清洗', value: '数据清洗', setting: {} },
+        {
+          label: '数据清洗',
+          value: '数据清洗',
+          setting: {
+            /*settings: [
+              {
+                type: 'checkBox',
+                options: [
+                  { label: '脉宽清洗', value: 1 },
+                  { label: '幅度清洗', value: 2 },
+                  { label: '频率清洗', value: 3 },
+                  { label: '连续波干扰清洗', value: 4 },
+                  { label: '虚假脉冲估计清洗', value: 5 },
+                  { label: '毛刺现象清洗', value: 6 },
+                  { label: '脉冲完整性分析清洗', value: 7 },
+                  { label: '多径干扰清洗', value: 8 },
+                  { label: '信噪比', value: 9 }
+                ]
+              }
+            ]*/
+          }
+        },
         { label: '数据解码', value: '数据解码' },
         { label: '有效脉冲提取', value: '有效脉冲提取' },
         { label: '标注置信度评估', value: '标注置信度评估', setting: {} }

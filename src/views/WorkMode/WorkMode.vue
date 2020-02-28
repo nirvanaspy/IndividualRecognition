@@ -168,7 +168,7 @@
                 <div
                   class="step-title"
                   :class="{ 'current-step': currentStep === index }"
-                  @dblclick="setCurrentStep(index)"
+                  @dblclick="setCurrentStep(index, step, 'mark')"
                 >
                   <dv-decoration-11 style="width:200px;height:60px">
                     {{ step.title }}
@@ -312,7 +312,7 @@
                 <div
                   class="step-title"
                   :class="{ 'current-step': currentStep === index }"
-                  @dblclick="setCurrentStep(index)"
+                  @dblclick="setCurrentStep(index, step, 'reason')"
                 >
                   <dv-decoration-11 style="width:200px;height:60px">
                     {{ step.title }}
@@ -370,6 +370,19 @@
         </div>
       </a-tab-pane>
     </a-tabs>
+    <a-modal
+      :title="selectedProcess ? selectedProcess.title : ''"
+      v-model="showStepResult"
+      width="80%"
+      class="cus-modal uploader-modal"
+      style="min-height: 800px;"
+      :footer="null"
+    >
+      <step-result
+        :process-name="selectedProcess.title"
+        v-if="showStepResult"
+      ></step-result>
+    </a-modal>
   </div>
 </template>
 
@@ -382,13 +395,16 @@ import MarkMode from './Components/Setting/MarkMode'
 import TrainMode from './Components/Setting/TrainMode'
 import ReasoningMode from './Components/Setting/ReasoningMode'
 
+import StepResult from './Components/StepResult/index'
+
 export default {
   name: 'WorkMode',
   components: {
     GatherMode,
     MarkMode,
     TrainMode,
-    ReasoningMode
+    ReasoningMode,
+    StepResult
   },
   data() {
     return {
@@ -683,12 +699,19 @@ export default {
           dataIndex: 'maxConfidence',
           align: 'center'
         }
-      ]
+      ],
+
+      showStepResult: false,
+      selectedProcess: null
     }
   },
   methods: {
-    setCurrentStep(index) {
+    setCurrentStep(index, process, mode) {
+      console.log(mode)
+      console.log(process)
       this.currentStep = index
+      this.selectedProcess = process
+      this.showStepResult = true
     },
     initGatherChartOption(chartTitle) {
       let option = {
