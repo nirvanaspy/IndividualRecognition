@@ -47,6 +47,26 @@
         </template>
       </a-table>
     </dv-border-box-3>
+    <a-tabs
+      default-active-key="0"
+      :tab-bar-style="{ marginBottom: '24px', paddingLeft: '16px' }"
+    >
+      <a-tab-pane key="0" tab="数据库配置信息">
+        <database-setting></database-setting>
+      </a-tab-pane>
+      <a-tab-pane key="1" tab="硬件节点配置信息">
+        <hard-ware-node-setting></hard-ware-node-setting>
+      </a-tab-pane>
+      <a-tab-pane key="2" tab="采集服务器配置信息">
+        <gather-server-setting></gather-server-setting>
+      </a-tab-pane>
+      <a-tab-pane key="3" tab="软件部署文件配置信息">
+        <soft-deploy-setting></soft-deploy-setting>
+      </a-tab-pane>
+      <a-tab-pane key="4" tab="Http服务器配置信息">
+        <http-server-setting></http-server-setting>
+      </a-tab-pane>
+    </a-tabs>
     <a-modal
       v-model="ifShowUploader"
       width="60%"
@@ -90,10 +110,21 @@
 
 <script>
 import UploaderTool from '@/components/Uploader/UploaderToolOrigin'
+import DatabaseSetting from './Setting/DatabaseSetting'
+import GatherServerSetting from './Setting/GatherServerSetting'
+import HardWareNodeSetting from './Setting/HardWareNodeSetting'
+import SoftDeploySetting from './Setting/SoftDeploySetting'
+import HttpServerSetting from './Setting/HttpServerSetting'
+
 export default {
   name: 'SysSetting',
   components: {
-    UploaderTool
+    UploaderTool,
+    DatabaseSetting,
+    GatherServerSetting,
+    HardWareNodeSetting,
+    SoftDeploySetting,
+    HttpServerSetting
   },
   data() {
     return {
