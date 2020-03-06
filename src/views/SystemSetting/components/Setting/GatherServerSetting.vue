@@ -20,12 +20,26 @@
         slot-scope="text, record"
       >
         <div :key="index">
-          <a-input
-            v-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="e => handleChange(e.target.value, col, record)"
-          />
+          <span v-if="record.editable">
+            <a-input-number
+              v-if="col.inputType === 'number'"
+              :value="text"
+              @change="e => handleChange(e, col, record)"
+            ></a-input-number>
+            <a-input
+              v-else-if="col.inputType === 'password'"
+              style="margin: -5px 0"
+              type="password"
+              :value="text"
+              @change="e => handleChange(e.target.value, col, record)"
+            />
+            <a-input
+              v-else
+              style="margin: -5px 0"
+              :value="text"
+              @change="e => handleChange(e.target.value, col, record)"
+            />
+          </span>
           <template v-else>{{ text }}</template>
         </div>
       </template>
@@ -189,7 +203,7 @@
           :wrapper-col="formItemLayout.wrapperCol"
           label="采集信号精度"
         >
-          <a-input-number
+          <a-input
             placeholder="请输入采集信号精度"
             v-decorator="[
               'GatherSignalAccuracy',
@@ -288,6 +302,7 @@ export default {
           title: '采集设备编号',
           dataIndex: 'GatherDeviceId',
           align: 'center',
+          inputType: 'number',
           scopedSlots: { customRender: 'GatherDeviceId' }
         },
         {
@@ -300,6 +315,7 @@ export default {
           title: '采集设备类型',
           dataIndex: 'GatherDeviceType',
           align: 'center',
+          inputType: 'number',
           scopedSlots: { customRender: 'GatherDeviceType' }
         },
         {
@@ -324,12 +340,14 @@ export default {
           title: '采集设备状态',
           dataIndex: 'GatherDeviceStatus',
           align: 'center',
+          inputType: 'number',
           scopedSlots: { customRender: 'GatherDeviceStatus' }
         },
         {
           title: '适用的采集信号',
           dataIndex: 'GatherSignalType',
           align: 'center',
+          inputType: 'number',
           scopedSlots: { customRender: 'GatherSignalType' }
         },
         {
@@ -366,6 +384,7 @@ export default {
     },
     // eslint-disable-next-line
     del(row) {
+      let _this = this
       this.$confirm({
         title: '警告',
         content: `真的要删除吗?`,
@@ -373,7 +392,14 @@ export default {
         okType: 'danger',
         cancelText: '取消',
         onOk() {
-          console.log('OK')
+          let params = {
+            configItemId: row.configItemId,
+            type: 2
+          }
+          deleteSettingConfig(params).then(() => {
+            _this.$message.success('删除成功！')
+            _this.getDataList()
+          })
         },
         onCancel() {
           console.log('Cancel')
@@ -381,12 +407,18 @@ export default {
       })
     },
     save(row) {
-      console.log(row)
-      row.editable = false
-      let targetIndex = this.gatherServerList.findIndex(
-        item => item.configItemId === row.configItemId
-      )
-      this.$set(this.gatherServerList, targetIndex, row)
+      modifySettingConfig(row)
+        .then(() => {
+          let targetIndex = this.gatherServerList.findIndex(
+            item => item.configItemId === row.configItemId
+          )
+          this.$message.success('修改成功')
+          this.$set(this.gatherServerList, targetIndex, row)
+          row.editable = false
+        })
+        .catch(() => {
+          this.$message.error('修改失败')
+        })
     },
     cancel(row) {
       row = _.cloneDeep(row.backUp)
@@ -409,13 +441,21 @@ export default {
           let params = { ...values }
           params.type = 2
           params.configItemType = 2
-          addSettingConfig(params).then()
+          addSettingConfig(params).then(() => {
+            this.getDataList()
+            this.visible = false
+          })
         }
+      })
+    },
+    getDataList() {
+      getSettingConfig(2).then(res => {
+        this.gatherServerList = res.data[0].info
       })
     }
   },
   created() {
-    getSettingConfig(2).then()
+    this.getDataList()
   }
 }
 </script>

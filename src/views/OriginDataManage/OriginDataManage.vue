@@ -30,7 +30,11 @@
           style="margin: 0 10px"
           >导入</a-button
         >
-        <a-button class="editable-add-btn" type="primary" style="margin: 0 10px"
+        <a-button
+          class="editable-add-btn"
+          type="primary"
+          style="margin: 0 10px"
+          @click="handleExport"
           >导出</a-button
         >
       </div>
@@ -104,6 +108,9 @@
 <script>
 import UploaderReviewer from '@/components/Uploader/UploaderFolder'
 import SearchPanel from '@/components/SearchPanel/SearchPanel'
+
+import { exportFiles } from '@/api/files'
+
 const dataSource = []
 // dataSource.push(null)
 for (let i = 0; i < 11; i++) {
@@ -298,6 +305,28 @@ export default {
     // 显示筛选框
     handleFilter() {
       this.ifShowFilterDialog = true
+    },
+    // 导出文件
+    handleExport() {
+      let fileIds = [100, 200]
+      let params = {
+        fileIds: fileIds
+      }
+      exportFiles(params).then(res => {
+        let filename = ''
+        if (res.headers.filename) {
+          filename = res.headers.filename
+        }
+        let blob = new Blob([res.data])
+        let downloadElement = document.createElement('a')
+        let href = window.URL.createObjectURL(blob) //创建下载的链接
+        downloadElement.href = href
+        downloadElement.download = filename //下载后文件名
+        document.body.appendChild(downloadElement)
+        downloadElement.click() //点击下载
+        document.body.removeChild(downloadElement) //下载完成移除元素
+        window.URL.revokeObjectURL(href) //释放掉blob对象
+      })
     }
   },
   mounted() {

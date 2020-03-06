@@ -68,7 +68,6 @@
 
 <script>
 import SparkMD5 from 'spark-md5'
-import Vue from 'vue'
 import qs from 'qs'
 import uniqId from 'uniqid'
 import _ from 'lodash'
@@ -87,7 +86,7 @@ export default {
         // target: 'http://192.168.31.232:23412/files/chunks',
         target: 'http://127.0.0.1:8080/apis/files/chunks',
         headers: {
-          Authorization: `bearer${Vue.ls.get(ACCESS_TOKEN)}`
+          Authorization: `bearer${this.$ls.get(ACCESS_TOKEN)}`
         },
         chunkSize: 10 * 1024 * 1024,
         simultaneousUploads: 20,

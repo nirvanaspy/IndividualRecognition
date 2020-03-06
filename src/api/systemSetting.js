@@ -39,7 +39,7 @@ export function modifySettingConfig(data) {
 export function deleteSettingConfig(data) {
   return axios({
     url: '/IndividualRecognition/systemSetting/delete',
-    method: 'delete',
-    data
+    method: 'DELETE',
+    params: data
   })
 }

@@ -34,7 +34,6 @@
 
 <script>
 import SparkMD5 from 'spark-md5'
-import Vue from 'vue'
 import qs from 'qs'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { hasMd5, mergeFile } from '@/api/files'
@@ -48,7 +47,7 @@ export default {
       options: {
         target: 'http://127.0.0.1:8080/apis/files/chunks',
         headers: {
-          Authorization: `bearer${Vue.ls.get(ACCESS_TOKEN)}`
+          Authorization: `bearer${this.$ls.get(ACCESS_TOKEN)}`
         },
         chunkSize: 10 * 1024 * 1024,
         simultaneousUploads: 20,

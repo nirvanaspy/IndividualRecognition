@@ -26,3 +26,17 @@ export function mergeFile(data) {
     data
   })
 }
+
+// 导出文件
+export function exportFiles(data) {
+  return axios({
+    url: '/IndividualRecognition/exportFiles',
+    method: 'post',
+    headers: {
+      'content-type': 'application/json'
+    },
+    timeout: 30000,
+    responseType: 'blob',
+    data
+  })
+}

@@ -20,12 +20,26 @@
         slot-scope="text, record"
       >
         <div :key="index">
-          <a-input
-            v-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="e => handleChange(e.target.value, col, record)"
-          />
+          <span v-if="record.editable">
+            <a-input-number
+              v-if="col.inputType === 'number'"
+              :value="text"
+              @change="e => handleChange(e, col, record)"
+            ></a-input-number>
+            <a-input
+              v-else-if="col.inputType === 'password'"
+              style="margin: -5px 0"
+              type="password"
+              :value="text"
+              @change="e => handleChange(e.target.value, col, record)"
+            />
+            <a-input
+              v-else
+              style="margin: -5px 0"
+              :value="text"
+              @change="e => handleChange(e.target.value, col, record)"
+            />
+          </span>
           <template v-else>{{ text }}</template>
         </div>
       </template>
@@ -204,12 +218,14 @@ export default {
           title: '节点编号',
           dataIndex: 'nodeId',
           align: 'center',
+          inputType: 'number',
           scopedSlots: { customRender: 'nodeId' }
         },
         {
           title: '节点类型',
           dataIndex: 'nodeType',
           align: 'center',
+          inputType: 'number',
           scopedSlots: { customRender: 'nodeType' }
         },
         {
@@ -252,6 +268,7 @@ export default {
     },
     // eslint-disable-next-line
     del(row) {
+      let _this = this
       this.$confirm({
         title: '警告',
         content: `真的要删除吗?`,
@@ -259,7 +276,14 @@ export default {
         okType: 'danger',
         cancelText: '取消',
         onOk() {
-          console.log('OK')
+          let params = {
+            configItemId: row.configItemId,
+            type: 1
+          }
+          deleteSettingConfig(params).then(() => {
+            _this.$message.success('删除成功！')
+            _this.getDataList()
+          })
         },
         onCancel() {
           console.log('Cancel')
@@ -267,12 +291,18 @@ export default {
       })
     },
     save(row) {
-      console.log(row)
-      row.editable = false
-      let targetIndex = this.hardWareList.findIndex(
-        item => item.configItemId === row.configItemId
-      )
-      this.$set(this.hardWareList, targetIndex, row)
+      modifySettingConfig(row)
+        .then(() => {
+          let targetIndex = this.hardWareList.findIndex(
+            item => item.configItemId === row.configItemId
+          )
+          this.$message.success('修改成功')
+          this.$set(this.hardWareList, targetIndex, row)
+          row.editable = false
+        })
+        .catch(() => {
+          this.$message.error('修改失败')
+        })
     },
     cancel(row) {
       row = _.cloneDeep(row.backUp)
@@ -295,13 +325,21 @@ export default {
           let params = { ...values }
           params.type = 1
           params.configItemType = 1
-          addSettingConfig(params).then()
+          addSettingConfig(params).then(() => {
+            this.getDataList()
+            this.visible = false
+          })
         }
+      })
+    },
+    getDataList() {
+      getSettingConfig(1).then(res => {
+        this.hardWareList = res.data[0].info
       })
     }
   },
   created() {
-    getSettingConfig(1).then()
+    this.getDataList()
   }
 }
 </script>

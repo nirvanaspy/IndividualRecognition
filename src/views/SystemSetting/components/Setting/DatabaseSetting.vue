@@ -20,12 +20,26 @@
         slot-scope="text, record"
       >
         <div :key="index">
-          <a-input
-            v-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="e => handleChange(e.target.value, col, record)"
-          />
+          <span v-if="record.editable">
+            <a-input-number
+              v-if="col.inputType === 'number'"
+              :value="text"
+              @change="e => handleChange(e, col, record)"
+            ></a-input-number>
+            <a-input
+              v-else-if="col.inputType === 'password'"
+              style="margin: -5px 0"
+              type="password"
+              :value="text"
+              @change="e => handleChange(e.target.value, col, record)"
+            />
+            <a-input
+              v-else
+              style="margin: -5px 0"
+              :value="text"
+              @change="e => handleChange(e.target.value, col, record)"
+            />
+          </span>
           <template v-else>{{ text }}</template>
         </div>
       </template>
@@ -61,7 +75,7 @@
           :wrapper-col="formItemLayout.wrapperCol"
           label="数据库类型"
         >
-          <a-input
+          <a-input-number
             placeholder="请输入数据库类型"
             v-decorator="[
               'dbType',
@@ -208,6 +222,7 @@ export default {
           title: '数据库类型',
           dataIndex: 'dbType',
           align: 'center',
+          inputType: 'number',
           scopedSlots: { customRender: 'dbType' }
         },
         {
@@ -226,6 +241,7 @@ export default {
           title: '端口号',
           dataIndex: 'port',
           align: 'center',
+          inputType: 'number',
           scopedSlots: { customRender: 'port' }
         },
         {
@@ -238,6 +254,7 @@ export default {
           title: '密码',
           dataIndex: 'dbPass',
           align: 'center',
+          inputType: 'password',
           scopedSlots: { customRender: 'dbPass' }
         },
         {
@@ -268,6 +285,7 @@ export default {
     },
     // eslint-disable-next-line
     del(row) {
+      let _this = this
       this.$confirm({
         title: '警告',
         content: `真的要删除吗?`,
@@ -275,7 +293,14 @@ export default {
         okType: 'danger',
         cancelText: '取消',
         onOk() {
-          console.log('OK')
+          let params = {
+            configItemId: row.configItemId,
+            type: 0
+          }
+          deleteSettingConfig(params).then(() => {
+            _this.$message.success('删除成功！')
+            _this.getDataList()
+          })
         },
         onCancel() {
           console.log('Cancel')
@@ -283,12 +308,18 @@ export default {
       })
     },
     save(row) {
-      console.log(row)
-      row.editable = false
-      let targetIndex = this.dbList.findIndex(
-        item => item.configItemId === row.configItemId
-      )
-      this.$set(this.dbList, targetIndex, row)
+      modifySettingConfig(row)
+        .then(() => {
+          let targetIndex = this.dbList.findIndex(
+            item => item.configItemId === row.configItemId
+          )
+          this.$message.success('修改成功')
+          this.$set(this.dbList, targetIndex, row)
+          row.editable = false
+        })
+        .catch(() => {
+          this.$message.error('修改失败')
+        })
     },
     cancel(row) {
       row = _.cloneDeep(row.backUp)
@@ -309,16 +340,23 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           let params = { ...values }
-          params.type = 1
-          params.configItemType = 1
-          addSettingConfig(params).then()
-          console.log(params)
+          params.type = 0
+          params.configItemType = 0
+          addSettingConfig(params).then(() => {
+            this.getDataList()
+            this.visible = false
+          })
         }
+      })
+    },
+    getDataList() {
+      getSettingConfig(0).then(res => {
+        this.dbList = res.data[0].info
       })
     }
   },
   created() {
-    getSettingConfig(0).then()
+    this.getDataList()
   }
 }
 </script>

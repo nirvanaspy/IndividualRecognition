@@ -155,6 +155,90 @@
                     >
                       <a-input v-model="currentRow.filePrefix"></a-input>
                     </a-form-item>
+                    <!--3月6日新增-->
+
+                    <div v-if="currentRow.type === 'USB'">
+                      <a-form-item
+                        label="中心频率"
+                        :label-col="{ span: 5 }"
+                        :wrapper-col="{ span: 12 }"
+                      >
+                        <a-input-number
+                          v-model="currentRow.CenterFreq_Hz"
+                        ></a-input-number>
+                      </a-form-item>
+                      <a-form-item
+                        label="参考电平"
+                        :label-col="{ span: 5 }"
+                        :wrapper-col="{ span: 12 }"
+                      >
+                        <a-input-number
+                          v-model="currentRow.RefLevel_dBm"
+                        ></a-input-number>
+                      </a-form-item>
+                      <a-form-item
+                        label="抽取倍数"
+                        :label-col="{ span: 5 }"
+                        :wrapper-col="{ span: 12 }"
+                      >
+                        <a-input-number
+                          v-model="currentRow.DecimateFactor"
+                        ></a-input-number>
+                      </a-form-item>
+                      <a-form-item
+                        label="采样数据的长度"
+                        :label-col="{ span: 5 }"
+                        :wrapper-col="{ span: 12 }"
+                      >
+                        <a-input v-model="currentRow.FramePts"></a-input>
+                      </a-form-item>
+                      <a-form-item
+                        label="超时时间"
+                        :label-col="{ span: 5 }"
+                        :wrapper-col="{ span: 12 }"
+                      >
+                        <a-input v-model="currentRow.Timeout"></a-input>
+                      </a-form-item>
+                      <a-form-item
+                        label="RF接收机路径"
+                        :label-col="{ span: 5 }"
+                        :wrapper-col="{ span: 12 }"
+                      >
+                        <a-select
+                          style="width: 240px"
+                          v-model="currentRow.RFPath"
+                        >
+                          <a-select-option value="0">ExtPath</a-select-option>
+                          <a-select-option value="1">IntPath</a-select-option>
+                        </a-select>
+                      </a-form-item>
+                      <a-form-item
+                        label="Trigger触发方式"
+                        :label-col="{ span: 5 }"
+                        :wrapper-col="{ span: 12 }"
+                      >
+                        <a-select
+                          style="width: 240px"
+                          v-model="currentRow.TRGMode"
+                        >
+                          <a-select-option value="0">Fixed</a-select-option>
+                          <a-select-option value="1">Triggered</a-select-option>
+                        </a-select>
+                      </a-form-item>
+                      <a-form-item
+                        label="IQ时域采集触发源"
+                        :label-col="{ span: 5 }"
+                        :wrapper-col="{ span: 12 }"
+                      >
+                        <a-select
+                          style="width: 240px"
+                          v-model="currentRow.TRGSrc"
+                        >
+                          <a-select-option value="0">External</a-select-option>
+                          <a-select-option value="1">Soft</a-select-option>
+                        </a-select>
+                      </a-form-item>
+                    </div>
                   </a-form>
                   <a-form :form="gatherSettingForm" v-else>
                     <a-form-item

@@ -150,9 +150,6 @@
 
 <script>
 import SparkMD5 from 'spark-md5'
-import Vue from 'vue'
-// import qs from 'qs'
-// import uniqId from 'uniqid'
 import _ from 'lodash'
 
 import { ACCESS_TOKEN } from '@/store/mutation-types'
@@ -172,7 +169,7 @@ export default {
         // target: 'http://192.168.31.17:23412/folder/files/chunks',
         target: `${axios.defaults.baseURL}/folder/files/chunks`,
         headers: {
-          Authorization: `bearer${Vue.ls.get(ACCESS_TOKEN)}`
+          Authorization: `bearer${this.$ls.get(ACCESS_TOKEN)}`
         },
         chunkSize: 10 * 1024 * 1024,
         simultaneousUploads: 20,
@@ -341,7 +338,8 @@ export default {
       ],
       fileDataList: [],
       dataAccuracy: '',
-      centerFrequency: 0
+      centerFrequency: 0,
+      folderId: ''
     }
   },
 
@@ -435,6 +433,7 @@ export default {
       this.uploader.pause()
       // this.fileTableList = []
       let folderId = uuidv4()
+      this.folderId = folderId
       files.forEach(file => {
         let tag = uuidv4()
         file.fileId = tag
@@ -554,7 +553,7 @@ export default {
       console.log(arguments[1])
       let fileInfo = this.fileInfoFactory(arguments[1])
       fileInfo.fileId = arguments[1].fileId
-      this.promiseList.push(this.mergeFileFactory(fileInfo))
+      this.fileList.push(this.mergeFileFactory(fileInfo))
     },
 
     // 文件勾选
@@ -666,7 +665,13 @@ export default {
     console.log(this.fileDataList)
   },
 
-  watch: {}
+  watch: {
+    promiseList(val) {
+      if (val.length === this.fileList.length) {
+        Promise.all(val).then(res => {})
+      }
+    }
+  }
 }
 </script>
 

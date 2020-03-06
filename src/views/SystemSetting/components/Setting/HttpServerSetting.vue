@@ -189,6 +189,7 @@ export default {
     },
     // eslint-disable-next-line
     del(row) {
+      let _this = this
       this.$confirm({
         title: '警告',
         content: `真的要删除吗?`,
@@ -196,7 +197,14 @@ export default {
         okType: 'danger',
         cancelText: '取消',
         onOk() {
-          console.log('OK')
+          let params = {
+            configItemId: row.configItemId,
+            type: 4
+          }
+          deleteSettingConfig(params).then(() => {
+            _this.$message.success('删除成功！')
+            _this.getDataList()
+          })
         },
         onCancel() {
           console.log('Cancel')
@@ -204,12 +212,18 @@ export default {
       })
     },
     save(row) {
-      console.log(row)
-      row.editable = false
-      let targetIndex = this.httpServerList.findIndex(
-        item => item.configItemId === row.configItemId
-      )
-      this.$set(this.httpServerList, targetIndex, row)
+      modifySettingConfig(row)
+        .then(() => {
+          let targetIndex = this.httpServerList.findIndex(
+            item => item.configItemId === row.configItemId
+          )
+          this.$message.success('修改成功')
+          this.$set(this.httpServerList, targetIndex, row)
+          row.editable = false
+        })
+        .catch(() => {
+          this.$message.error('修改失败')
+        })
     },
     cancel(row) {
       row = _.cloneDeep(row.backUp)
@@ -230,15 +244,23 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           let params = { ...values }
-          params.type = 2
-          params.configItemType = 2
-          addSettingConfig(params).then()
+          params.type = 4
+          params.configItemType = 4
+          addSettingConfig(params).then(() => {
+            this.getDataList()
+            this.visible = false
+          })
         }
+      })
+    },
+    getDataList() {
+      getSettingConfig(4).then(res => {
+        this.httpServerList = res.data[0].info
       })
     }
   },
   created() {
-    getSettingConfig(4).then()
+    this.getDataList()
   }
 }
 </script>
