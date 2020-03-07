@@ -10,7 +10,7 @@ import {
   DEFAULT_FIXED_HEADER_HIDDEN,
   DEFAULT_CONTENT_WIDTH_TYPE,
   DEFAULT_MULTI_TAB,
-  WORK_MODE
+  SET_WORK_MODE
 } from '@/store/mutation-types'
 
 const app = {
@@ -78,7 +78,7 @@ const app = {
       state.multiTab = bool
     },
     SET_WORK_MODE: (state, mode) => {
-      Vue.ls.set(WORK_MODE, mode)
+      Vue.ls.set(SET_WORK_MODE, mode)
       state.workMode = mode
     }
   },

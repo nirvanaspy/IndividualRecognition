@@ -57,7 +57,11 @@
     <!--文件字段信息修改-->
     <div class="file-edit-container">
       <span class="file-edit-box">
-        <a-select style="width: 120px" placeholder="数据精度">
+        <a-select
+          style="width: 120px"
+          placeholder="数据精度"
+          v-model="dataAccuracy"
+        >
           <a-select-option value="chart">chart</a-select-option>
           <a-select-option value="short">short</a-select-option>
           <a-select-option value="int">int</a-select-option>
@@ -69,14 +73,15 @@
         <a-input-number
           placeholder="中心频率"
           style="width: 120px"
+          v-model="centerFrequency"
         ></a-input-number>
       </span>
-      <span class="file-edit-box">
+      <!--<span class="file-edit-box">
         <a-date-picker style="width: 160px"></a-date-picker>
-      </span>
+      </span>-->
 
       <span class="file-edit-btn">
-        <a-button type="primary">修改</a-button>
+        <a-button type="primary" @click="handleModifyFileConfig">修改</a-button>
       </span>
     </div>
 
@@ -153,7 +158,12 @@ import SparkMD5 from 'spark-md5'
 import _ from 'lodash'
 
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-import { hasMd5, mergeFile } from '@/api/gtsb_folder_files'
+import {
+  hasMd5,
+  mergeFile,
+  getFolderFileConfig,
+  modifyFileConfig
+} from '@/api/gtsb_folder_files'
 // import { hasMd5, mergeFile } from '@/api/gtsb_files'
 
 import { v4 as uuidv4 } from 'uuid'
@@ -197,6 +207,8 @@ export default {
       promiseList: [],
       // 用户选择后的文件列表
       fileList: [],
+      // 选择上传的文件夹中的文件个数
+      fileLength: 0,
       columns: [
         {
           title: '文件名',
@@ -371,7 +383,8 @@ export default {
         mergeFile(fileInfo)
           .then(res => {
             // this.statusRemove(fileInfo.fileId)
-            resolve(res.data.data.id)
+            // resolve(res.data.data.id)
+            resolve()
           })
           .catch(() => {
             reject('error')
@@ -431,6 +444,7 @@ export default {
     // 选中文件夹
     onFilesAdd(files, fileList) {
       this.uploader.pause()
+      this.fileLength = files.length
       // this.fileTableList = []
       let folderId = uuidv4()
       this.folderId = folderId
@@ -550,10 +564,10 @@ export default {
 
     // 文件上传成功后的回调
     onFileSuccess() {
-      console.log(arguments[1])
+      // console.log(arguments[1])
       let fileInfo = this.fileInfoFactory(arguments[1])
       fileInfo.fileId = arguments[1].fileId
-      this.fileList.push(this.mergeFileFactory(fileInfo))
+      this.promiseList.push(this.mergeFileFactory(fileInfo))
     },
 
     // 文件勾选
@@ -657,18 +671,43 @@ export default {
       } else {
         return false
       }
+    },
+
+    handleModifyFileConfig() {
+      let params = {
+        fileParams: [
+          {
+            dataAccuracy: this.dataAccuracy,
+            centerFrequency: this.centerFrequency,
+            fileName: `import_ADS-B_原始信号_${this.dataAccuracy}_${
+              this.centerFrequency
+            }`,
+            fileId: this.folderId
+          }
+        ],
+        folderId: this.folderId
+      }
+      modifyFileConfig(params).then(res => {
+        console.log(res)
+      })
     }
   },
 
   created() {
-    this.fileDataList = this.flatFolderJson(this.fileTableList, [])
-    console.log(this.fileDataList)
+    // this.fileDataList = this.flatFolderJson(this.fileTableList, [])
   },
 
   watch: {
     promiseList(val) {
-      if (val.length === this.fileList.length) {
-        Promise.all(val).then(res => {})
+      if (val.length === this.fileLength) {
+        Promise.all(val).then(() => {
+          getFolderFileConfig(this.folderId).then(res => {
+            console.log(res)
+            if (res.data) {
+              this.fileDataList = this.flatFolderJson(res.data, [])
+            }
+          })
+        })
       }
     }
   }

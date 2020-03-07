@@ -12,14 +12,22 @@
         <a-button
           class="editable-add-btn"
           type="primary"
-          @click="handleDelete"
+          @click="handleFilter"
           style="margin: 0 10px"
           >查询</a-button
         >
-        <a-button class="editable-add-btn" type="primary" style="margin: 0 10px"
+        <a-button
+          class="editable-add-btn"
+          type="primary"
+          style="margin: 0 10px"
+          @click="showUploader"
           >导入</a-button
         >
-        <a-button class="editable-add-btn" type="primary" style="margin: 0 10px"
+        <a-button
+          class="editable-add-btn"
+          type="primary"
+          style="margin: 0 10px"
+          @click="handleExport"
           >导出</a-button
         >
       </div>
@@ -68,9 +76,36 @@
         </a-col>
       </a-row>
     </div>
+
+    <!--文件上传控件-->
+    <a-modal
+      v-model="ifShowUploader"
+      width="60%"
+      style="height: 60%"
+      class="cus-modal uploader-modal"
+      :footer="null"
+    >
+      <uploader-reviewer></uploader-reviewer>
+    </a-modal>
+
+    <!--搜索查询控件-->
+    <a-modal
+      v-model="ifShowFilterDialog"
+      width="60%"
+      style="height: 60%"
+      class="cus-modal uploader-modal"
+      :footer="null"
+    >
+      <search-panel></search-panel>
+    </a-modal>
   </div>
 </template>
 <script>
+import UploaderReviewer from '@/components/Uploader/UploaderFolder_OriginData'
+import SearchPanel from '@/components/SearchPanel/SearchPanel'
+
+import { exportFiles } from '@/api/files'
+
 const dataSource = []
 // dataSource.push(null)
 for (let i = 0; i < 11; i++) {
@@ -96,6 +131,10 @@ for (let i = 0; i < 11; i++) {
 }
 export default {
   name: 'SampleDataManage',
+  components: {
+    UploaderReviewer,
+    SearchPanel
+  },
   data() {
     return {
       chartList: [],
@@ -214,7 +253,9 @@ export default {
             center: ['50%', '50%']
           }
         ]
-      }
+      },
+      ifShowUploader: false,
+      ifShowFilterDialog: false
     }
   },
   methods: {
@@ -248,6 +289,39 @@ export default {
         onCancel() {
           console.log('Cancel')
         }
+      })
+    },
+
+    // 显示上传文件控件
+    showUploader() {
+      this.ifShowUploader = true
+    },
+
+    // 显示筛选框
+    handleFilter() {
+      this.ifShowFilterDialog = true
+    },
+
+    // 导出文件
+    handleExport() {
+      let fileIds = [100, 200]
+      let params = {
+        fileIds: fileIds
+      }
+      exportFiles(params).then(res => {
+        let filename = ''
+        if (res.headers.filename) {
+          filename = res.headers.filename
+        }
+        let blob = new Blob([res.data])
+        let downloadElement = document.createElement('a')
+        let href = window.URL.createObjectURL(blob) //创建下载的链接
+        downloadElement.href = href
+        downloadElement.download = filename //下载后文件名
+        document.body.appendChild(downloadElement)
+        downloadElement.click() //点击下载
+        document.body.removeChild(downloadElement) //下载完成移除元素
+        window.URL.revokeObjectURL(href) //释放掉blob对象
       })
     }
   },

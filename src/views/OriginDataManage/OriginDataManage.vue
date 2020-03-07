@@ -84,6 +84,7 @@
       </a-row>
     </div>
 
+    <!--文件上传控件-->
     <a-modal
       v-model="ifShowUploader"
       width="60%"
@@ -94,6 +95,7 @@
       <uploader-reviewer></uploader-reviewer>
     </a-modal>
 
+    <!--搜索查询控件-->
     <a-modal
       v-model="ifShowFilterDialog"
       width="60%"
@@ -106,7 +108,7 @@
   </div>
 </template>
 <script>
-import UploaderReviewer from '@/components/Uploader/UploaderFolder'
+import UploaderReviewer from '@/components/Uploader/UploaderFolder_OriginData'
 import SearchPanel from '@/components/SearchPanel/SearchPanel'
 
 import { exportFiles } from '@/api/files'
@@ -306,6 +308,7 @@ export default {
     handleFilter() {
       this.ifShowFilterDialog = true
     },
+
     // 导出文件
     handleExport() {
       let fileIds = [100, 200]

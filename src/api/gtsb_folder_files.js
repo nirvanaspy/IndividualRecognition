@@ -27,3 +27,26 @@ export function mergeFile(data) {
     data
   })
 }
+
+// 查询文件夹描述信息
+export function getFolderFileConfig(id) {
+  return axios({
+    url: 'IndividualRecognition/files/getFileConfig',
+    method: 'get',
+    params: {
+      folderId: id
+    }
+  })
+}
+
+// 修改文件参数信息
+export function modifyFileConfig(data) {
+  return axios({
+    url: 'IndividualRecognition/files/modifyFileConfig',
+    method: 'post',
+    headers: {
+      'content-type': 'application/json'
+    },
+    data
+  })
+}
