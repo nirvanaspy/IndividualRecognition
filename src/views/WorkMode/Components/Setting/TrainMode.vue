@@ -49,7 +49,7 @@
                   </div>
                   <!--资源列表树-->
                   <div class="user-operation">选择计算资源</div>
-                  <div class="tree-columns-title">
+                  <!--<div class="tree-columns-title">
                     <span class="cus-tree-text">资源索引</span>
                     <span class="cus-tree-text">型号</span>
                     <span class="cus-tree-text">容量</span>
@@ -74,7 +74,23 @@
                       <span class="cus-tree-text"> {{ record.capacity }} </span>
                       <span class="cus-tree-text"> {{ record.usage }} </span>
                     </template>
-                  </a-tree>
+                  </a-tree>-->
+                  <a-table
+                    :dataSource="trainResourceList"
+                    :columns="trainResourceColumns"
+                    :rowSelection="{
+                      selectedRowKeys: advanceSelectedRowKeys,
+                      onChange: onAdvanceSelectChange,
+                      onSelect: onAdvanceSelect,
+                      getCheckboxProps: record => ({
+                        props: {
+                          disabled: record.disabled // Column configuration not to be checked
+                        }
+                      })
+                    }"
+                    rowKey="id"
+                  >
+                  </a-table>
                 </dv-border-box-4>
               </div>
             </a-col>
@@ -502,9 +518,7 @@ export default {
         {
           resourceIndex: '推理设备1',
           title: '推理设备1',
-          scopedSlots: {
-            title: 'title'
-          },
+          disabled: true,
           id: '1',
           type: 'a',
           capacity: '1TB',
@@ -512,23 +526,28 @@ export default {
           children: [
             {
               resourceIndex: '推理设备1-卡1',
-              title: '推理设备1-卡1',
-              scopedSlots: {
-                title: 'title'
-              },
+              title: 'cpu-卡1',
+              fatherNodeId: '1',
               id: '6',
-              type: 'a',
+              type: 'cpu',
               capacity: '1TB',
               usage: '20%'
             },
             {
               resourceIndex: '推理设备1-卡2',
-              title: '推理设备1-卡2',
-              scopedSlots: {
-                title: 'title'
-              },
+              title: 'gpu-卡1',
+              fatherNodeId: '1',
               id: '7',
-              type: 'a',
+              type: 'gpu',
+              capacity: '1TB',
+              usage: '20%'
+            },
+            {
+              resourceIndex: '推理设备1-卡2',
+              title: 'gpu-卡2',
+              fatherNodeId: '1',
+              id: '8',
+              type: 'gpu',
               capacity: '1TB',
               usage: '20%'
             }
@@ -537,9 +556,6 @@ export default {
         {
           resourceIndex: '推理设备2',
           title: '推理设备2',
-          scopedSlots: {
-            title: 'title'
-          },
           id: '2',
           type: 'b',
           capacity: '1TB',
@@ -549,9 +565,6 @@ export default {
         {
           resourceIndex: '推理设备3',
           title: '推理设备3',
-          scopedSlots: {
-            title: 'title'
-          },
           id: '3',
           type: 'c',
           capacity: '1TB',
@@ -561,9 +574,6 @@ export default {
         {
           resourceIndex: '推理设备4',
           title: '推理设备4',
-          scopedSlots: {
-            title: 'title'
-          },
           id: '4',
           type: 'd',
           capacity: '1TB',
@@ -573,9 +583,6 @@ export default {
         {
           resourceIndex: '推理设备5',
           title: '推理设备5',
-          scopedSlots: {
-            title: 'title'
-          },
           id: '5',
           type: 'e',
           capacity: '1TB',
@@ -827,7 +834,8 @@ export default {
       selectedFeatureProcess: [],
       processSettingVisible: false,
       currentProcess: null,
-      form: this.$form.createForm(this, { name: 'coordinated' })
+      form: this.$form.createForm(this, { name: 'coordinated' }),
+      advanceSelectedRowKeys: []
     }
   },
   methods: {
@@ -905,6 +913,61 @@ export default {
       this.form.setFieldsValue({
         note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`
       })
+    },
+
+    onAdvanceSelectChange(selectedRowKeys, selectedRows) {
+      // console.log(selectedRowKeys, selectedRows)
+      this.advanceSelectedRowKeys = selectedRowKeys
+    },
+
+    onAdvanceSelect(record, selected, selectedRows, nativeEvent) {
+      let fatherNodeId = record.fatherNodeId
+      let fatherNode = this.trainResourceList.find(
+        item => item.id === fatherNodeId
+      )
+      if (fatherNode) {
+        let sonNodes = fatherNode.children
+
+        for (let i = 0; i < sonNodes.length; i++) {
+          let sonNode = sonNodes[i]
+          if (sonNode.type !== record.type && sonNode.id !== record.id) {
+            if (this.advanceSelectedRowKeys.find(key => key === sonNode.id)) {
+              let targetIndex = this.advanceSelectedRowKeys.findIndex(
+                key => key === record.id
+              )
+              if (targetIndex > -1) {
+                this.advanceSelectedRowKeys.splice(targetIndex, 1)
+                this.$message.error('请勿同时选中gpu和cpu！')
+                break
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  computed: {
+    computedRecord() {
+      return function(record) {
+        let flag = false
+        let fatherNodeId = record.fatherNodeId
+        let fatherNode = this.trainResourceList.find(
+          item => item.id === fatherNodeId
+        )
+        if (fatherNode) {
+          let sonNodes = fatherNode.children
+          sonNodes.forEach(sonNode => {
+            if (sonNode.type !== record.type && sonNode.id !== record.id) {
+              sonNode.disabled = !sonNode.disabled
+            }
+            let targetNode = sonNodes.find(node => node.id === record.id)
+            if (targetNode) {
+              flag = targetNode.disabled
+            }
+          })
+          return flag
+        }
+      }
     }
   }
 }

@@ -150,6 +150,19 @@ export const asyncRouterMap = [
         }
       },
 
+      // leaflet
+      {
+        path: '/leaflet',
+        name: 'leafletView',
+        component: () => import('@/views/Leaflet/leaflet'),
+        meta: {
+          title: 'leaflet地图',
+          keepAlive: true,
+          icon: 'global',
+          permission: ['simApplication']
+        }
+      },
+
       // Exception
       {
         path: '/exception',

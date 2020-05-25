@@ -31,6 +31,19 @@ import { Carousel, CarouselItem } from 'element-ui'
 
 import uploader from 'vue-simple-uploader'
 
+// leaflet
+import 'leaflet/dist/leaflet.css'
+import 'leaflet-draw/dist/leaflet.draw.css'
+import 'leaflet-navbar/Leaflet.NavBar.css'
+import * as L from 'leaflet'
+import 'leaflet-rotatedmarker'
+import 'leaflet-navbar'
+import './views/Leaflet/Plugins/leaflet.draw/leaflet.ellipse-draw.css'
+/*import './views/Leaflet/Plugins/leaflet.draw/leaflet.ellipse'
+import './views/Leaflet/Plugins/leaflet.draw/leaflet.ellipse-draw'*/
+
+Vue.prototype.$L = L
+
 Vue.prototype.$echarts = echarts
 Vue.prototype.$ = $
 
