@@ -5,12 +5,12 @@
         <div class="header">
           <a href="/">
             <img src="~@/assets/logo.svg" class="logo" alt="logo" />
-            <span class="title">个体识别深度学习系统</span>
+            <!--<span class="title">个体识别深度学习系统</span>-->
             <span class="title">系统软件框架</span>
           </a>
         </div>
         <div class="desc">
-          Individual Recognition Deep Learning System Software framework
+          <!--Individual Recognition Deep Learning System Software framework-->
         </div>
       </div>
 

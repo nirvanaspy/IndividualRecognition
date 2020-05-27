@@ -1,54 +1,32 @@
 import L from 'leaflet'
 
-function getIconUrl(modelInfo) {
-  let iconName = ''
-  switch (modelInfo.camp) {
-    case 0:
-      iconName = modelInfo.typeId + '_red'
-      break
-    case 1:
-      iconName = modelInfo.typeId + '_blue'
-      break
-    case 2:
-      iconName = modelInfo.typeId + '_green'
-      break
-  }
-  if (modelInfo.destroyed == true) {
-    iconName = modelInfo.typeId + '_gray'
+class LeafletPolyline {
+  constructor(map, polylineInfo) {
+    this.polylineInfo = polylineInfo
+
+    this.initPolyline(polylineInfo.latlngs, polylineInfo)
+
+    if (this.polyline) {
+      this.polyline.addTo(map)
+    }
   }
 
-  let iconUrl = `../Assets/icons/${iconName}.png`
-  return iconUrl
-}
-
-class LeafletModel {
-  constructor(map, modelInfo) {
-    this.modelInfo = modelInfo
-    let symbol = this.initModel(modelInfo)
-    this.symbol = symbol
-    map.map.addLayer(symbol)
-    /* // 更新模型飞行角度
-    if (modelInfo.angle || modelInfo.angle === 0) {
-      console.log(symbol)
-      symbol.setRotationAngle(modelInfo.angle)
-    }*/
+  initPolyline(latlngs, polylineInfo) {
+    this.polyline = null
+    if (latlngs && latlngs.length > 0) {
+      let antPath = L.polyline
+      this.polyline = antPath(latlngs, {
+        id: polylineInfo.id,
+        weight: 3, // 线宽
+        opacity: 0.5, // 透明度
+        color: polylineInfo.color ? polylineInfo.color : 'red' // 颜色
+      })
+    }
   }
 
-  initModel(modelInfo) {
-    let iconUrl = getIconUrl(modelInfo)
-    let symbol = L.marker([modelInfo.latitude, modelInfo.longitude], {
-      icon: L.icon({
-        iconUrl: iconUrl,
-        iconSize: [60, 60],
-        iconAnchor: [30, 30],
-        popupAnchor: [0, 0]
-      }),
-      rotationOrigin: 'center center',
-      draggable: false,
-      rotationAngle: modelInfo.angle ? modelInfo.angle : 0
-    })
-    return symbol
+  updatePolyline(latlngs) {
+    this.polyline.addLatLng(latlngs)
   }
 }
 
-export default LeafletModel
+export default LeafletPolyline

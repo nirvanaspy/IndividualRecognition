@@ -214,6 +214,18 @@ for (let i = 0; i < 6; i++) {
   }
   chartOptionList.push(option)
 }
+
+const taskList = []
+for (let i = 1; i < 100; i++) {
+  let task = {
+    name: `任务${i}`,
+    id: i,
+    description: `这是任务${i}`,
+    createTime: '2020-05-26 15:20:17',
+    progress: i
+  }
+  taskList.push(task)
+}
 export default {
   name: 'TaskManage',
   data() {
@@ -266,36 +278,7 @@ export default {
           sm: { span: 19, offset: 5 }
         }
       },
-      taskList: [
-        {
-          name: '任务1',
-          description: '这是任务1',
-          id: '1',
-          progress: 50,
-          createTime: '2010-8-31 11:00:00'
-        },
-        {
-          name: '任务2',
-          description: '这是任务2',
-          id: '2',
-          progress: 70,
-          createTime: '2010-8-31 11:01:00'
-        },
-        {
-          name: '任务3',
-          description: '这是任务3',
-          id: '3',
-          progress: 46,
-          createTime: '2010-8-31 11:02:00'
-        },
-        {
-          name: '任务4',
-          description: '这是任务4',
-          id: '4',
-          progress: 89,
-          createTime: '2010-8-31 11:03:00'
-        }
-      ],
+      taskList,
       chartList: [],
       targetApp: {},
       form: this.$form.createForm(this),

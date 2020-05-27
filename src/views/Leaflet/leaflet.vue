@@ -5,6 +5,8 @@
 <script>
 import LeafletViewer from './Plugins/viewer'
 import LeafletModel from './Plugins/model'
+import LeafletPolyline from './Plugins/polyline'
+
 import LeafletDraw from 'leaflet-draw'
 import './Plugins/leaflet.draw/leaflet.ellipse'
 import './Plugins/leaflet.draw/leaflet.ellipse-draw'
@@ -16,7 +18,9 @@ export default {
       map: null,
       initZoom: 6,
       center: [27.54724, 127.44141],
-      maxBounds: [[85, -26.19141], [-85, 333.98438]]
+      maxBounds: [[85, -26.19141], [-85, 333.98438]],
+      models: [],
+      polylines: []
     }
   },
   methods: {},
@@ -54,11 +58,11 @@ export default {
         polygon: {
           allowIntersection: false, // Restricts shapes to simple polygons
           drawError: {
-            color: '#e1e100', // Color the shape will turn when intersects
+            color: '#150ee1', // Color the shape will turn when intersects
             message: "<strong>Oh snap!<strong> you can't draw that!" // Message that will show when intersect
           },
           shapeOptions: {
-            color: '#bada55'
+            color: '#5351da'
           }
         },
         // circle: false, // Turns off this drawing tool
@@ -88,20 +92,38 @@ export default {
       drawnItems.addLayer(layer)
     })
 
-    let modelInfo = {
-      latitude: 33,
-      longitude: 104,
-      visible: true,
-      radius: 20000,
-      id: 0,
-      showPolyline: true,
-      polylineColor: 'red',
-      typeId: '006',
-      camp: 0,
-      angle: 30,
-      rangeFillColor: '#ff0000' // 扫描圈填充色
+    for (let i = 0; i < 1000; i++) {
+      let modelInfoTemp = {
+        latitude: 33 + i * 0.1,
+        longitude: 104 + i * 0.1,
+        visible: true,
+        radius: 20000,
+        id: i,
+        showPolyline: true,
+        polylineColor: 'red',
+        typeId: '006',
+        camp: 0,
+        angle: 30,
+        rangeFillColor: '#ff0000' // 扫描圈填充色
+      }
+      let model = new LeafletModel(map, modelInfoTemp)
+      this.models.push(model)
     }
-    let symbol = new LeafletModel(map, modelInfo)
+
+    let polyline = new LeafletPolyline(map.map, {
+      id: 0,
+      color: 'blue',
+      latlngs: [[33, 104]]
+    })
+    this.polylines.push(polyline)
+
+    let i = 0
+    setInterval(() => {
+      let targetModel = this.models.find(item => item.modelInfo.id === 0)
+      targetModel.model.setLatLng([40 + 0.0001 * i, 110 + 0.0001 * i])
+      polyline.updatePolyline({ lat: 40 + 0.0001 * i, lon: 110 + 0.0001 * i })
+      i += 1
+    }, 10)
   }
 }
 </script>

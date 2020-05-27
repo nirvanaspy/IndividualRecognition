@@ -25,8 +25,8 @@ class LeafletModel {
   constructor(map, modelInfo) {
     this.modelInfo = modelInfo
     let symbol = this.initModel(modelInfo)
-    this.symbol = symbol
-    map.map.addLayer(symbol)
+    this.model = symbol
+    map.map.addLayer(this.model)
     /* // 更新模型飞行角度
     if (modelInfo.angle || modelInfo.angle === 0) {
       console.log(symbol)
@@ -37,6 +37,7 @@ class LeafletModel {
   initModel(modelInfo) {
     let iconUrl = getIconUrl(modelInfo)
     let symbol = L.marker([modelInfo.latitude, modelInfo.longitude], {
+      id: modelInfo.id,
       icon: L.icon({
         iconUrl: iconUrl,
         iconSize: [60, 60],
@@ -48,6 +49,14 @@ class LeafletModel {
       rotationAngle: modelInfo.angle ? modelInfo.angle : 0
     })
     return symbol
+  }
+
+  getById(id) {
+    if (this.modelInfo.id === id) {
+      return true
+    } else {
+      return false
+    }
   }
 }
 

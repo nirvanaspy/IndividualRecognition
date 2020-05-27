@@ -65,6 +65,28 @@
               />
             </a-input>
           </a-form-item>
+
+          <a-form-item validate-status="warning">
+            <a-input
+              size="large"
+              type="password"
+              autocomplete="false"
+              placeholder="兵力类型:"
+              v-decorator="[
+                'type',
+                {
+                  rules: [{ required: true, message: '请输入兵力类型' }],
+                  validateTrigger: 'blur'
+                }
+              ]"
+            >
+              <a-icon
+                slot="prefix"
+                type="appstore"
+                :style="{ color: 'rgba(0,0,0,.25)' }"
+              />
+            </a-input>
+          </a-form-item>
         </a-tab-pane>
       </a-tabs>
 
@@ -72,7 +94,7 @@
         <a-checkbox v-decorator="['rememberMe']">自动登录</a-checkbox>
       </a-form-item>-->
 
-      <a-form-item style="margin-top:24px">
+      <a-form-item style="margin-top:10px">
         <a-button
           size="large"
           type="primary"
